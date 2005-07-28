@@ -1,0 +1,42 @@
+µo«H¤H: binbin.bbs@cpu.tfcis.org (»æ°®) ¬ÝªO: plan
+¼Ð  ÃD: [¥\¯à] §Úªº³Ì·R±Æ§Ç
+µo«H¯¸: °Ê¤O®Ö¤ß (2005/04/19 Tue 14:48:24)                Updated: 2004/04/19
+
+> favor.c : ¼W¥[¤U­±¨â­Ó¨ç¦¡
+
+static int
+mf_cmp(a, b)
+  MF *a;
+  MF *b;
+{
+  int k = a->mftype - b->mftype;                /* Ãþ«¬ */
+  return k ? k : str_cmp(a->xname, b->xname);   /* ¦WºÙ */
+}
+
+static int
+mf_sort(xo)
+  XO *xo;
+{
+  rec_sync(xo->dir, sizeof(MF), mf_cmp, NULL);
+  return mf_load(xo);
+}
+
+> favor.c : mf_cb[] ¥[¤J«öÁä 'S'
+
+static KeyFunc mf_cb[] =
+{
+  ...
+
+  'T', mf_title,
+  'E', mf_edit,
++ 'S', mf_sort,
+  's', mf_switch,
+  ...
+
+> theme.h
+
+#define NECKER_MF «á­±¥[¤J "... [S]±Æ§Ç ..."
+
+--
+ [1;43m¢«[46m¢ª[m Or[1mig[30min[m: [41m Maple-itoc£»°Ê¤O®Ö¤ß [36;47m cpu.tfcis.org [m
+ [1;44m¢©[41m¢¨[m A[1mut[30mho[mr: [1;33mbinbin [30m±q [31m211-74-86-40.adsl.dynamic.seed.net.tw [30mµoªí[m

@@ -1,0 +1,91 @@
+µo«H¤H: itoc.bbs@xeon.tfcis.org (®Ö¤ß°Ê¤O) ¬ÝªO: plan
+¼Ð  ÃD: Re: Âê¤åCtrl+y
+µo«H¯¸: °Ê¤O®Ö¤ß (Fri, 24 Oct 2003 18:36:01 +0800 (CST))  Updated: 2005/03/22
+
+¡° ¤Þ­z¡muserjoe.bbs@bittern.csie.nctu.edu.tw (¬õÀs)¡n¤§»Ê¨¥¡G
+> Âê¤å¦b¤å³¹¼ÐÃD§ï¦¨"¤å³¹¤w³Q¯¸°È¤H­ûÂê¦í"
+
+: post.c:hdr_outs() ¤£Åã¥Ü§@ªÌ
+
+  /* --------------------------------------------------- */
+  /* ¦L¥X§@ªÌ                                            */
+  /* --------------------------------------------------- */
+
+#ifdef CHECK_ONLINE
+  if (online = utmp_seek(hdr))
+    outs(COLOR7);
+#endif
+
++#ifdef HAVE_REFUSEMARK
++ if ((hdr->xmode & POST_RESTRICT) &&
++   strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
++   mark = "§@ªÌ¥[±K";
++ else
++#endif
+    mark = hdr->owner;
+  len = IDLEN + 1;
+
+: post.c:hdr_outs() ¤£Åã¥Ü¼ÐÃD
+
+  /* --------------------------------------------------- */
+  /* ¦L¥X¼ÐÃDªººØÃþ                                      */
+  /* --------------------------------------------------- */
+
++#ifdef HAVE_REFUSEMARK
++ if ((hdr->xmode & POST_RESTRICT) &&
++   strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
++ {
++   title = "¤å³¹¤w³Q¯¸°È¤H­ûÂê¦í";
++   ch = 1;
++ }
++ else
++#endif
++ {
+    title = str_ttl(mark = hdr->title);
+    ch = title == mark;
+    if (!strcmp(currtitle, title))
+      ch += 2;
++ }
+
+: cache.c:utmp_seek() ±K¤å§@ªÌ¤£Åã¥Ü¦b½u¤W
+
+  if (hdr->xmode & (GEM_GOPHER | POST_INCOME | MAIL_INCOME))
+    return NULL;
++#ifdef HAVE_REFUSEMARK
++ if ((hdr->xmode & POST_RESTRICT) &&
++   strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
++   return NULL;
++#endif
+  return utmp_get(hdr->owner);
+
+: xover.c:xo_uquery() ¤£¯à ^Q ¬d¸ß±K¤å§@ªÌ
+
+  hdr = (HDR *) xo_pool + (xo->pos - xo->top);
++#ifdef HAVE_REFUSEMARK
++ if ((hdr->xmode & POST_RESTRICT) &&
++   strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
++   return XO_NONE;
++#endif
+  userid = hdr->owner;
+  if (strchr(userid, '.'))
+    return XO_NONE;
+
+: post.c:post_cross() ¥[±K¤å³¹¤£±oÂà¿ý
+
+    hdr = tag ? &xhdr : (HDR *) xo_pool + (xo->pos - xo->top);
+      /* lkchu.981201: ¾ã§åÂà¿ý */
+
++   if ((!tag) && (hdr->xmode & POST_RESTRICT))
++   {
++     vmsg("¥[±K¤å³¹¤£±oÂà¿ý");
++     return XO_HEAD;
++   }
+
+--
+ [1;43m¢«[46m¢ª[m Or[1mig[30min[m: [41m Maple-itoc£»°Ê¤O®Ö¤ß [36;47m cpu.tfcis.org [m
+ [1;44m¢©[41m¢¨[m A[1mut[30mho[mr: [1;33mchwaian [30m±q [31m218-165-120-22.dynamic.hinet.net [30mµoªí[m
+
+
+--
+ [1;43m¢z[44m¢q[m Or[1mig[30min[m: [44m ¥x«n¤@¤¤£»°Ê¤O®Ö¤ß [31;47m processor.tfcis.org [m
+ [1;41m¢|[42m¢}[m A[1mut[30mho[mr: [1;36mitoc [30m±q [35mpc512-2.ee.nctu.edu.tw [30mµoªí[m

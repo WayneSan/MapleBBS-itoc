@@ -1,0 +1,70 @@
+§@ªÌ: itoc (cygreadline4.dll) ¬ÝªO: plan
+¼ÐÃD: [¥\¯à] ¯¸ªø°O¿ý -- ¬åªO
+®É¶¡: 2004/05/12 Wed 18:24:20                           Updated: 2005/04/29
+
+¡° ¤Þ­z¡mpoit.bbs@bbs.kh.usc.edu.tw (©I~~~~)¡n¤§»Ê¨¥¡G
+> ¦pªG­n§ï¦¨¯¸ªø¬åª©
+> ¨º¦pªG­n¥[¤W§¢ª©®É¥[¦C²z¥Ñ
+> ¤S­n«ç»ò­×§ï©O??
+
+  ¥ý°µºëµØ°Ï³o½g
+  [¥\¯à] post.c µo¤å¨ì¬ÝªO
+
+: acct.c ·s¼W¥H¤U¨ç¦¡¦b brd_edit() «e­±
+
+static void
+log_delboard(brdname, reason)
+  char *brdname;
+  char *reason;
+{
+  char fpath[64], title[TTLEN + 1];
+  FILE *fp;
+
+  sprintf(fpath, "tmp/log_delboard.%s", cuser.userid);   /* ¼È¦sÀÉ */
+  if (fp = fopen(fpath, "w"))
+  {
+    sprintf(title, "¯¸ªø %s §R°£ [%s] ¬ÝªO",
+      cuser.userid, brdname);
+
+    /* ¤å³¹ÀÉÀY */
+    fprintf(fp, "%s %s (%s) %s %s\n",
+      str_author1, cuser.userid, cuser.username,
+      str_post2, BN_SECURITY);
+    fprintf(fp, "¼ÐÃD: %s\n®É¶¡: %s\n\n", title, Now());
+
+    /* ¤å³¹¤º®e */
+    fprintf(fp, "%s\n\n", title);
+    fprintf(fp, "%s\n", reason);
+
+    fclose(fp);
+
+    add_post(BN_SECURITY, fpath, title);
+    unlink(fpath);
+  }
+}
+
+: acct.c:brd_edit()
+
+  case 'd':
+
+    if (vget(9, 0, msg_sure_ny, buf, 3, LCECHO) != 'y')
+    {
+      vmsg(MSG_DEL_CANCEL);
+    }
+    else
+    {
+      char *bname = bhdr->brdname;
++     char reason[50];
+
++     if (!vget(9, 0, "½Ð¿é¤J¬åªO²z¥Ñ¡G", reason, 50, DOECHO))
++       break;
+
+      if (*bname)
+      {
++       log_delboard(bname, reason);
+        sprintf(buf, "gem/brd/%s", bname);
+        f_rm(buf);
+        f_rm(buf + 4);
+
+--
+[1;37m¡¼ ¥»¤å³¹¥Ñ [33mitoc[37m ±q [32mpc512-2.EE.NCTU.edu.tw[37m µoªí[m

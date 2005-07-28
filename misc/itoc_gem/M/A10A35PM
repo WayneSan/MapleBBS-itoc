@@ -1,0 +1,173 @@
+§@ªÌ: itoc (cygreadline4.dll) ¬ÝªO: plan
+¼ÐÃD: [¥\¯à] ÂI¿ïºô§}»{ÃÒ
+®É¶¡: 2004/05/12 Wed 11:14:48                           Updated: 2004/05/19
+
+  ÂI¿ï»{ÃÒ«H¤¤ªººô§}´N³q¹L»{ÃÒ
+  ·íµM¡A«e´£¬O­n¦³±¾ bhttpd
+
+: mail.c:bsmtp()
+
+#ifdef EMAIL_JUSTIFY
+  char subject[80];
++ char regkey[10];
+#endif
+
+  ...
+  ...
+
+-   archiv32(str_hash(rcpt, cuser.tvalid), buf);
+-   sprintf(title, TAG_VALID " %s(%s) [VALID]", cuser.userid, buf);
++   archiv32(str_hash(rcpt, cuser.tvalid), regkey);
++   sprintf(title, TAG_VALID " %s(%s) [VALID]", cuser.userid, regkey);
+
+  ...
+  ...
+
+    if (method & MQ_JUSTIFY)    /* ¨­¤À»{ÃÒ«H¨ç */
+    {
+      fprintf(fw, " ID: %s (%s)  E-mail: %s\r\n\r\n",
+        cuser.userid, cuser.username, rcpt);
+      [1;44m// ¦pªG bhttpd ¤£¬O¶}¦b port 80¡A¨Ò¦p¬O port 8080¡A¨º»ò³o¸Ì­n§ï¦¨ [m
+      [1;44m// http://"MYHOSTNAME":8080/register/%s&%s" [m
++     fprintf(fw, " ±z¥i¥Hª½±µÂI¿ï http://"MYHOSTNAME"/register/%s&%s"
++       "¨Ó³q¹L»{ÃÒ\r\n\r\n", cuser.userid, regkey);
+    }
+
+: bhttpd.c ¤@¶}©lªºµù¸Ñ
+
+  http://my.domain/image/filename              Åã¥Ü¹ÏÀÉ
++ http://my.domain/register/userid&regkey      ½u¤W»{ÃÒ
+
+: bhttpd.c:main()
+
+  WebKeyFunc cmd[] =
+  {
+    ...
+    ...
+    "/image/", html_image,
++   "/register/", html_register,
+
+    NULL, html_mainpage
+  };
+
+: bhttpd.c ¥[³o¤@¬q¦b main() «e­±
+
+/*-------------------------------------------------------*/
+/* »{ÃÒ                                                  */
+/*-------------------------------------------------------*/
+
+
+static int
+is_badid(userid)
+  char *userid;
+{
+  int ch;
+  char *str;
+
+  ch = strlen(userid);
+  if (ch < 2 || ch > IDLEN)
+    return 1;
+
+  if (!is_alpha(*userid))
+    return 1;
+
+  str = userid;
+  while (ch = *(++str))
+  {
+    if (!is_alnum(ch))
+      return 1;
+  }
+  return 0;
+}
+
+
+static void
+justify_user(userid, email)
+  char *userid, *email;
+{
+  char fpath[64];
+  HDR hdr;
+  FILE *fp;
+
+  /* ±H»{ÃÒ³q¹L«Hµ¹¨Ï¥ÎªÌ */
+  usr_fpath(fpath, userid, FN_DIR);
+  if (!hdr_stamp(fpath, HDR_LINK, &hdr, FN_ETC_JUSTIFIED))
+  {
+    strcpy(hdr.title, "±z¤w¸g³q¹L¨­¤À»{ÃÒ¤F¡I");
+    strcpy(hdr.owner, STR_SYSOP);
+    hdr.xmode = MAIL_NOREPLY;
+    rec_add(fpath, &hdr, sizeof(HDR));
+  }
+
+  /* °O¿ý¦b FN_JUSTIFY */
+  usr_fpath(fpath, userid, FN_JUSTIFY);
+  if (fp = fopen(fpath, "a"))
+  {
+    fprintf(fp, "RPY: %s\n", email);
+    fclose(fp);
+  }
+}
+
+
+static void
+register_neck()
+{
+  printf("<br>\r\n"
+    "<table cellspacing=0 cellpadding=1 border=0 width=80%%>\r\n"
+    "<tr>\r\n"
+    "  <td width=100%% align=middle bgcolor="HCOLOR_NECK">»{ÃÒ¨t²Î</td>"
+    "</tr>\r\n"
+    "</table>\r\n"
+    "<br>\r\n");
+}
+
+
+static void
+html_register(str)
+  char *str;
+{
+  char userid[IDLEN + 1 + 7 + 1];  /* userid&regkey */
+  char fpath[64], *ptr;
+  int fd;
+  ACCT acct;
+
+  out_head("»{ÃÒ¨t²Î");
+
+  if (!*str)
+    return;
+
+  str_ncpy(userid, str, sizeof(userid));
+
+  if (!(ptr = strchr(userid, '&')))
+    return;
+  *ptr = '\0';
+
+  if (is_badid(userid))
+    return;
+
+  register_neck();
+
+  usr_fpath(fpath, userid, FN_ACCT);
+  if ((fd = open(fpath, O_RDWR, 0600)) >= 0)
+  {
+    if (read(fd, &acct, sizeof(ACCT)) == sizeof(ACCT))
+    {
+      if (str_hash(acct.email, acct.tvalid) == chrono32(ptr))/* regkey ¥¿½T */
+      {
+        /* ´£¤ÉÅv­­ */
+        acct.userlevel |= PERM_VALID;
+        time(&acct.tvalid);
+        lseek(fd, (off_t) 0, SEEK_SET);
+        write(fd, &acct, sizeof(ACCT));
+
+        justify_user(userid, acct.email);
+        printf("®¥³ß±z¤w¸g»{ÃÒ³q¹L\r\n");
+      }
+    }
+  }
+
+  register_neck();
+}
+
+--
+[1;37m¡¼ ¥»¤å³¹¥Ñ [33mitoc[37m ±q [32mitoc.Dorm11.NCTU.edu.tw[37m µoªí[m

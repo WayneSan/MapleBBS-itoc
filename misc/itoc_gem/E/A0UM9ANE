@@ -1,0 +1,42 @@
+з@к╠: itoc (AsPSQwel) м▌кO: plan
+╝╨├D: [дхеє] жhнл┬рлH│]йw
+о╔╢б: 2004/04/25 Sun 23:40:51
+
+                       [32mб╣ жhнл┬рлH│]йw б╣[m
+
+  д@бB┬рдJд]┬реX (д@пым▌кO)
+  дGбBеu┬рдJдг┬реX
+  дTбBеu┬реXдг┬рдJ
+
+
+    е╗дхеємO╝g╡╣нnжw╕╦ itoc й╥║√┼@к║ bbs ╡{жбкйе╗й╥и╧е╬к║бAи├дг╛Aе╬
+  ифеL bbs кйе╗бC
+
+    еHдU│]йw│гмOзя newsfeeds.bbs └╔бC
+
+
+б░ д@бB┬рдJд]┬реX (д@пым▌кO)
+
+   Example: tw.bbs.comp.386bsd -> [FreeBSD]
+            tw.bbs.comp.386bsd <- [FreeBSD]
+
+   bbsroute     tw.bbs.comp.386bsd      <-> FreeBSD  big5
+
+
+б░ дGбBеu┬рдJдг┬реX
+
+   Example: tw.bbs.campus -> [campus]
+
+   bbsroute     tw.bbs.campus            -> campus  big5
+
+   (│]йwм▌кO─▌й╩ б╜ дг┬рлHеXеhбA┤N╖|еuеX▓{жVеkк║╜b└Y)
+
+
+б░ дTбBеu┬реXдг┬рдJ
+
+   Example: tw.bbs.newgroups <- [newboards]
+
+   bbsroute     tw.bbs.newgroups        <-  newboards  big5
+
+--
+[1mб╝ е╗дх│╣е╤ [33mitoc[37m ▒q [32mitoc.Dorm11.NCTU.edu.tw[37m ╡oкэ[m

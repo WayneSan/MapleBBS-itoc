@@ -1,0 +1,54 @@
+§@ªÌ: itoc (League) ¬ÝªO: plan
+¼ÐÃD: [¥\¯à] ¥b§Y®É³]©w¨Ï¥ÎªÌªº¬ÝªOÅv­­
+®É¶¡: 2004/01/02 Fri 23:26:10                           Updated: 2004/06/26
+
+  ¦]¬°°ÊºA³]©w¨Ï¥ÎªÌªº¬ÝªOÅv­­­n§ï¤Ó¦h¤F
+
+  ©Ò¥H¼g­Ó¥b§Y®Éªº¡AÂ²³æ«Ü¦h :p
+
+: xover.c:xo_foot()
+
+  case XZ_CLASS:
+    outz(FEETER_CLASS);
++   if (time(NULL) - ap_start >= 10 * 60)        /* 10 ¤ÀÄÁ§ó·s¤@¦¸ */
++   {
++     if (cuser.userlevel)
++       brh_save();
++     board_main();
++   }
+    break;
+
+: board.c:brh_load()
+
+static inline void
+brh_load()
+{
++ static int default_board = 0;
+  BRD *brdp;
+  usint ulevel;
+  int n, cbno;
+  char *bits;
+
+  ...
+  ...
+
+  /* --------------------------------------------------- */
+  /* ³]©w default board                                  */
+  /* --------------------------------------------------- */
+
++ if (!default_board)
++ {
+    strcpy(currboard, BN_NULL);
+    currbno = -1;
++   default_board = 1;
++ }
++ else
++ {
++   currbno = brd_bno(currboard);
++   if (currbno < 0)
++     strcpy(currboard, BN_NULL);
++ }
+}
+
+--
+[1m¡¼ ¥»¤å³¹¥Ñ [33mitoc[37m ±q [32mitoc.Dorm11.NCTU.edu.tw[37m µoªí[m

@@ -1,0 +1,21 @@
+µo«H¤H: visor.bbs@bbs.yzu.edu.tw (16­¿¹ï«þ OnFly  ^O^), ¬ÝªO: plan
+¼Ð  ÃD: Re: [°ÝÃD]Windtop¶}¦n·sª©«á µLªkload
+µo«H¯¸: ¤¸´¼¤j¾Ç­·¤§¶ð (Mon Aug 13 16:38:03 2001)
+
+¡° ¤Þ­z¡mwilliam.bbs@bbs.ydu.edu.tw (¤@°¦ºµ)¡n¤§»Ê¨¥¡G
+> ·í¤p§Ì­×§ïconfig.h ±Nª©³Ì¤j¼Æ¶q§ï¦Ü2048
+> ¤W¯¸¤H¼Æ3000 ªº®É­Ô ´Nµo²{·s¼Wªºª©µLªkshow¥X¨Ó
+> «ì´_1024¸ò1500´N¥X²{¤F~~ ¤£ª¾¹D¬°¤°»ò·|³o¼Ë??
+
+:p  À³¸Ó¬O share memory ¤£°÷¥Î°Õ
+§ï¤@¤U kernel ³]©w§a
+
+¥[¤J  ¤U­±¨º¦æ  16mb ªº share memory À³¸Ó°÷¥Î¤F  :p
+options         SHMMAXPGS=4096
+
+default ­È¬O  1025  Á`¦@ 4mb
+--
+©Ç©Çªº 1025  @@"
+--
+[1;32m¡° Origin: [33m¤¸´¼¤j¾Ç ­·¤§¶ð [37m<bbs.yzu.edu.tw> [m
+[1;32m¡° From  : [36m210.c210-85-10.ethome.net.tw[m

@@ -1,0 +1,65 @@
+µo«H¤H: itoc.bbs@processor.tfcis.org (®Ö¤ß°Ê¤O) ¬ÝªO: plan
+¼Ð  ÃD: Re: [°ÝÃD] Ãö©óµù¥U¬yµ{
+µo«H¯¸: °Ê¤O®Ö¤ß (2004/08/22 Sun 23:32:27)                Updated: 2005/06/17
+
+¡° ¤Þ­z¡mchance.bbs@bbs.ntou.edu.tw (¥vªi¯ø ´£·þ)¡n¤§»Ê¨¥¡G
+> ²{¦b¦n¹³¥u­n§ïÅÜE-mail,°µE-mail»{ÃÒ,
+> ´N¥i¥Hª½±µ»{ÃÒ³q¹L¤F.
+> ­n«ç»ò§ï¤~¯àÅý
+> ¨Ï¥ÎªÌ¨Ï¥ÎE-mail»{ÃÒ
+> ¥H¤Î¶ñ¼gµù¥U³æ
+> ¤§«á,
+> ¯¸°È¼f®Ö¤F,¤~¯à¨ú±o:
+> µoªí¤å³¹¥H¤Î
+> »{ÃÒ³q¹L©O?
+
+  ¥ý§¹¦¨ Email »{ÃÒ¡A¤~¯à¶ñµù¥U³æ
+  µù¥U³æ¼f®Ö³q¹L«á¤~¯à®³¨ì PERM_VALID
+
+: bmtad.c:bbs_valid()
+
+- acct.userlevel |= PERM_VALID;
++ acct.userlevel |= PERM_9;
+
+: mailpost.c:verify_user()
+
+-           acct.userlevel |= PERM_VALID;
++           acct.userlevel |= PERM_9;
+
+: user.c:do_pop3()
+
+-     acct_setperm(&acct, PERM_VALID, 0);
++     acct_setperm(&acct, PERM_9, 0);
+
+: user.c:u_verify()
+
+- if (HAS_PERM(PERM_VALID))
++ if (HAS_PERM(PERM_9))
+  {
+    zmsg("±zªº¨­¤À½T»{¤w¸g§¹¦¨¡A¤£»Ý¶ñ¼g»{ÃÒ½X");
+  }
+  else
+  {
+    ...
+    ...
+
+-         acct_setperm(&acct, PERM_VALID, 0);
++         acct_setperm(&acct, PERM_9, 0);
+
+: user.c:u_register()
+
+  if (HAS_PERM(PERM_VALID))
+  {
+    zmsg("±zªº¨­¤À½T»{¤w¸g§¹¦¨¡A¤£»Ý¶ñ¼g¥Ó½Ðªí");
+    return XEASY;
+  }
+
++ if (!HAS_PERM(PERM_9))
++ {
++   zmsg("±z©|¥¼³q¹L Email »{ÃÒ¡AµLªk¶ñµù¥U³æ");
++   return XEASY;
++ }
+
+--
+ [1;41m¢~[44m¢q[m Or[1mig[30min[m: [43m Maple-itoc£»°Ê¤O®Ö¤ß [35;47m processor.tfcis.org [m
+ [1;42m¢q[45m¢}[m A[1mut[30mho[mr: [1;31mitoc [30m±q [36mitoc.Dorm11.NCTU.edu.tw [30mµoªí[m

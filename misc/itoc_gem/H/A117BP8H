@@ -1,0 +1,47 @@
+§@ªÌ: itoc (­·½Õ«B¶¶¡A°ê®õ¥Á¦w) ¬ÝªO: plan
+¼ÐÃD: [¥\¯à] ¶§¬Kª©¤å³¹µû¤À¥\¯à (­«¸mµû¤À)
+®É¶¡: Wed Jul 23 09:10:53 2003                          Updated: 2003/07/23
+
+¡° ¤Þ­z¡myiyihi.bbs@processor.tfcis.org (...........)¡n¤§»Ê¨¥¡G
+> ¥i¥H¦b¤£¸Ó±Àªº¤å³¹«e«ö i ¡B®³±¼±À¤å¼Æ¦r
+> ­n§â¦¹¥\¯àµ¹ªO¥D¨Ï¥Î³o­Ó¸Ó¦p¦ó§ï©O ¡H
+
+: post.c:post_resetscore() ¥[¦b post_mark() «á­±
+
+#ifdef HAVE_SCORE
+static int
+post_resetscore(xo)
+  XO *xo;
+{
+  if (bbstate & STAT_BOARD)
+  {
+    HDR *hdr;
+    int pos, cur, xmode;
+
+    pos = xo->pos;
+    cur = pos - xo->top;
+    hdr = (HDR *) xo_pool + cur;
+    xmode = hdr->xmode;
+
+    hdr->xmode = xmode & ~POST_SCORE;
+    hdr->score = 0;
+    currchrono = hdr->chrono;
+
+    rec_put(xo->dir, hdr, sizeof(HDR), xo->key == XZ_XPOST ? 
+      hdr->xid : pos, cmpchrono);
+    move(3 + cur, 7);
+    outc(post_attr(hdr));
+  }
+  return XO_NONE;
+}
+#endif
+
+: post.c:post_cb[] ¤Î post.c:xpost_cb[]
+
+#ifdef HAVE_SCORE
+  '%', post_score,
++ 'i', post_resetscore,
+#endif
+
+--
+[1;37m¡¼ ¥»¤å³¹¥Ñ [33mitoc[37m ±q [32mitoc.Dorm11.NCTU.edu.tw[37m µoªí[m

@@ -1,0 +1,47 @@
+§@ªÌ: itoc (®Ö¤ß°Ê¤O) ¯¸¤º: itoc
+¼ÐÃD: Re: ­­¨î¤£­­¦¸¼Æ³sÄò±À¤åªº°ÝÃD?
+®É¶¡: 2005/04/07 Thu 14:45:59                           Updated: 2005/04/07
+
+> ¡÷ blest ±À¡Gptt ¨ººØ30¬í±À¤å¥Î¡÷ªº­n«ç»ò¼gªü¡I
+
+: post.c:post_score()
+
+static int
+post_score(xo)
+  XO *xo;
+{
++ static time_t next = 0;   /* ¤U¦¸¥iµû¤À®É¶¡ */
+
+  ...
+
++ if (next < time(NULL))
++ {
+    switch (ans = vans("¡· µû¤À 1)±À¤å 2)³è±ó 3)¦Û©w±À 4)¦Û©w©A¡H[Q] "))
+    {
+    ...
+    ...
+    default:
+      return XO_FOOT;
+    }
++ }
++ else
++   strcpy(verb, "\033[33m¡÷");
+
+  if (!vget(b_lines, 0, "½Ð¿é¤J²z¥Ñ¡G", reason, 50, DOECHO))
+    return XO_FOOT;
+
+  ...
+
++ next = time(NULL) + 180;  /* ¨C 180 ¬í¤è¥iµû¤À¤@¦¸ */
+
+  if (curraddscore)
+  {
+    currchrono = hdr->chrono;
+    rec_ref(dir, hdr, sizeof(HDR), xo->key == XZ_XPOST ?
+      hdr->xid : pos, cmpchrono, addscore);
+    return XO_LOAD;
+  }
+
+--
+ [1;43m¢«[46m¢ª[m Or[1mig[30min[m: [41m Maple-itoc£»°Ê¤O®Ö¤ß [36;47m cpu.tfcis.org [m
+ [1;44m¢©[41m¢¨[m A[1mut[30mho[mr: [1;33mitoc [30m±q [31mitoc.dorm11.nctu.edu.tw [30mµoªí[m

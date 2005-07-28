@@ -1,0 +1,68 @@
+µo«H¤H: waynesan.bbs@csc241.twbbs.org (®¥³ß°g¤Û¬ü¤u¯¸ªø¥Ö¥ ¬ÝªO: plan
+¼Ð  ÃD: [¥[±j] money.c ¼úª÷¨t²Î-µo¼úª÷µ¹§@ªÌ
+µo«H¯¸: °g¤Û°ê«× (2004/08/08 Sun 18:18:43)                Updated: 2004/11/01
+
+¡° ¤Þ­z¡mTitan.bbs@xeon.tfcis.org (¨Ó°ÑÆ[ªº)¡n¤§»Ê¨¥¡G
+>         ¥i¥H¹ï§ë½Z°ÊºA¬ÝªO©Î¬Oºq¥»ªÌµ¹¹S³Ò¶Ü??
+
+¦b¤å³¹¦Cªíµo©ñ¼úª÷µ¹¤å³¹§@ªÌ
+
+: post.c:post_cb[]
+
+  Ctrl('O'), xo_usetup,
++ Ctrl('S'), post_award,
+
+: post.c:xpost_cb[]
+
+  Ctrl('O'), xo_usetup,
++ Ctrl('S'), post_award,
+
+: post.c:post_award() ·s¼W¦¹¤@¨ç¦¡©ó post_help() «e­±
+
+static int
+post_award(xo)      /* ª½±µµo¼úª÷µ¹§@ªÌ */
+  XO *xo;
+{
+  if (HAS_PERM(PERM_ALLACCT))
+  {
+    int money, gold;
+    char *userid, buf[80];
+    HDR *hdr;
+    PAYCHECK paycheck;
+
+    hdr = (HDR *) xo_pool + (xo->pos - xo->top);
+    userid = hdr->owner;
+    if (strchr(userid, '.'))
+      return XO_NONE;
+
+    if (vget(b_lines, 0, "µoµ¹¦h¤Ö»È¹ô¡G", buf, 7, DOECHO) &&
+      (money = atoi(buf)) >= 0   /* ¥i¥H¿é¤J 0 */ &&
+      vget(b_lines, 0, "µoµ¹¦h¤Öª÷¹ô¡G", buf, 7, DOECHO) &&
+      (gold = atoi(buf)) >= 0    /* ¥i¥H¿é¤J 0 */ &&
+      (money || gold))
+    {
+      memset(&paycheck, 0, sizeof(PAYCHECK));
+      time(&paycheck.tissue);
+      paycheck.money = money;
+      paycheck.gold = gold;
+      sprintf(paycheck.reason, "[½Z¶O] %s", cuser.userid);
+
+      usr_fpath(buf, userid, FN_PAYCHECK);
+      rec_add(buf, &paycheck, sizeof(PAYCHECK));
+
+      sprintf(buf, "µoµ¹ %s ª÷ %d »È %d", userid, gold, money);
+      vmsg(buf);
+    }
+
+    return XO_FOOT;
+  }
+  return XO_NONE;
+}
+
+--
+    [1;31m¡Z¡Z[m
+  [1;31m¡þ  [37m¡þ[34m¢v¢v¢@  [31m°g[34m¤Û[37m°ê«×[31m Charming [34mShadow [37mCountry[m
+[1;31m¢y  [37m¡þ[31m  [37m¡þ¢@  [34m¢j[33m¤J¹Ò¦ì§} csc241.twbbs.org[m
+[1;31m¢y  [37m¢@¡þ[31m  [37m¡þ  [34m¢j[32m¦ì§}¥N½X 203.71.212.241[m
+[1;31m  ¢@¡Z¡Z[37m¡þ[31m  [34m¡þ  [36m¨Ó·½¥À°ê 218-163-194-130.dynamic.hinet.net[m
+[1;31m  [4m¡þ¡@¡@[34m¢v¢v¢@[;1;31m  µoªí®É¶¡ 2004/08/08 Sun 12:11:15[m

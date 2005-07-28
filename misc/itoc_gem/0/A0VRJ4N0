@@ -1,0 +1,100 @@
+µo´H§H: qazq.bbs@bbs.cs.nchu.edu.tw (  - THE END -) ¨›™O: plan
+º–  √D: [•\Ø‡] §Â≥πæ\≈™\µo™Ì±±®ÓΩX¬XºW°C
+µo´HØ∏: §§ø≥∏Í¨Ï (Tue, 18 Nov 2003 00:56:38 +0800 (CST))  Updated: 2003/11/18
+
+        ¢∞. ±N Ctrl + Q ™∫øÔ∂µøÈ§JßÔ¨∞µ¯µ°§∆øÔ≥Ê°C
+
+        ¢±. ¬XºW±±®ÓΩX™∫∫ÿ√˛°C
+
+==============================================================================
+
+: edit.c:vedit() case Ctrl('Q'): ™∫≥°§¿ßÔ¶®≥oºÀ
+
+#ifdef SHOW_USER_IN_TEXT
+      case Ctrl('Q'):
++       {
++         /* qazq.031117: ¶hºÀ§∆≈„•‹®œ•Œ™Ã∏ÍÆ∆ */
++         char *msg[] = {"10",
++                        "1  ¢◊¢“      (**s)", "2  º ∫Ÿ      (**n)",
++                        "3  §WØ∏¶∏º∆  (**l)", "4  µo§Â¶∏º∆  (**p)",
++                        "5  ™˜πÙ      (**g)", "6  ª»πÙ      (**m)",
++                        "7  ≤{¶bÆ…®Ë  (**t)", "8  Ωu§W§Hº∆  (**u)",
++                        "9  •Õ§È      (**b)", "0  ®˙Æ¯",
++                        NULL};
+
+-         cc = vans("≈„•‹®œ•Œ™Ã∏ÍÆ∆(1)id (2)º ∫Ÿ°H");
++         cc = pans(5, 20, "≈„•‹®œ•Œ™Ã∏ÍÆ∆", msg);
+-         if (cc >= '1' && cc <= '2')
++         if (cc > '0')
+          {
+            ve_char(KEY_ESC);
+            ve_char('*');
+-           ve_char("sn"[cc - '1']);
++           ve_char("snlpgmtub"[cc - '1']);
+          }
++       }
+-       ve_mode = mode | VE_FOOTER;
+        break;
+#endif
+
+: visio.c:outx()
+
+void
+outx(str)
+  uschar *str;
+{
+  int ch;
++ char buf[20];
+
+  ...
+  ...
+
+      switch (str[2])
+      {
+      case 's':         /* **s ≈„•‹ ID */
+        outs(cuser.userid);
+        str += 3;
+        continue;
+      case 'n':         /* **n ≈„•‹º ∫Ÿ */
+        outs(cuser.username);
+        str += 3;
+        continue;
++     case 'l':       /* **l ≈„•‹§WØ∏¶∏º∆ */
++       sprintf(buf, "%d", cuser.numlogins);
++       outs(buf);
++       str += 3;
++       continue;
++     case 'p':       /* **p ≈„•‹µo§Â¶∏º∆ */
++       sprintf(buf, "%d", cuser.numposts);
++       outs(buf);
++       str += 3;
++       continue;
++     case 'g':       /* **g ≈„•‹™˜πÙ */
++       sprintf(buf, "%d", cuser.gold);
++       outs(buf);
++       str += 3;
++       continue;
++     case 'm':       /* **m ≈„•‹ª»πÙ */
++       sprintf(buf, "%d", cuser.money);
++       outs(buf);
++       str += 3;
++       continue;
++     case 't':       /* **t ≈„•‹§È¥¡ */
++       outs(Now());
++       str += 3;
++       continue;
++     case 'u':       /* **u ≈„•‹Ωu§W§Hº∆ */
++       sprintf(buf, "%d", total_user);
++       outs(buf);
++       str += 3;
++       continue;
++     case 'b':       /* **b ≈„•‹Ø∏¶W */
++       sprintf(buf, "%d/%d", cuser.month, cuser.day);
++       outs(buf);
++       str += 3;
++       continue;
+      }
+
+--
+ [1m[42m¢z[41m¢q[m Au[1mth[30mor[m: [43m §§ø≥∏Í¨Ï£ª§§ø≥∏Í¨Ï ¢Ì∏ÍøW®q [33;47m csNCHU.twbbs.org [m
+ [1m[44m¢|[43m¢}[m O[1mri[30mgi[mn: [1;36mqazq [30m±q [35m61-216-137-32.HINET-IP.hinet.net [30mµo™Ì[m

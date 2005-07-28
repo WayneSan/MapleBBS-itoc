@@ -1,0 +1,572 @@
+µo«H¤H: cyanofox.bbs@bbs.cs.nchu.edu.tw (§Ú¬O¦n¤H¤@±Úªº:() ¬ÝªO: plan
+¼Ð  ÃD: [¥\¯à] ¥[±K¤å³¹¥i¨£¦W³æ
+µo«H¯¸: ¤¤¿³¸ê¬ì (2004/03/19 Fri 00:49:19)                Updated: 2005/04/09
+
+¸g¹L¦h¦¸¸òamaki¤j¤j¸ß°Ý°Q±Ð«á¡A§Ú§âºëµØ°Ï¨º½g [¥\¯à] post.c ¥[±K¤å³¹¥i¨£¦W³æ
+µ¹µy°µ­×¥¿¡A¨Ï¤§¥i¥H¾A¥Î©ó·sª©ªºitoc¤jºûÅ@ªºMaple
+©³¤U¬O§Ú¯¸¤W(cmumed.twbbs.org)ªºpatch
+µ¹¤j®a°Ñ¦Ò¡A¤]Åwªï«ü±Ð ^^"
+-----------------------------------------------------------------------------
+
+  ²Ä¤@¦¸^y®É·|¸ß°Ý¡A²Ä¤G¦¸^y®É·|¸ß°Ý¬O§_­n¸Ñ°£¥[±K¡A
+  ¸Ñ°£«á·|¬å±¼©Ò¦³¥i¨£¦W³æ¡C
+
+  ¥[±K«á¡A¤é«á­Y¬O¦³»Ý­n¦A¥[¤J·sªº¥i¨£¦W³æ¡A½Ð«ö¤jOÁä¡C
+
+  ³Q§@ªÌ©Î¬OªO¥D¥[¤J¥i¨£¦W³æ¤¤ªºid¡A¸Ó½g¤å³¹«e­±·|Åã¥ÜX©Îx¡A
+  ¥H´£¥ÜªO¤Wªº¨Ï¥ÎªÌ¡A¥i¥H¬Ý¨£¸Ó½g¤å³¹¡C
+
+: config.h
++#define    HAVE_REFUSEMARK_PAL
+
+: src/lib/dao.p
+/* f_path.c */
++void mak_fpath(char *str, char *key, char *name);
+void brd_fpath(char *fpath, char *board, char *fname);
+void gem_fpath(char *fpath, char *board, char *fname);
+void usr_fpath(char *fpath, char *user, char *fname);
+
+: src/lib/f_path.c:mak_fpath()
+- static void
++ void
+mak_fpath(str, key, name)
+
+: src/maple/maple.p
+/* post.c */
+int cmpchrono(HDR *hdr);
++void kill_RefusePal(char *board, HDR *hdr); /* redfox:¥[±K¤å³¹¥i¨£¦W³æ */
++int RefusePal_belong(char *board, HDR *hdr);    /* redfox:¥[±K¤å³¹¥i¨£¦W³æ */
+void cancel_post(HDR *hdr);
+
+: post.c  ·s¼W¤U­±¨ç¦¡¡A©ñ¦bcmpchrono()«á­±
+#ifdef HAVE_REFUSEMARK_PAL
+static void
+RefusePal_fpath(fpath, board, mode, hdr)
+  char *fpath;
+  char *board;
+  char mode;       /* 'C':Cansee  'R':Refimage */
+  HDR *hdr;
+{
+  char gboard[64], fname[32];
+
+  *fpath++ = 'b';
+  *fpath++ = 'r';
+  *fpath++ = 'd';
+
+  sprintf(gboard, "%s/RefusePal_DIR", board);
+  sprintf(fname, "%s_%s", mode == 'C' ? "Cansee" : "Refimage", hdr->xname);
+  mak_fpath(fpath, gboard, fname);
+}
+
+void
+kill_RefusePal(board, hdr)   /* amaki.030322: ¥Î¨Ó¬å¦W³æ¤pÀÉ */
+  char *board;
+  HDR *hdr;
+{
+  char fpath[64];
+
+  RefusePal_fpath(fpath, board, 'C', hdr);
+  unlink(fpath);
+  RefusePal_fpath(fpath, board, 'R', hdr);
+  unlink(fpath);
+}
+
+
+int
+RefusePal_belong(board, hdr)
+  char *board;
+  HDR *hdr;
+{
+  int fsize, count, result;
+  char fpath[80];
+
+  [33;1m/* ­ì§@ªÌ¡BªO¥D¡B¯¸°È ¦b¥i¨£¦W³æ¤¤ */[m
+  if (!strcmp(hdr->owner, cuser.userid) || (bbstate & [33;1mSTAT_BOARD[m))
+    return 1;
+
+  result = 0;
+
+  RefusePal_fpath(fpath, board, 'R', hdr);
+  board = f_img(fpath, &fsize);
+
+  if (board != NULL)
+  {
+    count = fsize / sizeof(int);
+    if (count > 0)
+    {
+      int userno, *up;
+      int datum, mid;
+
+      userno = cuser.userno;
+      up = (int *) board;
+
+      while (count > 0)
+      {
+        datum = up[mid = count >> 1];
+        if (userno == datum)
+        {
+          result = 1;
+          break;
+        }
+        if (userno > datum)
+        {
+          up += (++mid);
+          count -= mid;
+        }
+        else
+        {
+          count = mid;
+        }
+      }
+    }
+    free(board);
+  }
+  return result;
+}
+
+static int
+int_cmp(a, b)
+  int *a;
+  int *b;
+{
+  return *a - *b;
+}
+
+static void
+bm_image_refusepal(hdr, board)
+  HDR *hdr;
+  char *board;
+{
+  int fd;
+  char fpath[80];
+
+  RefusePal_fpath(fpath, board, 'C', hdr);
+  if ((fd = open(fpath, O_RDONLY)) >= 0)
+  {
+    struct stat st;
+    PAL *pal, *up;
+    int count;
+
+    fstat(fd, &st);
+    if (pal = (PAL *) malloc(count = st.st_size))
+    {
+      count = read(fd, pal, count) / sizeof(PAL);
+      if (count > 0)
+      {
+        int *userno;
+        int c = count;
+
+        userno = (int *) up = pal;
+        do
+        {
+          *userno++ = up->userno;
+          up++;
+        } while (--c);
+
+        if (count > 1)
+          qsort(pal, count, sizeof(int), int_cmp);
+
+        RefusePal_fpath(fpath, board, 'R', hdr);
+        if ((count = open(fpath, O_WRONLY | O_CREAT | O_TRUNC, 0600)) >= 0)
+        {
+          write(count, pal, (char *) userno - (char *) pal);
+          close(count);
+        }
+      }
+      else
+      {
+        kill_RefusePal(board, hdr);
+      }
+      free(pal);
+    }
+    close(fd);
+  }
+}
+
+
+extern KeyFunc pal_cb[];
+
+static int
+XoBM_Refuse_pal(xo)
+  XO *xo;
+{
+  HDR *hdr;
+  int mode;
+
+  hdr = (HDR *) xo_pool + xo->pos - xo->top;
+  mode = hdr->xmode;
+
+  if (!(mode & POST_RESTRICT))
+    return XO_NONE;
+
+  [33;1m/* redfox: §@ªÌ.ªO¥D.¯¸°È ¥i¥H­×§ï¦W³æ */[m
+  if (!strcmp(hdr->owner, cuser.userid) || (bbstate & [33;1mSTAT_BOARD[m))
+  {
+    XO *xt;
+    char fpath[80];
+
+    sprintf(fpath, "brd/%s/RefusePal_DIR", currboard);
+    if (!dashd(fpath))
+      mkdir(fpath, 0755);
+
+    RefusePal_fpath(fpath, currboard, 'C', hdr);
+    xz[XZ_PAL - XO_ZONE].xo = xt = xo_new(fpath);
+    xz[XZ_PAL - XO_ZONE].cb = pal_cb;
+    xover(XZ_PAL);
+    /* build userno image to speed up, maybe upgreade to shm */
+
+    bm_image_refusepal(hdr, currboard);
+
+    free(xt);
+
+    return XO_INIT;
+  }
+  return XO_NONE;
+}
+#endif /* ¥H¤W¬O¥[±K¤å³¹¥i¨£¦W³æ */
+
+
+
+: post.c: post_reply()
+#ifdef HAVE_REFUSEMARK
++#ifdef HAVE_REFUSEMARK_PAL /* ¥[±K¤å³¹¥i¨£¦W³æ */
++   if ((hdr->xmode & POST_RESTRICT) && !RefusePal_belong(currboard, hdr))
++     return XO_NONE;
++#else
+    if ((hdr->xmode & POST_RESTRICT) &&
+      strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
+      return XO_NONE;
++#endif
++   if ((hdr->xmode & POST_RESTRICT) &&
++     vans("ª`·N¡I³o¬O¥[±K¤å³¹¡A±z½T©w­n¦^¤å¶Ü¡H[N] ") != 'y')
++     return XO_FOOT;
+#endif
+
+    hdr_fpath(quote_file, xo->dir, hdr);
+    return do_reply(hdr)
+  }
+
+
+
+: post.c: hdr_outs()
+  /* --------------------------------------------------- */
+  /* ¦L¥X¼ÐÃDªººØÃþ                                      */
+  /* --------------------------------------------------- */
+  /* redfox:¤U­±´X¦æ.¥[±K¤å³¹¤£¥X²{¼ÐÃD¡A¶¶«K°t¦X¥[±K¤å³¹¥i¨£¦W³æ */
++#ifdef HAVE_REFUSEMARK_PAL
++ if ((hdr->xmode & POST_RESTRICT) && !RefusePal_belong(currboard, hdr))
++#else
++ if ((hdr->xmode & POST_RESTRICT) &&
++   strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
++#endif
++ {
++   title = "\033[1;30m<< ¦¹¬°¥[±K¤å³¹¡A¤£Åã¥Ü¼ÐÃD >>\033[m";
++   ch = 1;
++ }
++ else
++ {
+    title = str_ttl(mark = hdr->title);
+    ch = title == mark;
+    if (!strcmp(currtitle, title))
+      ch += 2;
+    outs(type[ch]);
++ }
+
+
+
+: post.c:post_browse()  ­×§ïpost_browse
+
+#ifdef HAVE_REFUSEMARK
++#ifdef HAVE_REFUSEMARK_PAL
++   if ((xmode & POST_RESTRICT) && !RefusePal_belong(currboard, hdr))
++     break;
++#else
+    if ((xmode & POST_RESTRICT) &&
+      strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
+      break;
++#endif
+#endif
+
+  ......(²¤)
+      if (bbstate & STAT_POST)
+      {
++#ifdef HAVE_REFUSEMARK_PAL
++       if ((hdr->xmode & POST_RESTRICT) &&
++         vans("ª`·N¡I³o¬O¥[±K¤å³¹¡A±z½T©w­n¦^¤å¶Ü¡H[N] ") != 'y')
++         break;
++#endif
+        strcpy(quote_file, fpath);
+        if (do_reply(hdr) == XO_INIT)     /* ¦³¦¨¥\¦a post ¥X¥h¤F */
+          return post_init(xo);
+
+
+
+
+: post.c: post_cross()
+    hdr = tag ? &xhdr : (HDR *) xo_pool + (xo->pos - xo->top);
+      /* lkchu.981201: ¾ã§åÂà¿ý */
++#ifdef HAVE_REFUSEMARK_PAL      /* redfox.040130: ¥[±K¤å³¹¥i¨£¦W³æ */
++   if ((hdr->xmode & POST_RESTRICT) &&
++     vans("ª`·N¡I³o¬O¥[±K¤å³¹¡A±z½T©w­nÂà¿ý¶Ü¡H[N] ") != 'y')
++     return post_init(xo);
++#endif
+    method = ((HAS_PERM(PERM_ALLBOARD) || !strcmp(hdr->owner, cuser.userid)) &&
+      (vget(2, 0, "(1)­ì¤åÂà¸ü (2)Âà¿ý¤å³¹¡H[1] ", buf, 3, DOECHO) != '2')) ? 0 : 1;
+
+
+
+
+: post.c: post_forward()
+#ifdef HAVE_REFUSEMARK
++#ifdef HAVE_REFUSEMARK_PAL  /* redfox.040130:¥[±K¤å³¹¥i¨£¦W³æ */
++ if ((hdr->xmode & POST_RESTRICT) && !RefusePal_belong(currboard, hdr))
++   return XO_NONE;
++#else
+  if ((hdr->xmode & POST_RESTRICT) &&
+    strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
+    return XO_NONE;
++#endif
++ if ((hdr->xmode & POST_RESTRICT) &&
++   vans("ª`·N¡I³o¬O¥[±K¤å³¹¡A±z½T©w­nÂà¹F¯¸¤ººô¤Í¶Ü¡H[N] ") != 'y')
++   return XO_FOOT;
+#endif
+
+
+
+
+: post.c:post_refuse()  ­×§ïpost_refuse
+
+  pos = xo->pos;
+  cur = pos - xo->top;
+  hdr = (HDR *) xo_pool + cur;
+[33;1m//redfox: ­ì§@ªÌ.ªO¥D.¯¸°È¡A³£¥i¥H¥[±K¤å³¹[m
+! if (!strcmp(hdr->owner, cuser.userid) || (bbstate & [33;1mSTAT_BOARD[m))
+  {
++#ifdef HAVE_REFUSEMARK_PAL
++   if (hdr->xmode & POST_RESTRICT)
++   {
++     if (vans("±z½T©w­n¸Ñ°£¤å³¹«O±K¶Ü¡H¥i¨£¦W³æ±N·|¥þ³¡¬å°£³á¡I[N] "))
++       kill_RefusePal(currboard, hdr);
++     else
++       return XO_FOOT;
++   }
++#endif
+
+    hdr->xmode ^= POST_RESTRICT;
+    currchrono = hdr->chrono;
+
+  ......(²¤)
++#ifdef HAVE_REFUSEMARK_PAL
++   return XoBM_Refuse_pal(xo);
++#else
+    move(3 + cur, 7);
+    outc(post_attr(hdr));
++#endif
+
+
+
+
+: post.c: post_delabel()
+    else
+    {
+      /* ³s½u¬å«H */
+      cancel_post(hdr);
++#ifdef HAVE_REFUSEMARK_PAL  /* redfox.040128: ¥[±K¤å³¹¥i¨£¦W³æ */
++     if (xmode & POST_RESTRICT)
++       kill_RefusePal(currboard, hdr);
++#endif
+      hdr_fpath(fold, folder, hdr);
+      unlink(fold);
+
+
+
+: post.c: delpost()
+{
+  char fpath[64];
+
+  cancel_post(hdr);
++#ifdef HAVE_REFUSEMARK_PAL  /* redfox.040128: ¥[±K¤å³¹¥i¨£¦W³æ */
++ if (hdr->xmode & POST_RESTRICT)
++   kill_RefusePal(currboard, hdr);
++#endif
+  hdr_fpath(fpath, xo->dir, hdr);
+  unlink(fpath);
+}
+
+
+
+: post.c: post_edit()
+  if (HAS_PERM(PERM_ALLBOARD))          /* ¯¸ªø­×§ï */
+  {
+#ifdef HAVE_REFUSEMARK
++#ifdef HAVE_REFUSEMARK_PAL  /* redfox.040130: ¥[±K¤å³¹¥i¨£¦W³æ */
++   if ((hdr->xmode & POST_RESTRICT) && !RefusePal_belong(currboard, hdr))
++     return XO_NONE;
++#else
+    if ((hdr->xmode & POST_RESTRICT) && !(bbstate & STAT_BM) && strcmp(hdr->own
+er, cuser.userid))
+      return XO_NONE;
++#endif
++  if ((hdr->xmode & POST_RESTRICT) &&
++    vans("ª`·N¡I³o¬O¥[±K¤å³¹¡A±z½T©w­n½s¿è¶Ü¡H[N] ") != 'y')
++    return XO_FOOT;
+#endif
+    vedit(fpath, 0);
+  }
+
+
+
+: post.c: post_score()
+#ifdef HAVE_REFUSEMARK
++#ifdef HAVE_REFUSEMARK_PAL  /* redfox.040128: ¥[±K¤å³¹¥i¨£¦W³æ */
++ if ((hdr->xmode & POST_RESTRICT) && !RefusePal_belong(currboard, hdr))
++   return XO_NONE;
++#else
+  if ((hdr->xmode & POST_RESTRICT) &&
+    strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
+    return XO_NONE;
++#endif
++ if ((hdr->xmode & POST_RESTRICT) &&
++   vans("ª`·N¡I³o¬O¥[±K¤å³¹¡A±z½T©w­n±À¤å¶Ü¡H[N] ") != 'y')
++   return XO_FOOT;
+#endif
+
+
+
+: post.c:post_cb[]  ­×§ïpost_cb
++#ifdef HAVE_REFUSEMARK_PAL
++  'O', XoBM_Refuse_pal,
++#endif
+
+
+: post.c:xpost_cb[]  ­×§ïxpost_cb
++#ifdef HAVE_REFUSEMARK_PAL
++  'O', XoBM_Refuse_pal,
++#endif
+
+
+
+: xpost.c:XoXpost() ­×§ïXoXpost: Åý¨Ï¥ÎªÌ¨Ï¥Î¦ê¦C®É¤]¯à¬Ý¨ì¥[±K¤å³¹
+  do
+  {
+    locus++;
+
+#ifdef HAVE_REFUSEMARK
++#ifdef HAVE_REFUSEMARK_PAL
++   if ((head->xmode & POST_RESTRICT) && !RefusePal_belong(currboard, head))
++     continue;
++#else
+    if ((head->xmode & POST_RESTRICT) &&
+      strcmp(head->owner, cuser.userid) && !(bbstate & STAT_BM))
+      continue;
++#endif
+#endif
+
+    /* check condition */
+
+    if (!(* fchk) (head, hdr))
+
+
+
+: pal.c: pal_body()
+
++#ifdef HAVE_REFUSEMARK_PAL
++extern BCACHE *bshm;
++#endif
+
+static int
+pal_body(xo)
+  XO *xo;
+{
+  PAL *pal;
++#ifdef HAVE_REFUSEMARK_PAL
++ BRD *brd;
++#endif
+  int num, max, tail;
+
++#ifdef HAVE_REFUSEMARK_PAL
++ char *dir;
++ dir = xo->dir;
++#endif
+
+  max = xo->max;
+  if (max <= 0)
+  {
++#ifdef HAVE_REFUSEMARK_PAL
++   if (*dir == 'b')
++   {
++     brd = bshm->bcache + brd_bno(currboard);
++     if ((brd->readlevel == PERM_SYSOP) || (brd->readlevel == PERM_BOARD))
++     {
++       if (vans("­n³] ¬ÝªO¥i¨£¦W³æ/¥[±K¤å³¹¥i¨£¦W³æ ¶Ü(Y/N)¡H[N] ") == 'y')
++         return pal_add(xo);
++     }
++     else
++     {
++       if (vans("­n³] ¬ÝªO¤ô±í¦W³æ/¥[±K¤å³¹¥i¨£¦W³æ ¶Ü(Y/N)¡H[N] ") == 'y')
++         return pal_add(xo);
++     }
++   }
++   else
++#endif
+      if (vans("­n¥æ·sªB¤Í¶Ü(Y/N)¡H[N] ") == 'y')
+        return pal_add(xo);
+    return XO_QUIT;
+  }
+
+
+
+: /so/manage.c: post_terminator()
+    else
+    {
+      /* ­Y¬°¬ÝªO´N³s½u¬å«H */
++#ifdef HAVE_REFUSEMARK_PAL  /* redfox.040128: ¥[±K¤å³¹¥i¨£¦W³æ */
++     if (xmode & POST_RESTRICT)
++       kill_RefusePal(currboard, hdr);
++#endif
+      cancel_post(hdr);
+      hdr_fpath(fold, fpath, hdr);
+      unlink(fold);
+
+
+
+: /util/expire.c: ¦bexpire()«e·s¼W³o¤ä¨ç¦¡
+#ifdef HAVE_REFUSEMARK_PAL  /* ¥[±K¤å³¹¥i¨£¦W³æ */
+static void
+RefusePal_fpath(fpath, board, mode, hdr)
+  char *fpath;
+  char *board;
+  char mode;       /* 'C':Cansee  'R':Refimage */
+  HDR *hdr;
+{
+  sprintf(fpath, "%s/RefusePal_DIR/%s_%s",
+    board, mode == 'C' ? "Cansee" : "Refimage", hdr->xname);
+}
+#endif
+
+
+
+: /util/expire.c: expire()
+      *str = hdr.xname[7];
+      strcpy(fname, hdr.xname);
+      unlink(fpath);
+      fprintf(flog, "\t%s\n", fname);
++#ifdef HAVE_REFUSEMARK_PAL
++     if (hdr.xmode & POST_RESTRICT)
++     {
++       char fpath[80];
++
++       RefusePal_fpath(fpath, bname, 'C', &hdr);
++       unlink(fpath);
++       RefusePal_fpath(fpath, bname, 'R', &hdr);
++       unlink(fpath);
++     }
++#endif
+      total--;
+    }
+  }
+
+
+--
+ [1m[42m¢z[41m¢q[m Au[1mth[30mor[m: [43m ¤¤¿³¸ê¬ì£»¤¤¿³¸ê¬ì ¢í¸ê¿W¨q [33;47m csNCHU.twbbs.org [m
+ [1m[44m¢|[43m¢}[m O[1mri[30mgi[mn: [1;36mcyanofox [30m±q [35m218-170-28-125.HINET-IP.hinet.net [30mµoªí[m

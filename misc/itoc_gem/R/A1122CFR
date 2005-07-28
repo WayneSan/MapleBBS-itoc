@@ -1,0 +1,40 @@
+§@ªÌ: itoc (League) ¯¸¤º: plan
+¼ÐÃD: [­×¥¿] §â ANSILINELEN ¥[¤j
+®É¶¡: 2003/12/04 Thu 23:38:24                           Updated: 2004/02/19
+
+  ¦pªG·Q¼W¥[¤@¦æ§t±±¨î½Xªº³Ì¤jªø«×¡A¨º»ò
+  ½Ð§ï ANSILINELEN ¤Î struct screenline
+
+  ¤£¹L­nª`·N ANSILINELEN ¤£¯à¶W¹L 1023
+  ¦]¬° strcpy ªø«×¥u¤ä´©¨ì 1023
+
+: struct.h
+
+- #define ANSILINELEN     250     /* Maximum Screen width in chars */
++ #define ANSILINELEN     500     /* Maximum Screen width in chars */
+
+  ...
+  ...
+
+typedef struct screenline
+{
+- uschar oldlen;                /* previous line length */
+- uschar len;                   /* current length of line */
+- uschar width;                 /* padding length of ANSI codes */
++ int oldlen;                /* previous line length */
++ int len;                   /* current length of line */
++ int width;                 /* padding length of ANSI codes */
+  uschar mode;                  /* status of line, as far as update */
+- uschar smod;                  /* start of modified data */
+- uschar emod;                  /* end of modified data */
+- uschar sso;                   /* start of standout data */
+- uschar eso;                   /* end of standout data */
++ int smod;                     /* start of modified data */
++ int emod;                     /* end of modified data */
++ int sso;                      /* start of standout data */
++ int eso;                      /* end of standout data */
+  uschar data[ANSILINELEN];
+}          screenline;
+
+--
+[1;37m¡¼ ¥»¤å³¹¥Ñ [33mitoc[37m ±q [32mitoc.Dorm11.NCTU.edu.tw[37m µoªí[m

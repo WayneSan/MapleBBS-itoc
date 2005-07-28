@@ -1,0 +1,402 @@
+µo«H¤H: itoc.bbs@processor.tfcis.org (®Ö¤ß°Ê¤O) ¬ÝªO: plan
+¼Ð  ÃD: Re: ½Ð°ÝÃö©ó¶®ªê¡I©_¼¯ªº·s»D¥\¯à
+µo«H¯¸: °Ê¤O®Ö¤ß (2004/02/12 Thu 12:45:28)                Updated: 2005/05/19
+
+¡° ¤Þ­z¡msegaa.bbs@segaa.com.tw (¥[¯Zing)¡n¤§»Ê¨¥¡G
+>    ¦pªG»¡­n¹³µL¦W¤@¼Ëª½±µ§âkimo·s»D¦Û°ÊÂà¨ì¬ÝªO¤W
+>    ¨C­Ó¤ÀÃþ¦U¶}¤@­Óª©¡A¨C¤Ñ¦Û°Ê°õ¦æ¥h§ì·s»D«áª½±µpost¨ìªO¤W
+
+  ¦b ~/run/kimo ¤U¶} 12 ­Ó¥Ø¿ý¡A¤À§O¬O
+  A/ B/ C/ D/ E/ F/ G/ H/ I/ J/ K/ L/
+
+  ¥ç§Y¦b¤u§@¯¸¤W°õ¦æ¥H¤U«ü¥O
+  % mkdir ~/run/kimo
+  % mkdir ~/run/kimo/A ~/run/kimo/B ~/run/kimo/C ~/run/kimo/D
+  % mkdir ~/run/kimo/E ~/run/kimo/F ~/run/kimo/G ~/run/kimo/H
+  % mkdir ~/run/kimo/I ~/run/kimo/J ~/run/kimo/K ~/run/kimo/L
+
+: src/util/Makefile
+
+EXE =   .... [1;33menews-open[m
+
+: crontab -e ·s¼W¦¹¤G¦æ
+
+# ¨C¤Ñ 10:30AM 4:30PM §ì©_¼¯·s»D
+30 10,16 * * * bin/enews-open
+
+: util/enews-open.c ·s¼W¦¹µ{¦¡
+
+/*-------------------------------------------------------*/
+/* util/enews-open.c    ( NTHU CS MapleBBS Ver 3.10 )    */
+/*-------------------------------------------------------*/
+/* target : ©_¼¯·s»D§ó·s                                 */
+/* create : 02/01/29                                     */
+/* update :   /  /                                       */
+/* author : itoc.bbs@bbs.tnfsh.tn.edu.tw                 */
+/*-------------------------------------------------------*/
+
+
+#if 0
+
+ ¥»©_¼¯·s»D§ó·sµ{¦¡»Ý­n°t¦X contab ¥h§ì¸ê®Æ¡Acrontab ¦p¤U¡G
+
+# ¨C¤Ñ 10:30AM 4:30PM §ì©_¼¯·s»D
+30 10,16 * * * bin/enews-open
+
+ ­n¨Ï¥Î enews-open.c ¥²¶·¸Ë¦³ lynx¡Aª`·N lynx ªº¸ô®|­n©Mµ{¦¡§k¦X¡C
+ ¦pªG¥D¾÷»Ý³z¹L proxy ¤~¯à³s¥~ªº¸Ü¡A¨º»ò­n­×§ï lynx.cfg ªº http_proxy ³]©w­È¡C
+
+ ¤å³¹ÀÉ®×©ñ¦b run/kimo/
+
+ ¸ê®Æ¨Ó·½¡GYahoo! ©_¼¯·s»D http://tw.news.yahoo.com/
+
+#endif
+
+
+#include "bbs.h"
+
+
+#ifdef HAVE_NETTOOL
+
+
+#define INDEX_FILE  "tmp/kimo_index"
+#define NEWS_FILE   "tmp/kimo_news"
+
+
+/*-------------------------------------------------------*/
+/* ¤å³¹Âà¨ì¬ÝªO                                          */
+/*-------------------------------------------------------*/
+
+
+static BCACHE *bshm;
+
+
+static void
+init_bshm()
+{
+  /* itoc.030727: ¦b¶}±Ò bbsd ¤§«e¡AÀ³¸Ó´N­n°õ¦æ¹L account¡A
+     ©Ò¥H bshm À³¸Ó¤w³]©w¦n */
+
+  bshm = shm_new(BRDSHM_KEY, sizeof(BCACHE));
+
+  if (bshm->uptime <= 0)        /* bshm ¥¼³]©w§¹¦¨ */
+    exit(0);
+}
+
+
+static void
+update_btime(brdname)
+  char *brdname;
+{
+  BRD *bhdr, *tail;
+
+  bhdr = bshm->bcache;
+  tail = bhdr + bshm->number;
+  do
+  {
+    if (!str_cmp(brdname, bhdr->brdname))
+    {
+      bhdr->btime = -1;
+      break;
+    }
+  } while (++bhdr < tail);
+}
+
+
+static int                      /* 1: ¥H«e´N§ì¹Lªº³sµ² */
+old_link(fold, link)
+  char *fold;
+  char *link;
+{
+  int rc = 0;
+  ENEWS enews;
+  FILE *fp;
+
+  if (fp = fopen(fold, "r"))
+  {
+    while (fread(&enews, sizeof(ENEWS), 1, fp) == 1)
+    {
+      if (!strcmp(enews.link, link))
+      {
+        rc = 1;
+        break;
+      }
+    }
+
+    fclose(fp);
+  }
+
+  return rc;
+}
+
+
+static void
+post_board(fpath, title, kind)
+  char *fpath;
+  char *title;
+  char kind;
+{
+  char folder[64];
+  HDR hdr;
+  char class[12][5] =
+  {
+    "¬Fªv", "ªÀ·|", "°ê»Ú", "¨â©¤", "°]¸g", "¼vµø",
+    "Åé¨|", "¥Í¬¡", "¥ð¶¢", "°·±d", "¬ì§Þ", "·s©_"
+  };
+  char *board = "KimoNews";    [1;44m// Âà¥h KimoNews ªO¡A¦Û©w [m
+
+  brd_fpath(folder, board, FN_DIR);
+  hdr_stamp(folder, HDR_COPY | 'A', &hdr, fpath);
+  strcpy(hdr.owner, STR_SYSOP);
+  strcpy(hdr.nick, SYSOPNICK);
+  sprintf(hdr.title, "[%s] %.64s", class[kind - 'A'], title);
+  rec_add(folder, &hdr, sizeof(HDR));
+
+  update_btime(board);
+}
+
+
+/*-------------------------------------------------------*/
+/* ¤ÀªR html                                             */
+/*-------------------------------------------------------*/
+
+
+static int wlen;    /* ¥»¦æ¦³¦h¤Ö¦r */
+static int slen;    /* ¥»¦æ¦³¦h¤Ö¥b§Î¦r */
+
+
+static void
+foutc(ch, fp)
+  int ch;
+  FILE *fp;
+{
+  static int in_tag = 0;    /* 1: ¦b <tag> ¤¤ */
+  static int in_chi = 0;    /* 1: «e¤@½X¬O¤¤¤å¦r */
+
+  if (ch == '<')
+  {
+    in_tag = 1;
+    return;
+  }
+
+  if (!in_tag)
+  {
+    if (in_chi || ch & 0x80)    /* «e¤@­Óchar©Î³ochar¬O¤¤¤å¦rªº²Ä¤@½X */
+      in_chi ^= 1;
+    else                        /* ¦pªG³£¤£¬O¡Aªí¥Ü³ochar¬O¥b§Î¦r */
+      slen++;
+
+    if (wlen >= 60 - slen % 2)  /* ¤@¦æ³Ì¦h 60 ¦r¡A­Y¦³©_¼Æ­Ó¥b§Î¦r¡A
+                                   ¸Ó¦æ¥u¦L 59 ¦r */
+    {
+      fputs("\n    ", fp);      /* ¨C¦æ«e­±³£ªÅ¥|®æ */
+      wlen = 0;
+      /* slen = 0; */
+      slen = !in_chi;           /* ­Y·sªº³o¦æ²Ä¤@­Óchar¬O¥b§Î¦r¡Aslen=1 */
+    }
+
+    fputc(ch, fp);
+    wlen++;
+  }
+  else
+  {
+    if (ch == '>')
+      in_tag = 0;
+  }
+}
+
+
+static void
+fouts(str, fp)
+  uschar *str;
+  FILE *fp;
+{
+  int ch;
+
+  wlen = 0;
+  slen = 0;
+  fputs("\n    ", fp);      /* ¨C¦æ«e­±³£ªÅ¥|®æ */
+
+  while (ch = *str)
+  {
+    foutc(ch, fp);
+    str++;
+  }
+}
+
+
+static void
+html_download(enews, fold)      /* ¤U¸ü¤å³¹¨ÃÂà´«¬°¤å¦rÀÉ */
+  ENEWS *enews;
+  char *fold;
+{
+  char *strS, *strE;
+  char buf[2048];   /* °²³]¤å³¹¨C¬q¤£·|¶W¹L 2048 ¦r */
+  char fpath[64];
+  FILE *fpr, *fpw;
+  int article_begin;
+
+  /* ¤U¸ü¤å³¹ */
+  sprintf(buf, LYNX_PATH " %s > " NEWS_FILE, enews->link);
+  system(buf);
+
+  /* Âà´«¬°¤å¦rÀÉ */
+  if (fpr = fopen(NEWS_FILE, "r"))
+  {
+    sprintf(fpath, "run/kimo/%c/%s", enews->kind, enews->xname);
+    if (fpw = fopen(fpath, "w"))
+    {
+      /* ¶}ÀY¥[¤W¼ÐÃD */
+      fprintf(fpw, "%s %s (%s) %s %s\n",
+        STR_AUTHOR1, STR_SYSOP, SYSOPNICK, STR_POST2, "©_¼¯·s»D");
+      fprintf(fpw, "¼ÐÃD: %s\n®É¶¡: %s\n", enews->title, Now());
+
+      /* html -> text */
+      article_begin = 0;
+      while (fgets(buf, sizeof(buf), fpr))
+      {
+        if (!article_begin)     /* ¤å³¹¶}©l */
+        {
+          if (strstr(buf, "<!--end ¼ÐÃD±Hµ¹ªB¤Í¦C¦L-->"))
+            article_begin = 1;
+          continue;
+        }
+
+        /* ¤å³¹µ²§ô */
+        if (strstr(buf, "<div style=\042clear:both;display:none"))
+          break;
+
+        if ((strS = strstr(buf, "<big>")) &&
+          (strE = strstr(strS + 5, "</big>")))   /* ¥»¤å³¡¤À */
+        {
+          *strE = '\n';
+          *(strE + 1) = '\0';
+          fouts(strS + 5, fpw);
+          continue;
+        }
+
+        if ((strS = strstr(buf, "<small>")) &&
+          (strE = strstr(strS + 29, "</font>")))   /* ¨Ó·½³¡¤À */
+        {
+          *strE = '\n';
+          *(strE + 1) = '\0';
+          fouts(strS + 29, fpw);
+        }
+      }
+
+      /* µ²§À¥[¤W³sµ² */
+      fprintf(fpw, "\n--\nYahoo!©_¼¯·s»D\n%s\n", enews->link);
+      fclose(fpw);
+
+      if (!old_link(fold, enews->link))
+        post_board(fpath, enews->title, enews->kind);
+    }
+
+    fclose(fpr);
+    unlink(NEWS_FILE);  /* ²M°£¼È¦sÀÉ */
+  }
+}
+
+
+static void
+html_fetch(fpath, kind) /* ±N³oÀÉ®×¤¤¦³®Äªº³sµ²§ä¥X¨Ó */
+  char *fpath;
+  char kind;        /* ºØÃþ */
+{
+  static int chrono = 0;
+  FILE *fp;
+  char folder[64], fold[64], buf[1024];
+  char *str1, *str2, *str3;
+  ENEWS enews;
+  int article_num;
+
+  if (!(fp = fopen(fpath, "r")))
+    return;
+
+  sprintf(folder, "run/kimo/%c/.ENEWS", kind);
+  sprintf(fold, "%s.o", folder);
+  f_mv(folder, fold);
+
+#if 0
+  ³B²z HTML ®æ¦¡¦p¤U¡G
+  <a href="/040520/44/nwtu.html" class="title">¥_¥«¨â¤½¨®¹ï¼²  13¦W­¼«È°eÂå<!-- 20040520 --></a>
+#endif
+
+  article_num = 0;
+
+  while (fgets(buf, 1024, fp) && article_num <= 16)
+  {
+    if ((str1 = strstr(buf, "<a href=\"/")) &&      /* ¥u³B²z³sµ² */
+      (str2 = strstr(str1 + 10, "\" class=\"title\">")) &&
+      (str3 = strstr(str2 + 16, "<!-- ")))
+    {
+      *str2 = '\0';
+      *str3 = '\0';
+
+      /* ¥[¤J record */
+
+      memset(&enews, 0, sizeof(ENEWS));
+      enews.chrono = ++chrono;      /* ¨C½g¤å³¹¤@­Ó½s¸¹ */
+      enews.kind = kind;
+      sprintf(enews.xname, "A%06d%c", chrono, kind);
+      sprintf(enews.link, "http://tw.news.yahoo.com/%s", str1 + 10);
+      str_ncpy(enews.title, str2 + 16, sizeof(enews.title));
+      if (!rec_add(folder, &enews, sizeof(ENEWS)))
+        html_download(&enews, fold);
+
+      article_num++;
+    }
+  }
+
+  fclose(fp);
+}
+
+
+/*-------------------------------------------------------*/
+/* ¥Dµ{¦¡                                                */
+/*-------------------------------------------------------*/
+
+
+int
+main()
+{
+  char kind;
+  char cmd[256];
+
+  char *class[12] =
+  {
+    "polity", "society", "international", "twoshore",
+    "finance", "entertain", "sports", "leisure",
+    "relaxation", "health", "technology", "odd"
+  };
+
+  chdir(BBSHOME);
+
+  init_bshm();
+
+  /* §ì¸ê®Æ¨Ã¤ÀªR¤§ */
+
+  for (kind = 'A'; kind <= 'L'; kind++)
+  {
+    sprintf(cmd, LYNX_PATH " http://tw.news.yahoo.com/%s > " INDEX_FILE,
+      class[kind - 'A']);
+    system(cmd);
+    html_fetch(INDEX_FILE, kind);
+    unlink(INDEX_FILE);     /* ²M°£¼È¦sÀÉ */
+  }
+
+  return 0;
+}
+
+#else
+int
+main()
+{
+  printf("You should define HAVE_NETTOOL first.\n");
+  return -1;
+}
+#endif  /* HAVE_NETTOOL */
+
+--
+ [1;43m¢~[46m¢q[m Or[1mig[30min[m: [41m Maple-itoc£»°Ê¤O®Ö¤ß [32;47m processor.tfcis.org [m
+ [1;44m¢q[41m¢£[m A[1mut[30mho[mr: [1;33mitoc [30m±q [35mpc512-2.ee.nctu.edu.tw [30mµoªí[m
