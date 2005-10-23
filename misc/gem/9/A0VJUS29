@@ -1,6 +1,6 @@
 作者: itoc (拯救一個靈魂) 看板: plan
 標題: Re: [功能] 統計資料區獨立出來為 menu 的一個選項
-時間: Sat Jun 15 19:00:08 2002                          Updated: 2002/10/17
+時間: Sat Jun 15 19:00:08 2002                          Updated: 2005/10/07
 
 : menu.c:menu_XoGem() 新增此函式於 Gem() 前面
 
@@ -8,9 +8,9 @@ static void
 menu_XoGem(fpath, title)
   char *fpath, *title;
 {
-  /* itoc.001109: 看板總管在 (A)nnounce 下有 GEM_SYSOP，方便開板 */
+  /* itoc.001109: 看板總管在 (A)nnounce 下有 GEM_X_BIT，方便開板 */
   XoGem(fpath, title,
-    (HAS_PERM(PERM_ALLBOARD) ? GEM_SYSOP : GEM_USER));
+    (HAS_PERM(PERM_ALLBOARD) ? (GEM_W_BIT | GEM_X_BIT | GEM_M_BIT) : 0));
 }
 
 : menu.c:Gem() 換新
@@ -18,7 +18,7 @@ menu_XoGem(fpath, title)
 static int
 Gem()
 {
-  menu_XoGem("gem/.DIR", "精華布告欄");
+  menu_XoGem("gem/.DIR", "精華佈告欄");
   return 0;
 }
 

@@ -1,6 +1,6 @@
 發信人: itoc.bbs@processor.tfcis.org (:MM:), 看板: plan
 標  題: Re: [問題] 使用者修改自己的文章不能改標題
-發信站: XEON (Thu Dec 26 12:01:54 2002)                   Updated: 2005/06/29
+發信站: XEON (Thu Dec 26 12:01:54 2002)                   Updated: 2005/10/07
 
 ※ 引述《chonsi.bbs@WithHeart.twbbs.org (冰塊中的烈火 - 冰焰)》之銘言：
 > 當使用者修改自己的文章的時候...
@@ -70,7 +70,7 @@
 
 : gem.c:gem_edit()
 
-  if (level <= GEM_USER || (hdr->xmode & GEM_RESERVED && level < GEM_SYSOP))
+  if (!(level & GEM_W_BIT) || ((hdr->xmode & GEM_RESERVED) && !(level & GEM_X_BIT)))
   {
     vedit(fpath, -1);
   }

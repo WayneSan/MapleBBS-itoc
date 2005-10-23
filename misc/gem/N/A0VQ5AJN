@@ -2,7 +2,11 @@
 ¼Ð  ÃD: [¤å¥ó] ½u¤W¤H¼Æ mrtg ¹Ïªí
 µo«H¯¸: Àº¤Ñ±^ (Wed, 17 Sep 2003 22:30:08 +0800 (CST))    Updated: 2003/09/17
 
-·s¼W :src/util/showNum.c:
+: src/util/Makefile
+
+EXE =   ... [1;33mshowNum[m
+
+: src/util/showNum.c ·s¼W¦¹µ{¦¡
 
 #include "bbs.h"
 
@@ -24,6 +28,8 @@ main()
 
 
 ·íµM mrtg »P apache ­n¥ý¦w¸Ë¦n......
+
+±N ~bbs/bin/showNum ½Æ»s¨ì /usr/home/mrtg/bin/showNum
 
 ½s¿è¤@­Ó mrtg ªº cfg ÀÉ®×...  ¤º®e¦p¤U...
 

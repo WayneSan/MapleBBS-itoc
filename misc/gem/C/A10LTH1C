@@ -25,5 +25,10 @@ post_newbrd(xo)
 + 'J', post_newbrd,         [1;44m // «öÁä¦Û©w [m
   'h', post_help
 
+
+  ­Y§Æ±æ§ï¦¨©Ò¦³ªO«ö J ³£¥i¥H¶i¬ÝªO³s¸p¡A¨º»ò±N post.c:post_newbrd() ªº
+  if (HAS_PERM(PERM_VALID) && !strcmp(currboard, "newboard")) §ï¦¨
+  if (HAS_PERM(PERM_VALID)) §Y¥i
+
 --
 [1;37m¡¼ ¥»¤å³¹¥Ñ [33mitoc[37m ±q [32mitoc.Dorm11.NCTU.edu.tw[37m µoªí[m

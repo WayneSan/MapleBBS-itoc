@@ -1,8 +1,10 @@
 作者: itoc (核心動力) 站內: itoc
 標題: Re: 限制不限次數連續推文的問題?
-時間: 2005/04/07 Thu 14:45:59                           Updated: 2005/04/07
+時間: 2005/04/07 Thu 14:45:59                           Updated: 2005/09/14
 
 > → blest 推：ptt 那種30秒推文用→的要怎麼寫阿！
+
+  在一定時間內推文變 → 而且分數不加減
 
 : post.c:post_score()
 
@@ -16,6 +18,7 @@ post_score(xo)
 
 + if (next < time(NULL))
 + {
++   next = 1;
     switch (ans = vans("◎ 評分 1)推文 2)唾棄 3)自定推 4)自定呸？[Q] "))
     {
     ...
@@ -25,12 +28,31 @@ post_score(xo)
     }
 + }
 + else
-+   strcpy(verb, "\033[33m→");
++ {
++   next = 0;
++   verb = "3m→";
++ }
+
 
   if (!vget(b_lines, 0, "請輸入理由：", reason, 50, DOECHO))
     return XO_FOOT;
 
   ...
+
+  curraddscore = 0;
++ if (next)
++ {
+    if ((ans - '0') & 0x01)       /* 加分 */
+    {
+      if (hdr->score < 35)
+        curraddscore = 1;
+    }
+    else                          /* 扣分 */
+    {
+      if (hdr->score > -35)
+        curraddscore = -1;
+    }
++ }
 
 + next = time(NULL) + 180;  /* 每 180 秒方可評分一次 */
 

@@ -1,6 +1,6 @@
 發信人: LHD.bbs@YoMin.twbbs.org (我累了) 看板: plan
 標  題: [功能] 整行光棒－board.c (易於整合favor.c版)
-發信站: 遊民之家 (Mon, 14 Jul 2003 17:54:20 +0800 (CST))  Updated: 2005/06/10
+發信站: 遊民之家 (Mon, 14 Jul 2003 17:54:20 +0800 (CST))  Updated: 2005/10/07
 
 : board.c:class_item_bar() 及 class_bar() 加在 class_item() 之後
 
@@ -10,12 +10,12 @@ void
 #else
 static void
 #endif
-class_item_bar(brd, chn, cnt, brdpost)
+class_item_bar(brd, bno, chn, brdpost)
   BRD *brd;
-  int chn, cnt, brdpost;
+  int bno, chn, brdpost;
 {
   int num, fd, fsize;
-  char *str1, *str2, token;
+  char *str1, *str2, *str3, token, buf[16];
   char folder[64];
   struct stat st;
 
@@ -56,7 +56,7 @@ class_item_bar(brd, chn, cnt, brdpost)
   }
 
   /* 處理 編號/篇數 */
-  num = brdpost ? brd->bpost : cnt;
+  num = brdpost ? brd->bpost : bno;
 
   /* 處理 zap/friend/secret 板的符號 */
   if (brd_bits[chn] & BRD_Z_BIT)
@@ -83,12 +83,23 @@ class_item_bar(brd, chn, cnt, brdpost)
   else
     str2 = (brd->battr & BRD_NOTRAN) ? ICON_NOTRAN_BRD : ICON_TRAN_BRD;
 
-  prints("\033[1;42m%6d%c%s\033[1;42m%-13s\033[1;3%dm%-5s\033[37m%s\033[37m"
-    " %-34.33s %-13.13s\033[m",
+  /* 處理 人氣 */
+  bno = bshm->mantime[bno];
+  if (bno > 99)
+    str3 = "\033[1;31m爆\033[m";
+  else if (bno > 0)
+    sprintf(str3 = buf, "%2d", bno);
+  else
+    str3 = "  ";
+
+  prints("\033[1;42m%6d%c%s\033[1;42m%-13s\033[1;3%dm%-5s"
+    "\033[37m%s %-*.*s %s %-*.*s\033[m",
     num, token, str1, brd->brdname,
     brd->class[3] & 7, brd->class, str2,
-    brd->title, brd->BM);
+    (d_cols >> 1) + 31, (d_cols >> 1) + 30, brd->title, str3,
+    d_cols - (d_cols >> 1) + 13, d_cols - (d_cols >> 1) + 13, brd->BM);
 }
+
 
 static int
 class_bar(xo, mode)
@@ -108,9 +119,9 @@ class_bar(xo, mode)
   if (chn >= 0)         /* 一般看板 */
   {
     if (mode)
-      class_item_bar(brd, chn, cnt, brdpost);
+      class_item_bar(brd, cnt, chn, brdpost);
     else
-      class_item(cnt, chn, brdpost)
+      class_item(cnt, chn, brdpost);
   }
   else
   {
@@ -131,7 +142,7 @@ class_bar(xo, mode)
 }
 #endif
 
-: class.c:class_cb[]
+: board.c:class_cb[]
 
 static KeyFunc class_cb[] =
 {

@@ -1,6 +1,6 @@
 發信人: qazq.bbs@bbs.cs.nchu.edu.tw (＊我要紅透自己房間＊) 看板: plan
 標  題: [功能] 亂數產生數字，以 ASCII 圖形顯示。
-發信站: 中興資科 ｅ資獨秀 (2005/07/19 Tue 11:18:40)       Updated: 2004/07/19
+發信站: 中興資科 ｅ資獨秀 (2005/07/19 Tue 11:18:40)       Updated: 2005/09/15
 
 ※ 引述《JayWilliam.bbs.NOSPAM@bbs.shu.edu.tw.SHU (#歡迎光臨翠谷風情#)》之銘言
 > 站上疑似有廣告商使用自動程式連續註冊，
@@ -151,6 +151,19 @@ ascii_rand_num(x, y, max_bit, pattern)
 + if (atoi(buf) != try)
 +   login_abort("\n再見 ...");
 
+: src/maple/bbsd.c:tn_login()
+
+  sprintf(buf, "%s ip:%08x (%d)", fromhost, tn_addr, currpid);
+
++ srand(ap_start * tn_addr * currpid);
+
+  multi = login_user(buf);
+
+  ...
+  ...
+
+- srand(ap_start * cuser.userno * currpid);
+}
 
 ==============================================================================
 

@@ -1,6 +1,6 @@
 發信人: LHD.bbs@YoMin.twbbs.org (我要正常生活) 看板: plan
 標  題: ◇ [功能] 整行光棒(8)－gem.c 精華區
-發信站: 遊民之家 (Mon, 14 Jul 2003 22:15:33 +0800 (CST))  Updated: 2003/07/14
+發信站: 遊民之家 (Mon, 14 Jul 2003 22:15:33 +0800 (CST))  Updated: 2005/10/07
 
 : gem_item_bar() 加在 gem_item() 之後
 
@@ -30,8 +30,6 @@ gem_item_bar(xo, mode)
     gtype -= 2;
   else if (xmode & GEM_BOARD)           /*         看板:■ */
     gtype += 2;
-  else if (xmode & GEM_GOPHER)          /* 絲路:▽ 絲錄:▼ */
-    gtype += 4;
 
   prints("%s%6d%c%c\241%c ", mode ? "\033[1;41m" : "\033[m",
     num, xmode & GEM_RESTRICT ? ')' : ' ',
@@ -39,10 +37,10 @@ gem_item_bar(xo, mode)
 
   gtype = gem_way;
 
-  if ((xmode & GEM_RESTRICT) && (level <= GEM_USER))
+  if ((xmode & GEM_RESTRICT) && !(level & GEM_M_BIT))
     prints("%-67s%s", "<資料保密>", mode ? "\033[m" : "");
          /* itoc.000319: 限制級文章保密 */
-  else if ((gtype == 0) || (xmode & GEM_GOPHER))
+  else if (gtype == 0)
     prints("%-67.64s%s", hdr->title, mode ? "\033[m" : "");
   else
     prints("%-46.45s%-13s%-8.8s%s", hdr->title,

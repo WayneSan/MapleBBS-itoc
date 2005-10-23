@@ -1,6 +1,6 @@
 發信人: BioStar.bbs@micro.bio.ncue.edu.tw (澎湖小雲雀) 看板: itoc
 標  題: [文件] 精華區的篇數上限和容量上限
-發信站: 擎天崗 (Sun, 06 Jul 2003 15:21:41 +0800 (CST))    Updated: 2003/09/28
+發信站: 擎天崗 (Sun, 06 Jul 2003 15:21:41 +0800 (CST))    Updated: 2005/10/07
 
   (5) 檢查的主程式
 
@@ -156,7 +156,7 @@ gem_checksize(xo, filenum, filesize)
 
 : maple/gem.c:gem_paste()
 
-  if (xo->key <= GEM_USER)
+  if (!(xo->key & GEM_W_BIT))
     return XO_NONE;
 
 + if (gem_checksize(xo, &num, &ans))    /* 借用 num 和 ans */

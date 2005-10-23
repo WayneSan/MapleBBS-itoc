@@ -1,12 +1,13 @@
 作者: itoc (cygreadline4.dll) 站內: plan
 標題: [功能] 聯考榜單查詢
-時間: 2004/05/21 Fri 09:16:41                           Updated: 2005/03/15
+時間: 2004/05/21 Fri 09:16:41                           Updated: 2005/08/09
 
 : etc/jcee
 
-  從 http://cpu.twbbs.org 抓 jcee/ 整個目錄，放在 etc/ 下
+  從 http://cpu.twbbs.org/~itoc/ 抓 jcee/ 整個目錄，放在 etc/ 下
+  也就是要有 etc/jcee/##.txt，## 是民國年
 
-: menu.c:menu_net[]  其實查榜功能是在本機做的 :Q
+: menu.c:menu_net[]  適當的選單加上這二行
 
 + "bin/jcee.so:main_jcee", 0, - M_XMODE,
 + "JCEE       ♂ 聯考查榜 ♀",
@@ -39,6 +40,9 @@ SO =    ..... jcee.so
 #include "bbs.h"
 
 
+#define END_YEAR   94      /* 最後一年的榜單是民國 94 年 */
+
+
 static int
 ueequery_item(count, i, examnum, ptr, now)
   int count, i, examnum;
@@ -63,6 +67,7 @@ ueequery_item(count, i, examnum, ptr, now)
   }
 
   move(3 + i, 0);
+
   sprintf(buf, " %%-%d.%ds%%%ds   %%-8s  %%s", examnum, examnum, 9 - examnum);
   prints(buf, ptr, "", ptr + examnum, now);
 
@@ -80,7 +85,7 @@ ueequery_item(count, i, examnum, ptr, now)
   prints(COLOR1 " 榜單查詢 " COLOR2 " 目前共查詢到 %4d 筆資料。"
     "本資料僅供參考，錄取結果以聯招會公布為準 \033[m", count);
 
-  return ++i;
+  return i + 1;
 }
 
 
@@ -116,14 +121,16 @@ x_ueequery()
     "3. 83-86 年需要六位准考證號碼，87-90 年需要七位准考證號碼\n"
     "4. 91年起需要八位准考證號碼\n");
 
-  if (!vget(9, 0, "請輸入聯考年度(83 ~ 93)？[93] ", buf, 3, DOECHO))
+  sprintf(buf, "請輸入聯考年度(83 ~ %d)？[%d] ", END_YEAR, END_YEAR);
+
+  if (!vget(9, 0, buf, query, 3, DOECHO))
   {
-    year = 93;
+    year = END_YEAR;
   }
   else
   {
-    year = atoi(buf);
-    if (year < 83 || year > 93)
+    year = atoi(query);
+    if (year < 83 || year > END_YEAR)
       return 0;
   }
 
@@ -134,17 +141,17 @@ x_ueequery()
   else
     examnum = 8;
 
-  if (vget(11, 0, "請輸入完整准考証號碼：", query, examnum + 1, DOECHO))
+  if (vget(11, 0, "請輸入完整准考證號碼：", query, examnum + 1, DOECHO))
   {
     if (strlen(query) != examnum)
     {
-      vmsg("不正確的完整准考証號碼");
+      vmsg("不正確的完整准考證號碼");
       return 0;
     }
   }
   else if (!vget(13, 0, "請輸入部份姓名：", query, 10, DOECHO))
   {
-    vmsg("請於准考証號碼於姓名二欄中擇一填寫");
+    vmsg("請於准考證號碼於姓名二欄中擇一填寫");
     return 0;
   }
 
@@ -208,7 +215,7 @@ x_ueequery2()
 {
   char buf[256], query[30], query2[30], now[80], *ptr;
   int i, count, year, examnum;
-  int school, class;
+  int school, dept;
   FILE *fp;
 
   vs_bar("聯考榜單查詢");
@@ -217,14 +224,16 @@ x_ueequery2()
     "1. 大學及科系兩項至少需填寫一項才能夠查詢\n"
     "2. 輸入部分字串即可\n");
 
-  if (!vget(9, 0, "請輸入聯考年度(83 ~ 92)？[92] ", buf, 3, DOECHO))
+  sprintf(buf, "請輸入聯考年度(83 ~ %d)？[%d] ", END_YEAR, END_YEAR);
+
+  if (!vget(9, 0, buf, query, 3, DOECHO))
   {
-    year = 92;
+    year = END_YEAR;
   }
   else
   {
-    year = atoi(buf);
-    if (year < 83 || year > 92)
+    year = atoi(query);
+    if (year < 83 || year > END_YEAR)
       return 0;
   }
 
@@ -260,16 +269,16 @@ x_ueequery2()
         ptr = strtok(buf + 5, " ");
         strcpy(now, ptr);
 
-          if (!*query || strstr(now, query))      /* 找到學校 */
+        if (!*query || strstr(now, query))      /* 找到學校 */
           school = 1;
         else
           school = 0;
 
         ptr = strtok(NULL, " ");
         if (!*query2 || strstr(ptr, query2))    /* 找到科系 */
-          class = 1;
+          dept = 1;
         else
-          class = 0;
+          dept = 0;
 
         sprintf(now, "%-24s%-30s", now, ptr);
         continue;
@@ -279,7 +288,7 @@ x_ueequery2()
 
       do
       {
-        if (school && class && strlen(ptr) >= 6)/* 處理中文字的問題 */
+        if (school && dept && strlen(ptr) >= 6)/* 處理中文字的問題 */
         {
           count++;
           if (!(i = ueequery_item(count, i, examnum, ptr, now)))

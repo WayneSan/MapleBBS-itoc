@@ -49,7 +49,7 @@
 
 : cache.c:utmp_seek() 密文作者不顯示在線上
 
-  if (hdr->xmode & (GEM_GOPHER | POST_INCOME | MAIL_INCOME))
+  if (hdr->xmode & POST_INCOME) /* POST_INCOME 和 MAIL_INCOME 是相同的 */
     return NULL;
 +#ifdef HAVE_REFUSEMARK
 + if ((hdr->xmode & POST_RESTRICT) &&

@@ -1,6 +1,6 @@
 發信人: qazq.bbs@bbs.cs.nchu.edu.tw (ξ愛情御守ξ) 看板: plan
 標  題: [功能] 整行光棒(1)－pal.c 好友名單
-發信站: 中興資科 (Mon, 14 Jul 2003 16:17:49 +0800 (CST))  Updated: 2005/07/16
+發信站: 中興資科 (Mon, 14 Jul 2003 16:17:49 +0800 (CST))  Updated: 2005/08/08
 
 : pal.c:pal_item1()  加在 pal_item() 後面
 
@@ -12,12 +12,16 @@ pal_item_bar(xo, mode)
 {
   PAL *pal;
 #ifdef CHECK_ONLINE
-  UTMP *online = utmp_find(pal->userno);
+  UTMP *online;
 #else
   int online = 0;
 #endif
 
   pal = (PAL *) xo_pool + xo->pos - xo->top;
+
+#ifdef CHECK_ONLINE
+  online = utmp_get(pal->userno, NULL);
+#endif
 
   prints("%s%6d%c%-3s%s%-14s%s%-54s%s",
     mode ? "\033[44m" : "",         //這裡是光棒的顏色，可以自己改。

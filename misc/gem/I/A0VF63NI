@@ -1,6 +1,6 @@
 作者: itoc (http://cpu.twbbs.org) 看板: itoc
 標題: Re: 問一些小問題..
-時間: Fri Jun 20 21:40:46 2003                          Updated: 2005/05/12
+時間: Fri Jun 20 21:40:46 2003                          Updated: 2005/08/24
 
 ※ 引述《alexabc.bbs@aurora.twbbs.org (陌生人)》之銘言：
 > 請問有辦法像WD一樣做一個all_post板嗎?
@@ -55,9 +55,9 @@ do_post(title)
     mode |= POST_RESTRICT;
 #endif
 
-+ /* qazq.031025: 好友板、秘密板不做 all_post */
++ /* qazq.031025: 公開板才做 all_post */
 + brd = bshm->bcache + currbno;
-+ if (!(brd->readlevel == PERM_SYSOP) && !(brd->readlevel == PERM_BOARD))
++ if ((brd->readlevel | brd->postlevel) < (PERM_VALID << 1))
 +   do_allpost(fpath, rcpt, nick, mode);
 
 --

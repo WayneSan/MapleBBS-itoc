@@ -1,6 +1,6 @@
 作者: itoc (核心動力) 看板: itoc
 標題: Re: [請問] 關於All_Post的文章讀取...
-時間: 2004/06/18 Fri 19:55:40                           Updated: 2005/01/15
+時間: 2004/06/18 Fri 19:55:40                           Updated: 2005/08/24
 
 ※ 引述《Daniel.bbs@pctAngel.twbbs.org (我愛pct)》之銘言：
 > 要如何做才能讓使用者不管在All_Post或其他版只要讀取同一篇文章，
@@ -13,9 +13,9 @@
 
 : post.c:do_post()
 
-  /* qazq.031025: 好友板、秘密板不做 all_post */
+  /* qazq.031025: 公開板才做 all_post */
   brd = bshm->bcache + currbno;
-  if (!(brd->readlevel == PERM_SYSOP) && !(brd->readlevel == PERM_BOARD))
+  if ((brd->readlevel | brd->postlevel) < (PERM_VALID << 1))
 -   do_allpost(fpath, rcpt, nick, mode);
 +   do_allpost(fpath, rcpt, nick, mode, hdr.chrono);
 

@@ -1,6 +1,6 @@
 發信人: BioStar.bbs@micro.bio.ncue.edu.tw (澎湖小雲雀) 看板: plan
 標  題: Re: [文件] 精華區的篇數上限和容量上限
-發信站: 擎天崗 (Tue, 08 Jul 2003 23:53:02 +0800 (CST))    Updated: 2003/07/15
+發信站: 擎天崗 (Tue, 08 Jul 2003 23:53:02 +0800 (CST))    Updated: 2005/10/07
 
   (6) 顯示精華區使用量
 
@@ -20,7 +20,7 @@ gem_totalsize(xo)
   struct dirent *de;
   DIR *dirp;
 
-  if (xo->key <= GEM_USER)
+  if (!(xo->key & GEM_W_BIT))
     return XO_NONE;
 
   if (*xo->dir == 'g' && *(xo->dir + 4) == 'b')     /* 看板精華區 */

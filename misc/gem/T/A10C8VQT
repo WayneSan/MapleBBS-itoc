@@ -1,39 +1,20 @@
 µo«H¤H: itoc.bbs@processor.tfcis.org (®Ö¤ß°Ê¤O) ¬ÝªO: plan
 ¼Ð  ÃD: Re: ³s¸pª©
-µo«H¯¸: °Ê¤O®Ö¤ß (2004/06/07 Mon 21:53:49)                Updated: 2004/06/07
+µo«H¯¸: °Ê¤O®Ö¤ß (2004/06/07 Mon 21:53:49)                Updated: 2005/08/23
 
 ¡° ¤Þ­z¡myhl (yhl)¡n¤§»Ê¨¥¡G
 > ³s¸pªº¤å³¹¥i¥H¦b¦¨¥\³s¸p«á
 > Âà¤@½g¨ìnewboard¥h¶Ü
 
-: newbrd.c:add_post() ¥[¦b nbrd_reply() «e­±
-
-static void
-add_post(brdname, fpath, title)           /* µo¤å¨ì¬ÝªO */
-  char *brdname;        /* ±ý post ªº¬ÝªO */
-  char *fpath;          /* ÀÉ®×¸ô®| */
-  char *title;          /* ¤å³¹¼ÐÃD */
-{
-  HDR hdr;
-  char folder[64];
-
-  brd_fpath(folder, brdname, fn_dir);
-  hdr_stamp(folder, HDR_LINK | 'A', &hdr, fpath);
-  strcpy(hdr.owner, str_sysop);
-  strcpy(hdr.nick, SYSOPNICK);
-  strcpy(hdr.title, title);
-  rec_add(folder, &hdr, sizeof(HDR));
-}
+  ¥ý°µºëµØ°Ï³o½g
+  [¥\¯à] post.c µo¤å¨ì¬ÝªO
 
 : newbrd.c:nbrd_reply()
 
-    else
-    {
-      vmsg("¤w¹F³s¸p¼Ð·Ç¡A½ÐÀR­Ô¼f²z");
-      nbrd->mode = NBRD_OK | (nbrd->mode & NBRD_MASK);
+    currchrono = nbrd->btime;
+    rec_ref(xo->dir, nbrd, sizeof(NBRD), xo->pos, cmpbtime, addreply);
++   if (nbrd->total <= 1)
 +     add_post("newboard", fpath, "³s¸p³q¹L");
-    }
-
 
 --
  [1;43m¢~[46m¢q[m Or[1mig[30min[m: [41m Maple-itoc£»°Ê¤O®Ö¤ß [32;47m processor.tfcis.org [m

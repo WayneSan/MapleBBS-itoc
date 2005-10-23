@@ -68,13 +68,20 @@
   issuer                       type
   ============================ ========
   news@news.math.nctu.edu.tw   badhabit
+  news@news.math.nctu.edu.tw   google
   news@news.math.nctu.edu.tw   hinet
   news@news.math.nctu.edu.tw   power
   news@news.math.nctu.edu.tw   seednet
   news@news.math.nctu.edu.tw   spam
+  news@news.math.nctu.edu.tw   tanet
   nocem@bbs.isu.edu.tw         spam
   nocem@leeym.com              spam
   nocem@newsgate.nctu.edu.tw   spam
+  nocem@spring.edu.tw          cleanfeed
+  nocem@spring.edu.tw          dnsbl-bl.spamcop.net
+  nocem@spring.edu.tw          dnsbl-list.dsbl.org
+  nocem@spring.edu.tw          dnsbl-sbl-xbl.spamhaus.org
+  (陸續增加中)
 
   至於每個 issuer/type 所使用的過濾規則是什麼，則需要詢問該
   issuer 才能得知。

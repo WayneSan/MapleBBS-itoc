@@ -4,7 +4,7 @@
 
 ¡° -------------- mail ªº³¡¤À -------------- ¡°
 
-: bmtad/Makefile
+: bmtad/Makefile ­Y¬O FreeBSD ­n§ï³o­Ó
 
 freebsd:
 !       .... -L../lib -ldao -lcrypt [1;33m-L/usr/local/lib -liconv[m -export ....

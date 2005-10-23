@@ -1,6 +1,6 @@
 發信人: Dinsam.bbs@ccudream.twbbs.org (前世.. o.O) 看板: plan
 標  題: BLog for itoc-maple 安裝補充
-發信站: 中正築夢園 (Fri, 26 Sep 2003 20:17:24 +0800)      Updated: 2003/11/03
+發信站: 中正築夢園 (Fri, 26 Sep 2003 20:17:24 +0800)      Updated: 2005/10/07
 
 
 SnowWolf所提供的code是使用個人精華
@@ -70,7 +70,7 @@ gem_blog(xo)
 {
   char cmd[256], brdname[IDLEN + 1], *dir, *str;
 
-  if (xo->key <= GEM_USER)
+  if (!(xo->key & GEM_W_BIT))
     return XO_NONE;
 
   /* 由 xo->dir 找出目前在哪一個板的精華區 */

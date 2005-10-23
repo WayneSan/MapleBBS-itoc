@@ -1,13 +1,13 @@
 發信人: PaulLiu.bbs@processor.tfcis.org (GrandPaul) 看板: plan
 標  題: Re: [問題] 關於 RFC 2045 / RFC 2047
-發信站: XEON (Tue, 01 Apr 2003 19:22:16 +0800 (CST))      Updated: 2005/01/03
+發信站: XEON (Tue, 01 Apr 2003 19:22:16 +0800 (CST))      Updated: 2005/08/29
 
 ※ -------------- lib 的部分 -------------- ※
 
 : libiconv
 
   裝 libiconv
-  若是 FreeBSD，在 /usr/ports/converters/libiconv 1.8_2
+  若是 FreeBSD，在 /usr/ports/converters/libiconv
 
 : lib/dao.p
 
@@ -19,7 +19,7 @@ void str_decode(unsigned char *str);
 + void str_conv(unsigned char *fromcode, unsigned char *tocode,
 +   char *str, int len);
 
-: lib/Makefile
+: lib/Makefile 若是 FreeBSD 要改這個
 
 CC      = gcc
 RANLIB  = ranlib
@@ -35,7 +35,8 @@ CPROTO  = cproto -E"gcc -pipe -E" -I../include # -s -v
    都會砍掉.
 */
 
-#include "iconv.h"
+#include <errno.h>
+#include <iconv.h>
 
 static int
 str_iconv(fromcode, tocode, src, srclen, dst, dstlen)
@@ -48,6 +49,7 @@ str_iconv(fromcode, tocode, src, srclen, dst, dstlen)
 {
   iconv_t iconv_descriptor;
   int dstlen_old;
+  extern int errno;
 
   dstlen--;                     /* keep space for '\0' */
 

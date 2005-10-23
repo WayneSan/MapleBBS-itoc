@@ -1,6 +1,6 @@
 作者: itoc (綠巨人好客？) 看板: itoc
 標題: [功能] 整行光棒(12)－song.c 點歌
-時間: Tue Jul 15 11:11:29 2003                          Updated: 2005/06/26
+時間: Tue Jul 15 11:11:29 2003                          Updated: 2005/10/07
 
 : song.c:song_item_bar()  加在 song_item() 後面
 
@@ -25,8 +25,6 @@ song_item_bar(xo, mode)
     gtype -= 2;
   else if (xmode & GEM_BOARD)           /*         看板:■ */
     gtype += 2;
-  else if (xmode & GEM_GOPHER)          /* 絲路:▽ 絲錄:▼ */
-    gtype += 4;
 
   prints("%s%6d%c \241%c %-.*s%s",
     mode ? "\033[44m" : "",         //這裡是光棒的顏色，可以自己改

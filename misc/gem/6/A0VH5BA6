@@ -1,10 +1,10 @@
 ╡oлHдH: LHD.bbs@YoMin.twbbs.org (з┌з╓│Q╖d║╞дF||) м▌кO: plan
 ╝╨  ├D: [е\пр] ╛ужце·┤╬(7)б╨favor.c з┌к║│╠╖R
-╡oлHп╕: ╣Cе┴дзоa (Mon, 14 Jul 2003 19:45:37 +0800 (CST))  Updated: 2003/07/14
+╡oлHп╕: ╣Cе┴дзоa (Mon, 14 Jul 2003 19:45:37 +0800 (CST))  Updated: 2005/10/06
 
 [1;31mнnе¤░╡з╣board.cк║class_item_bar()о@[m
 
-: mf_item_bar() е[жb mf_item() дзлс
+: favor.c:mf_item_bar() е[жb mf_item() дзлс
 
 #ifdef HAVE_LIGHTBAR
 static int
@@ -50,9 +50,9 @@ mf_item_bar(xo, mode)
       if (!strcmp(mf->xname, bhead->brdname))
       {
         if (mode)
-          class_item_bar(bhead, chn, num, brdpost);
+          class_item_bar(bhead, num, chn, brdpost);
         else
-          class_item(bhead, chn, num, brdpost);
+          class_item(num, chn, brdpost);
         invalid = 0;
         break;
       }
@@ -61,9 +61,6 @@ mf_item_bar(xo, mode)
 
     if (invalid)        /* itoc.010821: │Qмхк║м▌кOнnеtе~жL */
     {
-      /* itoc.010821: дгигк║м▌кOбA┼¤ user ж█дv▓M▒╝бAжpж╣ user д~к╛╣Dн■и╟м▌кO│Qмх
-дF */
-
       prints("%s         \033[36m%-13s%-56s\033[m", mode ?
         "\033[1;42m" : "", mf->xname, "<дwзяжWй╬│QзR░гбA╜╨▒Nе╗▒╢о|зR░г>");
     } [1;31m /* к°л╫жn├°╜╒ ░оп▄ж█дvзядF= =*/[m
