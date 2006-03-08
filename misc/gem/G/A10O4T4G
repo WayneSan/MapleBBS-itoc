@@ -1,6 +1,6 @@
 µo«H¤H: simple.bbs@bbs.wfc.edu.tw (¾i§L¤d¤é ¥Î¦b¤@®É) ¬ÝªO: plan
 ¼Ð  ÃD: [¥\¯à]¼Ö³z±m-¤j¼Ö³z(­×§ïª©)
-µo«H¯¸: ¥d¥¬©_¿Õ (2004/10/27 Wed 00:39:26)                Updated: 2005/09/15
+µo«H¯¸: ¥d¥¬©_¿Õ (2004/10/27 Wed 00:39:26)                Updated: 2005/12/19
 
 : crontab -e ¥[¤J¤G¦æ
 
@@ -29,7 +29,6 @@ EXE =   ... [1;33mlottery-open[m
 
 
 #define OUTFILE_LOTTERY   "run/lottery.result"
-#define LAST_KEEP_MONEY   "run/lottery.lastmoney"  /* °O¿ý¤W´Á¥¼µoªº¼úª÷ */
 
 
 /* lottery_num[0~5] ¬O¤@¯ë¸¹½X¡Flottery_num[6] ¬O¯S§O¸¹ */
@@ -54,9 +53,8 @@ static FILE *flog;
 
 
 static void
-add_money(userid, prize)
-  char *userid;
-  int prize;
+add_money(log)
+  BUY_LOTTERY *log;
 {
   char fpath[64];
   PAYCHECK paycheck;
@@ -64,55 +62,78 @@ add_money(userid, prize)
 
   memset(&paycheck, 0, sizeof(PAYCHECK));
   time(&paycheck.tissue);
-  paycheck.money = eachmoney[prize];
-  sprintf(paycheck.reason, "¤j¼Ö³z%s¼ú¼úª÷", name[prize]);
+  paycheck.money = eachmoney[log->prize];
+  sprintf(paycheck.reason, "¤j¼Ö³z%s¼ú¼úª÷", name[log->prize]);
 
-  usr_fpath(fpath, userid, FN_PAYCHECK);
+  usr_fpath(fpath, log->userid, FN_PAYCHECK);
   rec_add(fpath, &paycheck, sizeof(PAYCHECK));
+
+  fprintf(flog, "  %-13s±m¨é¸¹½X¬° %02d %02d %02d %02d %02d %02d¡A"
+    "¤¤¤F%s¼ú %d ¤¸\n",
+    log->userid, log->num[0], log->num[1], log->num[2],
+    log->num[3], log->num[4], log->num[5], name[log->prize], paycheck.money);
 }
 
 
 static void
-mail_him(userid, log)       /* itoc.011115: ±HÀÉ®×µ¹ userid */
-  char *userid;             /* ¦¬¥ó¤H */
+mail_lottery(log)       /* itoc.011115: ±HÀÉ®×µ¹ userid */
   BUY_LOTTERY *log;
 {
   int i;
-  char folder[64], fpath[64];
+  char folder[64];
   HDR hdr;
-  FILE *fp;
+  static char userid[IDLEN + 1];
+  static char fpath[64];
+  static FILE *fp;
 
-  sprintf(fpath, "tmp/lottery.%d", userid);
-  if (fp = fopen(fpath, "w"))
+  /* log[] ­n¨Ì log->userid ¨Ó±Æ§Ç */
+  /* ¦P¤@¦ì¨Ï¥ÎªÌ¥i¯à¦³¦h±i±m¨é¤¤¼ú¡A¦b¦P¤@«Ê«H¸Ì­±·|§â©Ò¦³©ú²Ó³£¼g¥X¨Ó */
+
+  if (strcmp(userid, log->userid))   /* ·sªº userid */
   {
-    /* ¤å³¹ÀÉÀY */
-    fprintf(fp, "%s %s (%s)\n", STR_AUTHOR1, STR_SYSOP, SYSOPNICK);
-    fprintf(fp, "¼ÐÃD: ±m¨éµo¿ú\n®É¶¡: %s\n\n", Now());
+    /* ±N«e¤@¤¤¼ú¤Hªº«H±H¥X */
+    if (fp)
+    {
+      fclose(fp);
 
-    /* ¤å³¹¤º®e */
-    fprintf(fp, "     ¥»´Á¼Ö³z¤¤¼ú¸¹½X¬°¡G\n\n          ");
-    for (i = 0; i < 6; i++)
-      fprintf(fp, "%02d  ", lottery_num[i]);
-    fprintf(fp, "\n\n     ¥»´Á¼Ö³z¯S§O¸¹½X¬°¡G%\n\n          ");
-    fprintf(fp, "%02d\n\n", lottery_num[6]);
+      usr_fpath(folder, userid, FN_DIR);
+      hdr_stamp(folder, HDR_LINK, &hdr, fpath);
+      strcpy(hdr.owner, STR_SYSOP);
+      strcpy(hdr.nick, SYSOPNICK);
+      strcpy(hdr.title, "±m¨éµo¿ú");
+      rec_add(folder, &hdr, sizeof(HDR));
 
-    fprintf(fp, "     ±z©ÒÁÊ¶Rªº¸¹½X¬°¡G\n\n          ");
-    for (i = 0; i < 6; i++)
-      fprintf(fp, "%02d  ", log->num[i]);
+      unlink(fpath);
+    }
 
-    fprintf(fp, "®¥³ß±zÄ¹±o %d ¤¸¡A¸Ô²Ó¤¤¼ú°O¿ý½Ð°Ñ¦Ò %s ªO\n",
-      eachmoney[log->prize], BN_RECORD);
-    fclose(fp);
+    if (!log->userid[0])   /* ¤w±H¥X³Ì«á¤@¦ì¤¤¼ú¤H³qª¾«H */
+      return;
 
-    usr_fpath(folder, userid, FN_DIR);
-    hdr_stamp(folder, HDR_LINK, &hdr, fpath);
-    strcpy(hdr.owner, STR_SYSOP);
-    strcpy(hdr.nick, SYSOPNICK);
-    strcpy(hdr.title, "±m¨éµo¿ú");
-    rec_add(folder, &hdr, sizeof(HDR));
+    /* ¶}©l·Ç³Æ·s¤¤¼ú¤Hªº«H */
+    strcpy(userid, log->userid);
 
-    unlink(fpath);
+    sprintf(fpath, "tmp/lottery.%d", userid);
+    if (fp = fopen(fpath, "w"))
+    {
+      /* ¤å³¹ÀÉÀY */
+      fprintf(fp, "%s %s (%s)\n", STR_AUTHOR1, STR_SYSOP, SYSOPNICK);
+      fprintf(fp, "¼ÐÃD: ±m¨éµo¿ú\n®É¶¡: %s\n\n", Now());
+
+      /* ¤å³¹¤º®e */
+      fprintf(fp, "     ¥»´Á¼Ö³z¤¤¼ú¸¹½X¬°¡G\n\n          ");
+      for (i = 0; i < 6; i++)
+        fprintf(fp, "%02d  ", lottery_num[i]);
+      fprintf(fp, "\n\n     ¥»´Á¼Ö³z¯S§O¸¹½X¬°¡G%\n\n          ");
+      fprintf(fp, "%02d\n\n", lottery_num[6]);
+    }
   }
+
+  fprintf(fp, "     ±z©ÒÁÊ¶Rªº¸¹½X¬°¡G\n\n          ");
+  for (i = 0; i < 6; i++)
+    fprintf(fp, "%02d  ", log->num[i]);
+
+  fprintf(fp, "®¥³ß±zÄ¹±o %d ¤¸¡A¸Ô²Ó¤¤¼ú°O¿ý½Ð°Ñ¦Ò %s ªO\n",
+    eachmoney[log->prize], BN_RECORD);
 }
 
 
@@ -175,44 +196,37 @@ rand_num:                       /* random ¥X¤@­Ó©M¤§«e³£¤£¦Pªº¼Æ¦r */
 }
 
 
-static void
-check_number(log, guessed, spec)   /* ¶Ç¤J log¡A¶Ç¦^ guessed ¤Î spec */
+static int  /* -1:Ý¢Àt 0:´¶¼ú 1:³°¼ú 2:¥î¼ú 3:¸v¼ú 4:°Ñ¼ú 5:¶L¼ú 6:ÀY¼ú */
+check_prize(log)
   BUY_LOTTERY *log;
-  int *guessed;         /* ¤¤´X­Ó¸¹½X */
-  int *spec;            /* 1: ¤¤¯S§O¸¹ */
 {
   int i, j;
+  int guessed;        /* ¤¤¤F´X­Ó¸¹½X */
+  int spec;           /* 1: ¤¤¤F¯S§O¸¹½X */
+  int prize;
 
-  *guessed = 0;
+  guessed = 0;
   for (i = 0; i < 6; i++)
   {
     for (j = 0; j < 6; j++)
     {
       if (log->num[i] == lottery_num[j])
       {
-        (*guessed)++;
+        guessed++;
         break;
       }
     }
   }
 
-  *spec = 0;
+  spec = 0;
   for (i = 0; i < 6; i++)
   {
     if (log->num[i] == lottery_num[6])
     {
-      *spec = 1;
+      spec = 1;
       break;
     }
   }
-}
-
-
-static int /* -1:Ý¢Àt 0:´¶¼ú 1:³°¼ú 2:¥î¼ú 3:¸v¼ú 4:°Ñ¼ú 5:¶L¼ú 6:ÀY¼ú */
-check_prize(guessed, spec)      /* ¬Ý¤¤¤F¤°»ò¼ú */
-  int guessed, spec;
-{
-  int prize;
 
   /* ÀY¼ú »P·í´Á¤»­Ó¤¤¼ú¸¹½X§¹¥þ¬Û¦PªÌ¡q¶¶§Ç¤£­­¡r
      ¶L¼ú ¹ï¤¤·í´Á¤¤¼ú¸¹½X¤§¨ä¤¤¥ô¤­½X¡Ï¯S§O¸¹
@@ -244,7 +258,8 @@ check_prize(guessed, spec)      /* ¬Ý¤¤¤F¤°»ò¼ú */
     prize = 6;
   }
 
-  lottery_win[prize]++;
+  if (prize >= 0)
+    lottery_win[prize]++;
   return prize;
 }
 
@@ -278,23 +293,43 @@ check_money()         /* ­pºâ¦U¼ú¶µ¼úª÷ */
   for (i = 2; i < 7; i++)  /* °£´¶¼ú¡B³°¼ú¥H¥~ */
   {
     if (lottery_win[i])
-      eachmoney[i] = totalmoney * rate[i] / 100 / lottery_win[i];
+      eachmoney[i] = totalmoney / 100 / lottery_win[i] * rate[i];
     else
-      keepmoney += totalmoney * rate[i] / 100;
+      keepmoney += totalmoney / 100 * rate[i];
   }
   eachmoney[1] = 20000;
   eachmoney[0] = 8000;
 
   /* ±N¥¼µo¥Xªº¼úª÷«O¯d¦Ü¤U´Á */
   rec_put(LAST_KEEP_MONEY, &keepmoney, sizeof(int), 0, NULL);
+
+  fprintf(flog, "¦U¼ú¶µªº¼úª÷¨Ì§Ç¬O¡G");
+  for (i = 0; i < 7; i++)
+    fprintf(flog, "%d ", eachmoney[i]);
+  fprintf(flog, "\n\n");
+}
+
+
+static int
+lottery_cmp(a, b)
+  BUY_LOTTERY *a, *b;
+{
+  int ap, bp;
+
+  ap = a->prize;
+  bp = b->prize;
+
+  if (ap * bp < 0)   /* ¤@¤H¦³¤¤¼ú¡A¥t¤@¤H¨S¤¤¼ú */
+    return ap - bp;  /* ¨S¤¤¼úªº©ñ«e­± */
+
+  /* ¤G¤H³£¦³¤¤¼ú©Î³£¨S¤¤¼ú¡A¨Ì id ±Æ§Ç */
+  return strcmp(a->userid, b->userid);
 }
 
 
 static void
 lottery_open()
 {
-  int guessed;        /* ¤¤¤F´X­Ó¸¹½X */
-  int spec;           /* 1: ¤¤¤F¯S§O¸¹½X */
   int fsize;
   BUY_LOTTERY *data, *head, *tail;
 
@@ -310,32 +345,30 @@ lottery_open()
     tail = data + fsize;
     do
     {
-      /* ¶}©l¹ï¼ú */
-      check_number(head, &guessed, &spec);
-
-      fprintf(flog, "  %-13s±m¨é¸¹½X¬° %02d %02d %02d %02d %02d %02d\n",
-        head->userid, head->num[0], head->num[1], head->num[2],
-        head->num[3], head->num[4], head->num[5]);
-      fprintf(flog, "  ¤¤¤F¤@¯ë¸¹½X¡G%d ­Ó  ¯S§O¸¹½X¡G%d ­Ó\n\n",
-        guessed, spec);
-
-      /* ²Î­p¤¤¼úª`¼Æ¡A°O¿ý¤¤¤°»ò¼ú */
-      head->prize = check_prize(guessed, spec);
+      /* ¶}©l¹ï¼ú¡A²Î­p¤¤¼úª`¼Æ */
+      head->prize = check_prize(head);
     } while (++head < tail);
 
     /* ­pºâ¦U¼ú¶µ¼úª÷ */
     check_money();
 
+    /* ±N data ¨Ì userid ±Æ§Ç */
+    qsort(data, fsize * sizeof(BUY_LOTTERY), sizeof(BUY_LOTTERY), lottery_cmp);
+
     /* ²Ä¤G°éµo¼úª÷ */
     head = data;
     do
     {
-      if (head->num[0] >= 0)
+      if (head->prize >= 0)
       {
-        add_money(head->userid, head->prize);
-        mail_him(head->userid, head);
+        add_money(head);
+        mail_lottery(head);
       }
     } while (++head < tail);
+
+    /* ±H¥X³Ì«á¤@­Ó¤¤¼ú¤H³qª¾«H */
+    data->userid[0] = '\0';
+    mail_lottery(data);
 
     free(data);
   }

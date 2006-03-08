@@ -1,58 +1,40 @@
 µo«H¤H: itoc.bbs@processor.tfcis.org (®Ö¤ß°Ê¤O) ¬ÝªO: plan
 ¼Ð  ÃD: Re: ½Ð°Ý°Î¦Wª©PO¤å³¹¨C­Ó¤H³£¥i¥H¦³£|¥N¸¹£v
-µo«H¯¸: °Ê¤O®Ö¤ß (2004/03/15 Mon 12:03:18)                Updated: 2004/04/07
+µo«H¯¸: °Ê¤O®Ö¤ß (2004/03/15 Mon 12:03:18)                Updated: 2005/11/16
 
 ¡° ¤Þ­z¡mganiao.bbs@wretch.twbbs.org (ªì¾ÇªÌ)¡n¤§»Ê¨¥¡G
 > °Î¦W¤å³¹µoªíÁöµM°Î¦W¦ý¥i¥H¹³PPT¯¸¶Ü??¡A¨C­Ó¤H«ö¤jQ´N¥i¬d¸ßPO¤å³¹ªÌ¥Î¤á½s¸¹¡A
 > ¦ý¥L­Ì¥uª¾¹D½s¸¹«o¤£ª¾¹D¥»¤H¡A¥H¨¾¤î¤¬¬Ûðã½|²q§Ò¡C
 
-  §â½s¸¹¼g¦b¼ÊºÙ¤¤¡Areply ¨º½g¤å³¹¡A´N¥i¥H¦b¼ÊºÙÄæ¬Ý¨ì
+  §â½s¸¹¼g¦b¼ÊºÙ¤¤
 
 : post.c:do_post()
 
-  post.xmode = mode;
-  strcpy(post.owner, rcpt);
-+#ifdef HAVE_ANONYMOUS
-+ if (curredit & EDIT_ANONYMOUS)
-+   sprintf(post.nick, "§Ú¬O½s¸¹ %d", cuser.userno);
-+ else
-+   strcpy(post.nick, nick);
-+#else
-  strcpy(post.nick, nick);
-+#endif
-  strcpy(post.title, title);
-
-
-  ©Î¬O¥i¥H§ï¦¨¦b ^Q ¬d¸ß¤å³¹§@ªÌ®É¥i¥H¬Ý¨ì
-
-: xover.c:xo_uquery()
-
-- my_query(userid);
-+ my_query2(hdr);
-
-: maple.p
-
-void my_query(char *userid);
-+ void my_query2(HDR *hdr);
-
-: talk.c:my_query2() ·s¼W¦b my_query() ¤U­±
-
-void
-my_query2(hdr)
-  HDR *hdr;
+static int
+do_post(xo, title)
+  XO *xo;
+  char *title;
 {
-  ACCT acct;
+  /* Thor.981105: ¶i¤J«e»Ý³]¦n curredit */
+  HDR hdr, buf;
++#ifdef HAVE_ANONYMOUS
++ char anony[49];
++#endif
 
-  if (acct_load(&acct, hdr->owner) >= 0)
-    do_query(&acct);
-  else
-  {
-    utmp_mode(M_QUERY);
-    prints("[±b¸¹] %-12s [¼ÊºÙ] %-16.16s\n",
-      hdr->owner, hdr->nick);
-    vmsg(NULL);
-  }
-}
+  ...
+  ...
+
+    rcpt = anonymousid; /* itoc.010717: ¦Û©w°Î¦W ID */
+-   nick = STR_ANONYMOUS;
++   sprintf(nick = anony, "§Ú¬O½s¸¹ %d", cuser.userno);
+
+: edit.c:ve_header()
+
+-     fprintf(fp, "%s %s (%s) %s %s\n",
+-       str_author1, anonymousid, STR_ANONYMOUS,
++     fprintf(fp, "%s %s (§Ú¬O½s¸¹ %d) %s %s\n",
++       str_author1, anonymousid, cuser.userno,
+        curredit & EDIT_OUTGO ? str_post1 : str_post2, currboard);
 
 --
  [1;43m¢~[46m¢q[m Or[1mig[30min[m: [41m Maple-itoc£»°Ê¤O®Ö¤ß [32;47m processor.tfcis.org [m

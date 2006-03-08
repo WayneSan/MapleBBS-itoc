@@ -110,16 +110,16 @@ main()
 
       if (acct.month == month && acct.day == day)   /* 本日壽星 */
       {
-        HDR fhdr;
+        HDR hdr;
         char folder[64], lowid[IDLEN + 1];
 
         str_lower(lowid, acct.userid);
         sprintf(folder, "%s/.DIR", lowid);
-        hdr_stamp(folder, HDR_LINK, &fhdr, BBSHOME "etc/birth");
-        strcpy(fhdr.owner, STR_SYSOP);
-        strcpy(fhdr.title, "生日快樂");
-        fhdr.xmode = 0;
-        rec_add(folder, &fhdr, sizeof(HDR));
+        hdr_stamp(folder, HDR_COPY, &hdr, BBSHOME "etc/birth");
+        strcpy(hdr.owner, STR_SYSOP);
+        strcpy(hdr.title, "生日快樂");
+        hdr.xmode = 0;
+        rec_add(folder, &hdr, sizeof(HDR));
         bbs_biff(acct.userid);
       }
     }

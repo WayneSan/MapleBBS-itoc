@@ -32,15 +32,15 @@ typedef struct
 : post.c:post_attr()
 
 static int
-post_attr(fhdr)
-  HDR *fhdr;
+post_attr(hdr)
+  HDR *hdr;
 {
   int mode, attr;
 
-+ if (fhdr->delday > 0)
++ if (hdr->delday > 0)
 +   return 'D';
 
-  mode = fhdr->xmode;
+  mode = hdr->xmode;
 
 : post.c:post_delday() 新增此函式在 post_mark() 後面
 

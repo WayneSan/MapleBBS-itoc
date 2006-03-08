@@ -1,6 +1,6 @@
 發信人: simple.bbs@bbs.wfc.edu.tw (養兵千日 用在一時) 看板: plan
 標  題: [功能]樂透彩-大樂透(修改版)
-發信站: 卡布奇諾 (2004/10/27 Wed 00:39:26)                Updated: 2005/06/22
+發信站: 卡布奇諾 (2004/10/27 Wed 00:39:26)                Updated: 2005/11/14
 
 : struct.h 新增這個 struct 在 MODELOG 後面
 
@@ -19,6 +19,7 @@ typedef struct
 : global.h
 
 + #define FN_RUN_LOTTERY        "run/lottery"       /* 本次樂透全站購買名單 */
++ #define LAST_KEEP_MONEY   "run/lottery.lastmoney"  /* 記錄上期未發的獎金 */
 
 #define BMTA_LOGFILE    "run/bmta.log"  /* 收外部信的記錄 */
 

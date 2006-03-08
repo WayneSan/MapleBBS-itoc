@@ -1,6 +1,6 @@
 作者: itoc (站上人數：802) 看板: plan
 標題: [功能] 文章置底
-時間: 2004/10/25 Mon 20:10:30                           Updated: 2004/11/30
+時間: 2004/10/25 Mon 20:10:30                           Updated: 2005/12/28
 
 ※ 引述《shakalaca.bbs@php.twbbs.org (用身體證明你的友情吧)》之銘言：
 >   我的方法是置底的時候把文章 copy 一份到最後面 (rec_add)
@@ -58,10 +58,10 @@
 
 : post.c:post_history()
 
-+ if (fhdr->xmode & POST_BOTTOM)    /* 置底文不加入閱讀記錄 */
++ if (hdr->xmode & POST_BOTTOM)     /* 置底文不加入閱讀記錄 */
 +   return;
 
-  chrono = fhdr->chrono;
+  chrono = hdr->chrono;
   if (!brh_unread(chrono))      /* 如果已在 brh 中，就無需動作 */
     return;
 
@@ -114,12 +114,12 @@ post_bottom(xo)
     if (max > b_lines)
       max = b_lines;
 
-    fhdr = (HDR *) xo_pool;
--   brh_visit(ans == 'w' ? fhdr[xo->pos - row].chrono : ans == 'u');
+    hdr = (HDR *) xo_pool;
+-   brh_visit(ans == 'w' ? hdr[xo->pos - row].chrono : ans == 'u');
 +   pos = xo->pos - row;
 +   /* weiyu.20041010: 在置底文上選 w 視為全部已讀 */
-+   brh_visit(ans == 'w' ? fhdr[pos].xmode & POST_BOTTOM ? 0 :
-+                          fhdr[pos].chrono : ans == 'u');
++   brh_visit(ans == 'w' ? hdr[pos].xmode & POST_BOTTOM ? 0 :
++                          hdr[pos].chrono : ans == 'u');
 
     row = 3;
 

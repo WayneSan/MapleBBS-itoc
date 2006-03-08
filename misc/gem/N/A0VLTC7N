@@ -1,6 +1,6 @@
 µo«H¤H: jd.bbs@bbs.eo.nhit.edu.tw (jd©f¥N¥´¤¤), ¬ÝªO: plan
 ¼Ð  ÃD: [­×§ï] Áåª÷³Nµ{¦¡(¥[¤JÁåª÷¬ö¿ý)
-µo«H¯¸: ¥ú°ì¤p±Ú (Wed Nov 27 15:36:18 2002)               Updated: 2003/11/16
+µo«H¯¸: ¥ú°ì¤p±Ú (Wed Nov 27 15:36:18 2002)               Updated: 2005/11/29
 
 ¤p§Ì©ÒºÞªºBBS¯¸­è¥ÑMagicBBS¨t²ÎÂà¬°Maple-itocª©
 §Ú¸ÕµÛ§â¬Y¨Ç­ìMagic¤Wªº¤@¨Ç¹CÀ¸²¾´Ó¨ìMaple-itoc¤W
@@ -31,6 +31,9 @@
 +   keeplog(FN_RUN_MAKEGOLD_LOG, BN_SECURITY, title, 2);
 + #endif
 
+: so/Makefile
+
+SO =    ... [1;33malchemy.so[m
 
 : so/alchemy.c
 
@@ -55,10 +58,16 @@ main_alchemy()
   int make_gold, randnum;
 
   srand(time(NULL) + cuser.userno);
-  vs_bar("·Òª÷³N");
 
   while(1)
   {
+    vs_bar("·Òª÷³N");
+
+    mouts(2, 0, "¥u»Ýªá¶O 50000 »È¹ô");
+    mouts(3, 0, "´N¦³¾÷·|±o¨ìª÷¹ô¡I");
+    move(4, 0);
+    prints("\033[1;30m±z¥Ø«e¦³ %d »È %d ª÷ \033[m", cuser.money, cuser.gold);
+
     if (vans("­n¦©±¼ 50000 »È¹ô¨Ó·Òª÷¶Ü(Y/N)¡H[N] ") != 'y')
       break;
 
@@ -118,10 +127,6 @@ main_alchemy()
   return 0;
 }
 #endif  /* HAVE_GAME */
-
-: so/Makefile
-
-!       alchemy.so bar.so bingo.so bj.so ....
 
 : menu.c
 

@@ -1,15 +1,15 @@
 發信人: itoc.bbs@processor.tfcis.org (核心動力) 看板: plan
 標  題: 將 more.c 由 buffered file read 改成 full file read
-發信站: 動力核心 (2005/05/22 Thu 23:50:50)                Updated: 2005/05/22
+發信站: 動力核心 (2005/05/22 Thu 23:50:50)                Updated: 2005/11/17
 
 : more.c
 
 #define STR_ANSICODE    "[0123456789;"
 
 - static off_t more_off;
-+ static uschar *fimage;
-+ static uschar *foff;
-+ static uschar *fend;
++ static uschar *fimage;          /* file image begin */
++ static uschar *fend;            /* file image end */
++ static uschar *foff;            /* 目前讀到哪裡 */
 
 : more.c:more_goto()
 
@@ -93,7 +93,7 @@ outs_footer(buf, lino, fsize)
   ...
 
 - /* prints(FOOTER_MORE, ..., (more_off * 100) / fsize); */
-+ /* prints(FOOTER_MORE, ..., ((fimage - foff) * 100) / fsize); */
++ /* prints(FOOTER_MORE, ..., ((foff - fimage) * 100) / fsize); */
 
   /* itoc.010821: 為了和 FOOTER 對齊 */
 - sprintf(buf, FOOTER_MORE, ..., (more_off * 100) / fsize);
@@ -121,7 +121,7 @@ outs_footer(buf, lino, fsize)
 - more_base = more_size = 0;
 - more_off = 0;
 + foff = fimage;
-+ fend = foff + fsize;
++ fend = fimage + fsize;
 
   /* 讀出檔案第一行，來判斷站內信還是站外信 */
 - if (fstat(fd, &st) || (fsize = st.st_size) <= 0 || !more_line(fd, buf))
@@ -159,11 +159,11 @@ outs_footer(buf, lino, fsize)
   ...
   ...
 -   if (more_off >= fsize)      /* 已經讀完全部的檔案 */
-+   if (foff - fimage >= fsize)       /* 已經讀完全部的檔案 */
++   if (foff >= fend)           /* 已經讀完全部的檔案 */
   ...
   ...
 -       if ((shift & END_MASK) && (fsize - more_off >= MORE_BUFSIZE))
-+       if ((shift & END_MASK) && (fsize - (foff - fimage) >= MORE_BUFSIZE))
++       if ((shift & END_MASK) && (fend - foff >= MORE_BUFSIZE))
   ...
   ...
           /* 先讀到最後一列看看全部有幾列 */

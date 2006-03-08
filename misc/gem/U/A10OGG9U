@@ -1,6 +1,6 @@
 發信人: itoc.bbs@processor.tfcis.org (核心動力) 看板: plan
 標  題: Re: 關於 "版主刪文時自行設定理由"
-發信站: 動力核心 (2004/02/24 Tue 23:47:52)                Updated: 2005/03/27
+發信站: 動力核心 (2004/02/24 Tue 23:47:52)                Updated: 2005/10/09
 
 ※ 引述《Loveforever.bbs@wretch.csie.nctu.edu.tw (逍遙如風..)》之銘言：
 > 關於 "版主刪文時自行設定理由"
@@ -24,7 +24,7 @@
 +     sprintf(hdr->title, "%s 刪除理由：%s", cuser.userid, buf);
 +   else
 +     sprintf(hdr->title, "<< 本文章經 %s 刪除 >>", cuser.userid);
-+   hdr->xmode = POST_ERASE;
++   hdr->xmode = POST_ERASE | (hdr->xmode & POST_BOTTOM);
 
 : post.c:post_delete() 如果不要有輸入理由的功能則這樣改
 
@@ -32,7 +32,7 @@
   {
     currchrono = hdr->chrono;
 +   sprintf(hdr->title, "<< 本文章經 %s 刪除 >>", cuser.userid);
-+   hdr->xmode = POST_ERASE;
++   hdr->xmode = POST_ERASE | (hdr->xmode & POST_BOTTOM);
 
 : post.c:post_delete()
 
@@ -142,12 +142,12 @@
 
 : xover.c:xo_thread()
 
-+   if (fhdr->xmode & POST_ERASE)
++   if (hdr->xmode & POST_ERASE)
 +     continue;
 
 #ifdef HAVE_REFUSEMARK
-    if ((fhdr->xmode & POST_RESTRICT) &&
-      strcmp(fhdr->owner, cuser.userid) && !(bbstate & STAT_BM))
+    if ((hdr->xmode & POST_RESTRICT) &&
+      strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
       continue;
 #endif
 

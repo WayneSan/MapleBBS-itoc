@@ -1,8 +1,14 @@
 ß@™Ã: itoc (≠∑Ω’´B∂∂°A∞ÍÆı•¡¶w) ¨›™O: plan
 º–√D: [•\Ø‡] ¬‡´H™∫§Â≥π•[§J¿…¿Y X-Filename
-Æ…∂°: Tue Jun 24 14:45:57 2003                          Updated: 2004/07/21
+Æ…∂°: Tue Jun 24 14:45:57 2003                          Updated: 2005/11/25
 
   ¶b§Â≥π™∫§∫§Â´e•[§J√B•~™∫¿…¿Y∏ÍÆ∆ X-Filename
+
+: global.h
+: ¨›ßA¶≥¥X≠”¿…¿Y°ALINE_HEADER ≥oº∆¶r¥Nºg¥X
+
+- #define LINE_HEADER     3               /* more.c bhttpd.c ¿…¿Y¶≥§T¶C */
++ #define LINE_HEADER     4               /* more.c bhttpd.c ¿…¿Y¶≥§T¶C */
 
 : inntobbs.h
 
@@ -68,26 +74,19 @@ char *SUBJECT, *FROM, *SITE, *DATE, *PATH,
 +     fprintf(fp, "¿…  ¶W: %.70s\n", XFILENAME);
 +   fprintf(fp, "\n");
 
-: more.c:outs_header() ºW•[§@≠”¿…¿Y
-: ¨›ßA¶≥¥X≠”¿…¿Y°ALINE_HEADER ≥oº∆¶r¥Nºg¥X
-
-- #define LINE_HEADER     3       /* ¿…¿Y¶≥§T¶Ê */
-+ #define LINE_HEADER     4       /* ¿…¿Y¶≥•|¶Ê */
+: more.c:outs_header()
 
 static int              /* 1:¨O¿…¿Y */
 outs_header(buf, header_len)
   char *buf;
   int header_len;
 {
-  static char header1[LINE_HEADER][LEN_AUTHOR1] =
+  static const char header1[LINE_HEADER][LEN_AUTHOR1] =
     {"ß@™Ã",   "º–√D",   "Æ…∂°"[1;33m,   "¿…¶W"[m};
-  static char header2[LINE_HEADER][LEN_AUTHOR2] =
+  static const char header2[LINE_HEADER][LEN_AUTHOR2] =
     {"µo´H§H", "º–  √D", "µo´HØ∏"[1;33m, "¿…  ¶W"[m};
 
-: txt2htm.c:txt2htm()
-
-- #define LINE_HEADER     3       /* ¿…¿Y¶≥§T¶Ê */
-+ #define LINE_HEADER     4       /* ¿…¿Y¶≥•|¶Ê */
+: bhttpd.c:txt2htm()
 
 static void
 txt2htm(fp)

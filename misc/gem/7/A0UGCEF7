@@ -101,15 +101,13 @@
           修改 schoolname bbsname ... msg_bmw 等數項，例如改成以下這樣
           (請注意不要有空白或是[]符號)
 
-schoolname="交大電子"
-bbsname="蘋果樂園"
-bbsname2="NCTUEE.Apple.BBS"
-sysopnick="站長大大"
-tag_valid="AppleBBS"
-myipaddr="140.113.55.66"
-myhostname="nctu5566.dorm3.nctu.edu.tw"
-bbs_token="Apple"
-msg_bmw="水球"
+schoolname="太陽星系"
+bbsname="火星樂園"
+bbsname2="MarsBBS"
+sysopnick="戰神馬斯"
+myipaddr="200.100.50.25"
+myhostname="solarmars.twbbs.org"
+msg_bmw="火球"
 
           如果您是使用 Linux 的話，還要改
 

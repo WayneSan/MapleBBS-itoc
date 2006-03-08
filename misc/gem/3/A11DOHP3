@@ -1,6 +1,6 @@
 作者: itoc (拯救一個靈魂) 站內: plan
 標題: [功能] bbsd.c 申請 new id 以後就馬上註冊
-時間: Sat Jul 20 01:27:39 2002                          Updated: 2004/01/11
+時間: Sat Jul 20 01:27:39 2002                          Updated: 2005/10/31
 
 ※ 引述《mac.bbs@kulu.twbbs.org (風之妖精)》之銘言：
 >     我想讓使用者  在new帳號時
@@ -14,7 +14,7 @@ tn_reg()
   if (vans("是否馬上 E-mail 認證(Y/N)？[Y] ") != 'n')
     u_addr();
   else if (vans("是否馬上填寫註冊單(Y/N)？[Y] ") != 'n')
-    DL_func("bin/admutil.so:u_register");
+    u_register();
   else
     vmsg("要註冊才會有完整權限喔");
 }

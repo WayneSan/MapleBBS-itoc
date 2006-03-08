@@ -1,6 +1,6 @@
 作者: itoc (站上人數：802) 站內: plan
 標題: [功能] 刪除過久沒有新文章的看板
-時間: 2005/04/05 Tue 16:13:03                           Updated: 2005/06/20
+時間: 2005/04/05 Tue 16:13:03                           Updated: 2005/12/28
 
 ※ 引述《drewlin.bbs@bbs.seehere.org (eternity.)》之銘言：
 > 希望系統能夠自動刪除三個月以上沒有新文章的看板
@@ -80,7 +80,7 @@ mail_him(userid, brdname)
   strcpy(hdr.owner, STR_SYSOP);
   strcpy(hdr.nickname, SYSOPNICK);
   sprintf(hdr.title, "[%s] 板即將被砍除", brdname);
-  rec_add(folder, &hdr, sizeof(fhdr));
+  rec_add(folder, &hdr, sizeof(HDR));
 }
 
 

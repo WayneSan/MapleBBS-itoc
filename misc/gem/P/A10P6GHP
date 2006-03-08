@@ -1,6 +1,6 @@
 作者: itoc (站上人數：802) 站內: plan
 標題: [功能] HDR 新增一個欄位給已讀未讀輔助判斷
-時間: 2004/11/11 Thu 17:46:58                           Updated: 2004/11/12
+時間: 2004/11/11 Thu 17:46:58                           Updated: 2005/12/28
 
   在 struct HDR 新增一個欄位 stamp
   stamp 也是 unique 的，且和 chrono 不能重覆
@@ -54,8 +54,8 @@
 
 : post.c:post_attr()
 
-- attr = brh_unread(fhdr->chrono) ? 0 : 0x20;
-+ attr = brh_unread(BMAX(fhdr->chrono, fhdr->stamp)) ? 0 : 0x20;
+- attr = brh_unread(hdr->chrono) ? 0 : 0x20;
++ attr = brh_unread(BMAX(hdr->chrono, hdr->stamp)) ? 0 : 0x20;
 
 : xover.c:xo_get_post()
 
@@ -85,10 +85,10 @@
 : xover.c:xo_thread()
 
 - #define UNREAD_FUNC()  \
--     (op & RS_BOARD ? brh_unread(fhdr->chrono) : !(fhdr->xmode & MAIL_READ))
+-     (op & RS_BOARD ? brh_unread(hdr->chrono) : !(hdr->xmode & MAIL_READ))
 + #define UNREAD_FUNC()  \
-+     (op & RS_BOARD ? brh_unread(BMAX(fhdr->chrono, fhdr->stamp)) : \
-+     !(fhdr->xmode & MAIL_READ))
++     (op & RS_BOARD ? brh_unread(BMAX(hdr->chrono, hdr->stamp)) : \
++     !(hdr->xmode & MAIL_READ))
 
 : post.c:do_post()
 
@@ -133,20 +133,20 @@
 
 : maple.p
 
-+ void post_history(XO *xo, HDR *fhdr);
++ void post_history(XO *xo, HDR *hdr);
 
 : post.c:post_history() 改成這樣
 
 void
-post_history(xo, fhdr)          /* 將 fhdr 這篇加入 brh */
+post_history(xo, hdr)          /* 將 hdr 這篇加入 brh */
   XO *xo;
-  HDR *fhdr;
+  HDR *hdr;
 {
-  HDR hdr;
   int fd;
   time_t prev, chrono, next, this;
+  HDR buf;
 
-  chrono = BMAX(fhdr->chrono, fhdr->stamp);
+  chrono = BMAX(hdr->chrono, hdr->stamp);
   if (!brh_unread(chrono))      /* 如果已在 brh 中，就無需動作 */
     return;
 
@@ -155,9 +155,9 @@ post_history(xo, fhdr)          /* 將 fhdr 這篇加入 brh */
     prev = chrono + 1;
     next = chrono - 1;
 
-    while (read(fd, &hdr, sizeof(HDR)) == sizeof(HDR))
+    while (read(fd, &buf, sizeof(HDR)) == sizeof(HDR))
     {
-      this = BMAX(hdr.chrono, hdr.stamp);
+      this = BMAX(buf.chrono, buf.stamp);
 
       if (chrono - this < chrono - prev)
         prev = this;
@@ -178,17 +178,17 @@ post_history(xo, fhdr)          /* 將 fhdr 這篇加入 brh */
 : post.c:change_stamp() 新增函式在 cmpchrono() 後面
 
 static void
-change_stamp(folder, fhdr)
+change_stamp(folder, hdr)
   char *folder;
-  HDR *fhdr;
+  HDR *hdr;
 {
-  HDR hdr;
+  HDR buf;
 
   /* 為了確定新造出來的 stamp 也是 unique (不和既有的 chrono 重覆)，
      就產生一個新的檔案，該檔案隨便 link 即可。
      這個多產生出來的垃圾會在 expire 被 sync 掉 (因為不在 .DIR 中) */
-  hdr_stamp(folder, HDR_LINK | 'A', &hdr, "etc/stamp");
-  fhdr->stamp = hdr.chrono;
+  hdr_stamp(folder, HDR_LINK | 'A', &buf, "etc/stamp");
+  hdr->stamp = buf.chrono;
 }
 
 : etc/stamp 新增一個檔案

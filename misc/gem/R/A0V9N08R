@@ -58,7 +58,17 @@
   [36m#[m
   [36m# OK ªí¥Ü¤¹³\³o­Ó request¡A¤£¦A¹ï smtpd_client_restrictions «á­±©Ò¦Cªº[m
   [36m# ±ø¥ó°µÀË¬d¤F¡C[m
-  /nctu\.edu\.tw$/      OK
+  /\.edu\.tw$/          OK
+  /\.edu$/              OK
+  /\.com\.tw$/          OK
+  /\.com$/              OK
+  /\.net\.tw$/          OK
+  /\.net$/              OK
+  /\.org\.tw$/          OK
+  /\.org$/              OK
+  /\.idv\.tw$/          OK
+  /\.cc$/               OK
+  /\.tw$/               OK
   [36m#[m
   [36m# REJECT ªí¥Ü¤£¦Y³o«Ê«H (¨ä¹ê¤]³£ÁÙ¨S¬Ý¨ì«H¥ó)[m
   /kimo\.com\.tw$/      REJECT
@@ -68,9 +78,7 @@
   [36m#[m
   [36m# ¦pªG³£¤£²Å¦X¤W­±¦C¥X¨Óªº¡A´NÄ~ÄòÀË¬d§a¡C[m
 
-  ¥t¥~¡Apostfix ¤ä´© DNSBL ªº¾÷¨î¡AÃö©ó¤°»ò¬O DNSBL¡A½Ð°Ñ¦Ò¡G
-
-  [1mblahblah[m
+  ¥t¥~¡Apostfix ¤ä´© DNSBL ªº¾÷¨î¡AÃö©ó¤°»ò¬O DNSBL¡A½Ð¦Û¦æ©óºô­¶¤W·j´M
 
   §Ú­Ì¥i¥H³]©w maps_rbl_domains¡G
 
@@ -107,6 +115,10 @@
 
   [36m# header ªºÀË¬d[m
   header_checks =
+
+* ¥þ³¡³]©w¦n¥H«á¡A­«·s¸ü¤J postfix
+
+  postfix reload
 
 --
                                     Gea-Suan Lin <gslin@informath.net>

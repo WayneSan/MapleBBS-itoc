@@ -77,7 +77,7 @@
     {
       /* 將游標所在這筆資料刪除，但刪除前要做 chrono 的 compare
          若相同才刪除，以免誤砍 */
-      currchrono = fhdr->chrono;
+      currchrono = hdr->chrono;
       rec_del(xo->dir, sizeof(HDR), xo->pos, cmpchrono);
     }
 

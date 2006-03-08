@@ -1,6 +1,6 @@
 發信人: simple.bbs@bbs.wfc.edu.tw (養兵千日 用在一時) 看板: plan
 標  題: [功能]樂透彩-大樂透(修改版)
-發信站: 卡布奇諾 (2004/10/27 Wed 00:39:26)                Updated: 2005/06/22
+發信站: 卡布奇諾 (2004/10/27 Wed 00:39:26)                Updated: 2005/11/14
 
 : src/so/Makefile
 
@@ -407,6 +407,8 @@ lottery_buy_some()
 int
 main_lottery()
 {
+  int money;
+
   if (HAS_STATUS(STATUS_COINLOCK))
   {
     vmsg(MSG_COINLOCK);
@@ -418,6 +420,13 @@ main_lottery()
   while (1)
   {
     lottery_screen("etc/game/lottery.main");
+
+    /* 顯示累積獎金 */
+    money = 0;
+    rec_get(LAST_KEEP_MONEY, &money, sizeof(int), 0);
+    money += rec_num(FN_RUN_LOTTERY, sizeof(BUY_LOTTERY)) * 1000;
+    move(20, 10);
+    prints("目前累積獎金有 %d 元", money);
 
     switch (vkey())
     {

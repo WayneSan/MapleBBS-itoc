@@ -1,49 +1,59 @@
 作者: itoc (不太發展實驗室) 看板: plan
 標題: [功能] 無聊的 NPC
-時間: Tue Sep  3 11:54:28 2002                          Updated: 2003/08/17
+時間: Tue Sep  3 11:54:28 2002                          Updated: 2006/01/07
 
   丟水球給 userlevel=0 (也就是 guest) 的 NPC (non-player-char.)
   NPC 會回水球給你
 
-  如果丟 guest 水球
+  如果丟 NPC 這 ID 水球
   問 "請問如何開板"  NPC 會答 "開板請至 [newboard] 板 post"
   問 "請問站長是誰"  NPC 會答 "本站的站長是 sysop"
-  如果跟 guest 隨便丟水球，guest 也會回你話
+  如果跟 NPC 隨便丟水球，NPC 也會回你話
 
-  如果想把 NPC 改為別的 id
-  就把那個 id 的所有權限都拿掉即可
+: bmw.c:bmw_rqst()
 
-: ufo.h
+  int i, j, userno, locus;
+  BMW bmw[BMW_PER_USER], *mptr, **mslot;
++ char fpath[64];
 
-#define UFO_DEFAULT_GUEST       (UFO_COLOR | UFO_BRDNOTE | ...)
-
-              拿掉 UFO_PAGER，讓使用者可以丟 guest 水球
-
-: bmw.c:bmw_edit()
-
-    if (up)     /* 不是廣播 */
+    do
     {
-+     if (!(up->userlevel))     /* guest 是 NPC */
-+     {
-+       bmw->sender = 0;        /* 不可回覆 */
-+       bmw->recver = cuser.userno;
-+       strcpy(bmw->userid, "我是 NPC");
-+       bmw_npcAI(bmw->msg);
-+       bmw_send(cutmp, bmw);
-+       return;
-+     }
-+     else
-+     {
-        /* 送出水球 */
-        bmw->recver = recver;
-        strcpy(bmw->userid, userid);
-        if (bmw_send(up, bmw))
-          vmsg(MSG_USR_LEFT);
+      mptr = &bmw[i];
 
-        /* lkchu.990103: 若是自己送出的水球，存對方的 userid */
-        strcpy(bmw->userid, up->userid);
+      ...
+      ...
+
+      bmw_lslot[locus++] = *mptr;       /* structure copy */
+
++     /* 當 NPC 收到別人丟來的水球時，自動回話 */
++     if (!strcmp(cuser.userid, "NPC"))  /* NPC 的 ID 是 "NPC" */
++     {
++       if (mptr->caller)
++       {
++         BMW new;
++
++         time(&new.btime);
++         new.caller = cutmp;
++         new.sender = cuser.userno;
++         new.recver = mptr->sender;
++         strcpy(new.userid, cuser.userid);
++         strcpy(new.msg, mptr->msg);
++         bmw_npcAI(new.msg);
++         bmw_send(mptr->caller, &new);
++
++         usr_fpath(fpath, cuser.userid, fn_bmw);
++         rec_add(fpath, &new, sizeof(BMW));
++
++         usr_fpath(fpath, cuser.userid, fn_amw);
++         if (fp = fopen(fpath, "a"))
++         {
++           fprintf(fp, BMW_FORMAT2 " %s\n",
++             new.userid, new.msg, Btime(&new.btime));
++           fclose(fp);
++         }
++       }
 +     }
-    }
+    } while (++i < j);
 
 : bmw.c:bmw_npcAI() 新增於 bmw_edit() 前面
 
@@ -61,11 +71,8 @@ bmw_npcAI(msg)      /* Non-Player-Char 的人工智慧 */
   find = 0;
   if (fp = fopen("etc/npc", "r"))
   {
-    while (fgets(rule, 80, fp))
+    while (fgets(rule, 80, fp) && fgets(ans, 80, fp))  /* 一次 fget 二行 */
     {
-      if (!fgets(ans, 80, fp))
-        break;
-
       if (str = strchr(rule, '\n'))
         *str = '\0';
       if (strstr(msg, rule))

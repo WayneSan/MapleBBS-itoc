@@ -24,35 +24,30 @@
     ¦pªG·Q§â cancel ªº¤å³¹³£°O¿ý¤U¨Ó¡A¨º»ò½Ð #define ³o¶µ¡C
 
 
-  * ³]©w innd/bbsname.bbs
+  * ³]©w¡uÂà¤å¯¸¥x¦Cªí¡v (innd/nodelist.bbs)
 
-    bbsname.bbs ¸Ì­±½Ð¼g¤W±zªº­^¤å¯¸¦W¡C
-
-
-  * ³]©w innd/nodelist.bbs
-
-    ¤¹³\³s½uªº¯¸¥x¸ê°T¡C
+    ¥u¦³¦b³o­ÓÀÉ®×¸Ì­±ªº¯¸¥x¡A¤~¤¹³\¸Ó¯¸¥x³s½u¦Ü¥»¯¸¡C
 
 
-  * ³]©w innd/newsfeeds.bbs
+  * ³]©w¡uÂà¤å¬ÝªO¦Cªí¡v (innd/newsfeeds.bbs)
 
-    Âà«Hªº¯¸¥x/¸s²Õ/¬ÝªO¹ï·Ó¦Cªí¡C
+    ³o­ÓÀÉ®×¸Ì­±°O¸ü¤F©Ò¦³­n©M§O¥x¥æ´«¤å³¹ªº¬ÝªO¡A¨äÂà«Hªº¯¸¥x/¸s²Õ/¬ÝªO
+    ¹ï·Ó¦Cªí¡C
 
 
-  * ³]©w innd/ncmperm.bbs
+  * ³]©w¡uNoCeM¾×¤å³W«h¡v (innd/ncmperm.bbs)
 
-    NoCeM ¾×«H¾÷¨îªº±±¨î¡C
+    NoCeM ¾×«H¾÷¨îªº±±¨î¡A¥i¥H¿ï¾Ü¬O§_±µ¦¬ NoCeM notice ªº¬å¤å¡C
+
+
+  * ³]©w¡u¼s§i¤å¦W³æ¡v (innd/spamrule.bbs)
+
+    º¡¨¬³o­ÓÀÉ®×¸Ì­±©Ò¦C³W«hªº¤å³¹¡A±N³Q¥»¯¸©Ú¦¬¡C
 
 
   [1;33m¤G¡B±`¨£°ÝÃD (FAQ)[m
 
   (¥H¤U©Ò¦³ªº % ¶}ÀYªº«ü¥O¡A³£¬O¥H bbs ¨­¤À¦b /home/bbs °õ¦æ)
-
-
-  * §Ú­n«ç»ò³]©w bbsname.bbs¡H
-
-    1. ´N§â¦Û¤v¯¸¥xªº node-name ¼g¤J§Y¥i¡A³Ì«áµL»Ý Enter ªÅ¦æ¡C
-    2. ³o­Ó node-name ¬O°O¿ý PATH ¥Îªº¡A¤£­n©M¨ä¥L¯¸¤@¼Ë¡C
 
 
   * §Ú­n«ç»ò³]©w nodelist.bbs¡H
@@ -68,7 +63,8 @@
     2. node-name ¬O¸Ó¯¸ªºµu¦W¡AÀH«K±z©R¦W¡C
     3. host ¬O¸Ó¯¸ªº hostname¡A¥i¥H¬O ip/fqdn¡A§Y¨Ï¤£¬O¥¿¸Ñ¡A¹³
        xxx.twbbs.org ¤]¬O³Q±µ¨üªº¡C
-    4. ¥Ø«e¤ä´©ªº protocol ¦³ IHAVE POST ¤GºØ¡C
+    4. ¥Ø«e¤ä´©ªº protocol ¦³ IHAVE POST ¤GºØ¡A¤@¯ë BBS ¨Ï¥Î IHAVE¡A
+       news-server ¨Ï¥Î POST¡C
     5. port ¬°¹ï¤è¶}ªº³s±µ°ð¡A¤@¯ë BBS ¨Ï¥Î 7777¡Anews-server ¨Ï¥Î 119¡C
     6. ¥u¦³§â¹ï¤è¯¸¥xªº¸ê°T¥[¤J nodelist.bbs ¥H«á¡A¹ï¤è¤~¥i¥H access §Ú­Ì¡C
 
@@ -78,7 +74,7 @@
     1. newsfeeds.bbs ªº®æ¦¡¦p¤U¡G
 
        Maple        nthu.cs.bbs.plan        <-> plan   big5
-       ^^^^^        ^^^^^^^^^^^^^^^         ^^^ ^^^^^  ^^^^
+       ^^^^^        ^^^^^^^^^^^^^^^^        ^^^ ^^^^^  ^^^^
        node-name    newsgroup               way board  charset
 
        ³oªí¥Ü¡G¥»¯¸ªº plan ªO»P Maple ¯¸ªº nthu.cs.bbs.plan °µÂù¦VÂà«H¡A
@@ -115,15 +111,41 @@
 
     1. ncmperm.bbs ªº®æ¦¡¦p¤U¡G
 
-       House        [¨Ó·½] ¥]§t hinet.net
-       ^^^^^         ^^^^       ^^^^^^^^^
-       board         type       detail
+       Maple        House        [¨Ó·½] ¥]§t hinet.net
+       ^^^^^        ^^^^^         ^^^^       ^^^^^^^^^
+       path         board         type       detail
 
-       ³oªí¥Ü¡G­Y¨Ó·½¥]§t hinet.net ªº¤å³¹±NµLªkÂà«H¶i¤J House ªO¡C
+       ³oªí¥Ü¡G¦b Maple ³o­Ó¯¸Âà¨Óªº¤å³¹¤¤¡A­Y¨Ó·½¥]§t hinet.net ±NµLªkÂà
+       «H¶i¤J House ªO¡C
 
-    2. board ¬O³o±ø³W«h¾A¥Î©ó­þ¨Ç¬ÝªO¡C
-    3. type ¬O³o±ø³W«hÀË¬d­þ¤@Äæ¦ì¡C
-    4. detail ¬O³o±ø³W«hªº¤º®e¡C
+    2. path ¬O³o±ø³W«h¾A¥Î©ó­þ¨Ç¯¸Âà¨Óªº¤å³¹¡A¤]¥i¥H¿ï¾Ü©Ò¦³¯¸¥x¡C
+    3. board ¬O³o±ø³W«h¾A¥Î©ó­þ¨Ç¬ÝªO¡A¤]¥i¥H¿ï¾Ü©Ò¦³¬ÝªO¡C
+    4. type ¬O³o±ø³W«hÀË¬d­þ¤@Äæ¦ì¡C
+    5. detail ¬O³o±ø³W«hªº¤º®e¡C
+
+
+  * §Ú¥i¥H¸ò­þ¨Ç news-server Âà«H¡H
+
+    ¦b¦¹¦C¥X¤@¨Ç±`¨£ªº news-server¡G
+
+    1. ¥æ³q¤j¾Ç  netnews.nctu.edu.tw   POST(119)
+    2. ¥æ¤j¸ê¬ì  news.cis.nctu.edu.tw  POST(119)
+    3. ¥æ¤jÀ³¼Æ  news.math.nctu.edu.tw POST(119)
+    4. ¤¤¤s¤j¾Ç  news.nsysu.edu.tw     POST(119)
+    5. ¤¤¿³¤j¾Ç  news.nchu.edu.tw      POST(119)
+    6. Hinet     news.hinet.net        POST(119)
+
+    µM¦Ó³o¨Ç news-server ©¹©¹³£¦³¨ä¦s¨ú­­¨î¡A¨Ò¦p Hinet ªº¦øªA¾¹¶È­­ Hinet
+    ªº¥Î¤á¦s¨ú¡C
+
+    ­Y±z¤£ª¾¹D¶Q³æ¦ì±MÄÝªº news-server¡A½Ð«ê­pºâ¾÷¤¤¤ßµ¥¬ÛÃö³æ¦ì¡C
+
+
+  * §Ú­n«ç»ò±oª¾­þ­Ó newsgroup ¬O¹ïÀ³­þ­Ó°Q½×°Ï¡H
+
+    ¹ï©ó¤@¯ëªº¤j²³Âà«HªO¡A¦b³\¦h news-server ¤W³£¦³¨ä¹ïÀ³ªº¸s²Õ¡C¤@¨Ç±`¨£
+    ªº tw.bbs.* ¸s²Õ¹ï·Óªí½Ð°Ñ¦Ò³o­Óºô¯¸¡G
+    http://www.csie.nctu.edu.tw/~cdsheen/pnews/index.php
 
 
   * §Ú­n«ç»ò±oª¾ news-server ¤W¦³¤°»ò newsgroup¡H
@@ -136,7 +158,7 @@
     ¤Wªº©Ò¦³ newsgroup ¤F¡C
 
 
-  * ¦p¦ó¤@¦¸§ì³\¦h«H¡H
+  * ¦p¦ó¤@¦¸§ì³\¦h½g¤å³¹¡H
 
     bbslink ¹w³]¤@¦¸¥u§ì 100 «Ê«H¡A¦pªG­n§ì¶W¹L 100 «Êªº¸Ü¡A½Ð¨Ï¥Î -a
     ³o­Ó°Ñ¼Æ¡C
@@ -144,7 +166,7 @@
     ¨ä¤¤ site ¬O°O¿ý¦b nodelist.bbs ¸Ìªº­^¤å¯¸¦W¡C
 
 
-  * ¦pªG§ì¹L¥hªº«H¡H
+  * ¦pªG§ì¹L¥hªº¤å³¹¡H
 
     ¦pªG±z·Q¦¬¹L¥h¤w¸g§ì¹Lªº«H¡A¨º»ò½Ð­×§ï newsfeeds.bbs ¤¤ªº high-number
     (±N³o¼Æ¦rÅÜ¤p¡A¦Ü©ó­n´î¤p¦h¤Ö¡A¨ú¨M©ó±z­n§ì´X«Ê¹L¥hªº«H)¡C

@@ -1,10 +1,10 @@
 發信人: BioStar.bbs@micro.bio.ncue.edu.tw (澎湖小雲雀) 看板: plan
 標  題: Re: 請問累積上站時數
-發信站: 擎天崗 (Sat, 01 Nov 2003 00:39:02 +0800 (CST))    Updated: 2004/09/17
+發信站: 擎天崗 (Sat, 01 Nov 2003 00:39:02 +0800 (CST))    Updated: 2005/10/29
 
   改了 ACCT 欄位要 transacct
 
-: src/include/struct.h: struct ACCT
+: struct.h: struct ACCT
 
   time_t firstlogin;            /* 第一次上站時間 */
   time_t lastlogin;             /* 上一次上站時間 */
@@ -12,7 +12,7 @@
   time_t tvalid;                /* 通過認證的時間 */
 + time_t staytime;              /* 掛站總時間 */
 
-: src/maple/bbsd.c:u_exit()
+: bbsd.c:u_exit()
 
   utmp_free();                  /* 釋放 UTMP shm */
 
@@ -22,6 +22,19 @@
 + diff /= 60;
   sprintf(fpath, "Stay: %d (%d)", diff, currpid);
   blog(mode, fpath);
+
+: bbsd.c:tn_main()
+
+  tn_signals(); /* Thor.980806: 放於 tn_login前, 以便 call in不會被踢 */
+  tn_login();
+
+  /* BioStar.051029: 累積上站時數應從登入後才計算，而不是從連線建立時候就
+     開始計算，避免使用者先用防閒置的 BBS 軟體開啟數十個尚未登入的連線，
+     由於尚未登入所以不受同一ID同時上線限制，但是每一個連線的累積上站時數
+     就已經開始計算，然後過了幾天後在逐一登入與登出，就有大量累積上站時數 */
++ time(&ap_start);
+
+  board_main();
 
 : acct.c:acct_show()
 

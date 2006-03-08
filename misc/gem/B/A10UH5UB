@@ -1,6 +1,6 @@
 作者: itoc (核心動力) 看板: itoc
 標題: Re: [請問] 關於All_Post的文章讀取...
-時間: 2004/06/18 Fri 19:55:40                           Updated: 2005/08/24
+時間: 2004/06/18 Fri 19:55:40                           Updated: 2005/10/30
 
 ※ 引述《Daniel.bbs@pctAngel.twbbs.org (我愛pct)》之銘言：
 > 要如何做才能讓使用者不管在All_Post或其他版只要讀取同一篇文章，
@@ -30,21 +30,22 @@ static void
   int mode;
 + time_t chrono;
 {
-  HDR post;
+  HDR hdr;
   char folder[64];
+  char *brdname = "All_Post";       // 板名自定
 
-  brd_fpath(folder, "All_Post", fn_dir);
-  hdr_stamp(folder, HDR_LINK | 'A', &post, fpath);
+  brd_fpath(folder, brdname, fn_dir);
+  hdr_stamp(folder, HDR_LINK | 'A', &hdr, fpath);
 
-  post.xmode = mode;
-+ post.xid = chrono;
-  strcpy(post.owner, owner);
-  strcpy(post.nick, nick);
-  strcpy(post.title, ve_title);
+  hdr.xmode = mode & ~POST_OUTGO;  /* 拿掉 POST_OUTGO */
++ hdr.xid = chrono;
+  strcpy(hdr.owner, owner);
+  strcpy(hdr.nick, nick);
+  strcpy(hdr.title, ve_title);
 
-  rec_add(folder, &post, sizeof(HDR));
+  rec_bot(folder, &hdr, sizeof(HDR));
 
-  btime_update(brd_bno("All_Post"));
+  btime_update(brd_bno(brdname));
 }
 
 : post.c 新增這一段在 post_browse() 前面

@@ -15,7 +15,7 @@
 
 : post.c:post_delete()  d 的部分
 
-- if (fhdr->xmode & POST_MARKED)
+- if (hdr->xmode & POST_MARKED)
 -   return XO_NONE;
 
 : post.c:chkpost()      D 及 ^D 的部分

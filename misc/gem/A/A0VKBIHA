@@ -1,6 +1,6 @@
 發信人: etnba.bbs@bbs.leader.edu.tw (期待6/30), 看板: plan
 標  題: Re: [問題] bbsd.c 進站畫面改成五個跑
-發信站: 領導者之家 (Tue Jul 16 08:52:46 2002)             Updated: 2003/06/06
+發信站: 領導者之家 (Tue Jul 16 08:52:46 2002)             Updated: 2006/01/23
 
 : src/include/struct.h
 : 新增 FILM_OPENING3 FILM_OPENING4
@@ -36,6 +36,14 @@ static char *list[] =           /* src/include/struct.h */
 + "opening.3",                  /* FILM_OPENING3 */
 + "opening.4",                  /* FILM_OPENING4 */
   "goodbye",                    /* FILM_GOODBYE  */
+
+: src/util/camera.c:main()
+
+-   if (i >= FILM_OPENING0 && i <= FILM_OPENING2 && feast[0])
++   if (i >= FILM_OPENING0 && i <= FILM_OPENING4 && feast[0])
+    {
+      mirror(feast, 0);
+    }
 
 : src/maple/bbsd.c:tn_main()
 

@@ -10,6 +10,15 @@
 
 : vote.c:vote_add()
 
+static int
+vote_add(xo)
+  XO *xo;
+{
++ FILE *fp;
+
+  ...
+  ...
+
   rec_add(dir, &vch, sizeof(vch));
 
 + sprintf(fpath, "tmp/vote.%s", cuser.userid);

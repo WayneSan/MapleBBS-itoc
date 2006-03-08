@@ -125,8 +125,8 @@ post_advmark(xo)
 
 : post.c:post_delete()
 
-- if (fhdr->xmode & POST_MARKED)
-+ if (fhdr->xmode & (POST_MARKED | POST_MARKEDCOLOR))
+- if (hdr->xmode & POST_MARKED)
++ if (hdr->xmode & (POST_MARKED | POST_MARKEDCOLOR))
     return XO_NONE;
 
 : post.c:post_mark()
@@ -143,7 +143,7 @@ post_advmark(xo)
 -   do
 -   {
 -     move(row, 7);
--     outc(post_attr(fhdr++));
+-     outc(post_attr(hdr++));
 -   } while (++row < max);
 +   return post_body(xo);
   }

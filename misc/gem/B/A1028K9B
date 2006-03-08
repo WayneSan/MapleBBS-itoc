@@ -129,7 +129,7 @@ int vaHelp();
 (把所有 so/*.c game/*.c 加入的 non-static 函式都掛上宣告)
 
 
----------------------------------------2005/04/05---------------------
+---------------------------------------2005/12/09---------------------
 int vaHelp();
 int vaBWboard();
 int post_manage();
@@ -143,18 +143,16 @@ int a_xfile();
 int a_resetsys();
 int a_register();
 int a_regmerge();
+int a_restore();
 int a_innbbs();
 int m_bm();
 int m_all();
 int t_aloha();
 int t_chat();
-int u_register();
 int XoSongLog();
 int XoSongMain();
 int XoSongSub();
 int main_railway();
-int x_bbsnet();
-int main_jcee();
 int main_liteon();
 int guessNum();
 int fightNum();

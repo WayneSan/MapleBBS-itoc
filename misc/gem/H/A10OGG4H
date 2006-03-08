@@ -1,6 +1,6 @@
 §@ªÌ: itoc (®Ö¤ß°Ê¤O) ¬ÝªO: itoc
 ¼ÐÃD: Re: ½Ð°Ým¤åÃC¦â..
-®É¶¡: 2004/10/26 Tue 09:07:08                           Updated: 2004/12/23
+®É¶¡: 2004/10/26 Tue 09:07:08                           Updated: 2005/10/24
 
 ¡° ¤Þ­z¡mcentric.bbs@processor.tfcis.org (centric)¡n¤§»Ê¨¥¡G
 > m¤åÃC¦â­n¹³ÂÂª©maple¡A¤@¼Ë¬OÂÅ¦â[1;36m¢õ[m..
@@ -27,7 +27,7 @@
 -   move(3 + cur, 7);
 -   outc(post_attr(hdr));
 +   move(3 + cur, 0);
-+   post_item((xo->key == XZ_XPOST ? hdr->xid : pos) + 1, hdr);
++   post_item(pos + 1, hdr);
 
 : post.c:post_visit()
 
@@ -35,7 +35,7 @@
 -   do
 -   {
 -     move(row, 7);
--     outc(post_attr(fhdr++));
+-     outc(post_attr(hdr++));
 -   } while (++row < max);
 +   return post_body(xo);
   }

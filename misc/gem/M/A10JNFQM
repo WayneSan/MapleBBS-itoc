@@ -10,6 +10,7 @@
      CONN    [12345] banana.domain.name ip:12CD34AB   04/05/18 10:57:32
 
   3. 將 banana.domain.name 加入 (0)Admin -> (X)file -> (14) 收信白名單
+     並 (0)Admin -> (B)BSreset -> 3)指名及擋信
 
   4. 再從 某站 寄一封信寄自己站上，如果已經可以收到，那就結束了
      如果還是不能收到，繼續以下步驟
@@ -18,6 +19,7 @@
      SPAM-M  [54321] orange.domain.name
 
   6. 將 orange.domain.name 加入 (0)Admin -> (X)file -> (14) 收信白名單
+     並 (0)Admin -> (B)BSreset -> 3)指名及擋信
 
   這樣就完成了
 

@@ -53,7 +53,7 @@ bmw_post(xo)
   {
     FILE *fp;
     char fname[40];
-    HDR fhdr;
+    HDR hdr;
     int ans;
 
     ans = vans("您想要暱名嗎(Y/N)？[N] ");
@@ -79,11 +79,11 @@ bmw_post(xo)
     fclose(fp);
 
     brd_fpath(fpath, BN_EVIDENCE, fn_dir);
-    hdr_stamp(fpath, HDR_LINK | 'A', &fhdr, fname);
-    strcpy(fhdr.owner, "[系統檢舉]");
-    strcpy(fhdr.nick, cuser.userid);    /* 匿名可在 hdr.nick 中查到 id */
-    sprintf(fhdr.title, "[檢舉] 水球騷擾 (%s)", userid);
-    rec_add(fpath, &fhdr, sizeof(fhdr));
+    hdr_stamp(fpath, HDR_LINK | 'A', &hdr, fname);
+    strcpy(hdr.owner, "[系統檢舉]");
+    strcpy(hdr.nick, cuser.userid);    /* 匿名可在 hdr.nick 中查到 id */
+    sprintf(hdr.title, "[檢舉] 水球騷擾 (%s)", userid);
+    rec_add(fpath, &hdr, sizeof(HDR));
 
     unlink(fname);
   }

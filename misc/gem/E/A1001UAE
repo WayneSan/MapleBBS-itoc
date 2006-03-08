@@ -1,6 +1,6 @@
 作者: itoc (核心動力) 看板: itoc
 標題: Re: [問題] 生日
-時間: 2004/01/11 Sun 15:14:23                           Updated: 2004/10/25
+時間: 2004/01/11 Sun 15:14:23                           Updated: 2005/11/02
 
 ※ 引述《vinnie (心情)》之銘言：
 > 跟審核註冊單的時後也要審核生日
@@ -43,7 +43,7 @@ typedef struct  /* 註冊表單 (Register From) 256 bytes */
 
     prints("申請代號: %s (申請時間：%s)\n", userid, Btime(&rform.rtime));
 +   prints("生日：%-2s/%-2s/%-2s  性別：%s\n",
-+     rform.realname, rform.year, rform.month, rform.day, rform.sex);
++     rform.year, rform.month, rform.day, rform.sex);
     prints("服務單位: %s\n", rform.career);
     prints("目前住址: %s\n", rform.address);
     prints("連絡電話: %s\n%s\n", rform.phone, msg_seperator);
