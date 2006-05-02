@@ -1,6 +1,6 @@
 發信人: itoc.bbs@processor.tfcis.org (:MM:) 看板: plan
 標  題: Re: [功能] post.c 文章評分功能
-發信站: XEON (Wed, 09 Apr 2003 22:26:34 +0800 (CST))      Updated: 2003/04/10
+發信站: XEON (Wed, 09 Apr 2003 22:26:34 +0800 (CST))      Updated: 2006/04/18
 
 ※ 引述《amaki.bbs@luna.twbbs.org (仙草小羊)》之銘言：
 > 顯示文章被閱覽的次數程式否？
@@ -25,13 +25,15 @@
 
 : hdr.h:struct HDR
 
-  移 nick 的 4 bits 給 numread
-
   char owner[80];               /* 作者 (E-mail address) */
-! char nick[46];                /* 暱稱 */
+- char nick[49];                /* 暱稱 */
++ char nick[44];                /* 暱稱 */
 + int numread;                  /* 被閱讀過幾次 */
++ char nouse;
+  char score;                   /* 文章評比分數 */
 
   char date[9];                 /* 96/12/31 */
+  char title[73];
 
 : post.c:post_item() 排版自定
 
@@ -42,9 +44,33 @@ post_item(num, hdr)
 {
 + int numread;
 
-+ numread = hdr->numread / 1000;     /* 每一千次瀏覽算 1分 */
-! prints("%6d %c%c", num, post_attr(hdr), numread ? '0' + numread : ' ');
-! hdr_outs(hdr, 46);
+  ...
+  ...
+
+- prints("%6d%c%c", (hdr->xmode & POST_BOTTOM) ? -1 : num,
+-   tag_char(hdr->chrono), post_attr(hdr));
++ numread = hdr->numread / 1000;     /* 每一千次瀏覽算一分 */
++ prints("%6d%c%c%c", (hdr->xmode & POST_BOTTOM) ? -1 : num,
++   tag_char(hdr->chrono), post_attr(hdr),
++   numread ? '0' + numread : ' ');
+
+  ...
+  ...
+
+- hdr_outs(hdr, d_cols + 46);
++ hdr_outs(hdr, d_cols + 45);
+
+  ...
+  ...
+
+- prints("%6d%c%c", (hdr->xmode & POST_BOTTOM) ? -1 : num,
+-   tag_char(hdr->chrono), post_attr(hdr));
+- hdr_outs(hdr, d_cols + 47);
++ numread = hdr->numread / 1000;     /* 每一千次瀏覽算一分 */
++ prints("%6d%c%c%c", (hdr->xmode & POST_BOTTOM) ? -1 : num,
++   tag_char(hdr->chrono), post_attr(hdr),
++   numread ? '0' + numread : ' ');
++ hdr_outs(hdr, d_cols + 46);
 }
 
 --

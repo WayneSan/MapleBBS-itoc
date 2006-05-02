@@ -1,6 +1,6 @@
 µo´H§H: etnba.bbs@bbs.leader.edu.tw (¥¡´›6/30), ¨›™O: plan
 º–  √D: Re: [∞›√D] bbsd.c ∂iØ∏µe≠±ßÔ¶®§≠≠”∂]
-µo´HØ∏: ª‚æ…™Ã§ßÆa (Tue Jul 16 08:52:46 2002)             Updated: 2006/01/23
+µo´HØ∏: ª‚æ…™Ã§ßÆa (Tue Jul 16 08:52:46 2002)             Updated: 2006/01/24
 
 : src/include/struct.h
 : ∑sºW FILM_OPENING3 FILM_OPENING4
@@ -47,14 +47,8 @@ static char *list[] =           /* src/include/struct.h */
 
 : src/maple/bbsd.c:tn_main()
 
-  prints(MYHOSTNAME " °Û " SCHOOLNAME " °Û " MYIPADDR "\n"
-    "≈w™Ô•˙¡{°i\033[1;33;46m %s \033[m°j•ÿ´eΩu§W§Hº∆ [%d] §H",
-    str_site, ushm->count);
-
-- film_out((time(&ap_start) % 3) + FILM_OPENING0, 3);   /* ∂√º∆≈„•‹∂}¿Yµe≠± */
-+ film_out((time(&ap_start) % 5) + FILM_OPENING0, 3);   /* ∂√º∆≈„•‹∂}¿Yµe≠± */
-
-  currpid = getpid();
+- film_out((ap_start % 3) + FILM_OPENING0, 3);  /* ∂√º∆≈„•‹∂}¿Yµe≠± */
++ film_out((ap_start % 5) + FILM_OPENING0, 3);  /* ∂√º∆≈„•‹∂}¿Yµe≠± */
 
 --
 [1;32m°º Origin: [33m•ﬂºwª‚æ…™Ã§ßÆa [37mbbs.leader.edu.tw  [31m°º From: [36m61-216-130-237.HINET-IP.[m

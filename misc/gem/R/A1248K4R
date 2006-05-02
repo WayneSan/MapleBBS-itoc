@@ -76,13 +76,13 @@ post_jump(xo)       /* qazq.041119: ¸õ¨ì¤å³¹¨Ó·½¬ÝªO */
 
 : post.c:post_browse()
 
-    case 'h':
-      xo_help("post");
-      break;
-
 +   case 'J':       /* qazq.041119: ¸õ¤å³¹¨ì¨Ó·½¬ÝªO */
 +     post_jump(xo);
 +     break;
+
+    case 'h':
+      xo_help("post");
+      break;
 
 --
  [1m[42m¢z[41m¢q[m Au[1mth[30mor[m: [43m ¤¤¿³¸ê¬ì£»¤¤¿³¸ê¬ì ¢í¸ê¿W¨q [33;47m csNCHU.twbbs.org [m

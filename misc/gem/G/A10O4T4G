@@ -1,6 +1,6 @@
 發信人: simple.bbs@bbs.wfc.edu.tw (養兵千日 用在一時) 看板: plan
 標  題: [功能]樂透彩-大樂透(修改版)
-發信站: 卡布奇諾 (2004/10/27 Wed 00:39:26)                Updated: 2005/12/19
+發信站: 卡布奇諾 (2004/10/27 Wed 00:39:26)                Updated: 2006/01/24
 
 : crontab -e 加入二行
 
@@ -38,7 +38,7 @@ static int lottery_num[6];
    0:普獎 1:陸獎 2:伍獎 3:肆獎 4:參獎 5:貳獎 6:頭獎 */
 static int lottery_win[7];
 
-static int totalmoney;     /* 總押金 */
+static double totalmoney;     /* 總押金 */
 
 /* eachmoney[0~6] 依序是各獎項的獎金
    0:普獎 1:陸獎 2:伍獎 3:肆獎 4:參獎 5:貳獎 6:頭獎 */
@@ -268,7 +268,7 @@ static void
 check_money()         /* 計算各獎項獎金 */
 {
   int i;
-  int keepmoney;
+  double keepmoney;
   int rate[7] = {0, 0, 20, 5, 10, 9, 56};
 
   /* 頭獎 共 lottery_win[6] 注，佔剩餘獎金56%
@@ -282,7 +282,7 @@ check_money()         /* 計算各獎項獎金 */
 
   /* 取出上期未發出的獎金 */
   keepmoney = 0;
-  rec_get(LAST_KEEP_MONEY, &keepmoney, sizeof(int), 0);
+  rec_get(LAST_KEEP_MONEY, &keepmoney, sizeof(keepmoney), 0);
   totalmoney += keepmoney;
 
   /* 先扣除普獎、陸獎的獎金 */
@@ -301,7 +301,7 @@ check_money()         /* 計算各獎項獎金 */
   eachmoney[0] = 8000;
 
   /* 將未發出的獎金保留至下期 */
-  rec_put(LAST_KEEP_MONEY, &keepmoney, sizeof(int), 0, NULL);
+  rec_put(LAST_KEEP_MONEY, &keepmoney, sizeof(keepmoney), 0, NULL);
 
   fprintf(flog, "各獎項的獎金依序是：");
   for (i = 0; i < 7; i++)

@@ -11,43 +11,18 @@
 
 : struct.h
 
-#define IDLEN   12              /* Length of board / user id */
-#define PASSLEN 14              /* Length of encrypted passwd field */
-#define RNLEN   19              /* Length of real name */
-#define UNLEN   23              /* Length of user name */
+  #define UNLEN   23            /* Length of user name */
 + #define FLLEN   4             /* Length if feeling */
 
+: struct.h:strcut ACCT
 
-: struct.h ACCT
-
-typedef struct
-{
-  int userno;                   /* unique positive code */
-
-  char userid[IDLEN + 1];       /* ID */
-  char passwd[PASSLEN];         /* 密碼 */
-  char realname[RNLEN + 1];     /* 真實姓名 */
   char username[UNLEN + 1];     /* 暱稱 */
-+ char feeling[FLLEN + 1];;     /* 心情 */
++ char feeling[FLLEN + 1];      /* 心情 */
 
-  usint userlevel;              /* 權限 */
-  usint ufo;                    /* habit */
-  uschar signature;             /* 預設簽名檔 */
+: struct.h:struct UTMP
 
-
-: struct.h UTMP
-
-struct UTMP
-{
-  ...
-  ...
-
-  char userid[IDLEN + 1];       /* user's ID */
-  char mateid[IDLEN + 1];       /* partner's ID */
   char username[UNLEN + 1];     /* user's nickname */
 + char feeling[FLLEN + 1];      /* user's feeling */
-  char from[34];                /* remote host */
-
 
 : acct.c acct_show()
 
@@ -58,7 +33,6 @@ struct UTMP
 
   prints("  \033[32m真實姓名：\033[37m%-35s\033[32m擁有金幣：\033[37m%d\n",
     u->realname, u->gold);
-
 
 : acct.c acct_setup()
 
@@ -78,12 +52,10 @@ struct UTMP
 +     break;
 + };
 
-
 : bbsd.c utmp_setup()
 
   strcpy(utmp.userid, cuser.userid);
 + strcpy(utmp.feeling, cuser.feeling);
-
 
 : talk.c ulist_item() 版面自定
 
@@ -103,7 +75,7 @@ struct UTMP
 +   bmode(up, 0), up->feeling, buf);
 }
 
-: theme.h
+: theme.h 版面自定
 
   改 NECKER_ULIST
 
@@ -111,12 +83,11 @@ struct UTMP
 
 #define HAVE_CHANGE_NICK        /* 使用者名單 ^N 永久更改暱稱 */
 
-+#define HAVE_CHANGE_FEEL        /* 使用者名單 ^N 永久更改心情 */
++ #define HAVE_CHANGE_FEEL        /* 使用者名單 M 永久更改心情 */
 
 #define HAVE_CHANGE_FROM        /* 使用者名單 ^F 暫時更改故鄉 */
 
 #define HAVE_CHANGE_ID          /* 使用者名單 ^D 暫時更改 ID */
-
 
 : talk.c 新增 ulist_feelchange() 於 ulist_nickchange() 下面
 
@@ -155,7 +126,6 @@ ulist_feelchange(xo)
 #ifdef HAVE_CHANGE_FROM
   Ctrl('F'), ulist_fromchange,
 #endif
-
 
 : acct.c u_info()
 

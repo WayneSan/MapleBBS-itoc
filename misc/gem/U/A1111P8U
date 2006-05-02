@@ -1,6 +1,6 @@
 發信人: TKyo.bbs@cpu.tfcis.org (暗黑貴公子) 看板: plan
 標  題: [功能]IP/FQDN 表管理介面
-發信站: 動力核心 (2005/01/25 Tue 18:06:54)                Updated: 2005/01/25
+發信站: 動力核心 (2005/01/25 Tue 18:06:54)                Updated: 2006/04/17
 
 #if 0
 
@@ -115,31 +115,12 @@
 + COLOR1 " FQDN管理 " COLOR2 " (a)新增 (E)修改 (s)排序 (↑/↓)上下" \
 + " (PgUp/PgDn)上下頁 (←)離開     "
 
-: src/maple/xover.c : xo_foot()
+: src/maple/xover.c : xz[]
 
-  case XZ_GEM:
-    outf(FEETER_GEM);
-    break;
-
-+ case XZ_ADMIP:
-+   outf(FEETER_ADMIP);
-+   break;
-
-+ case XZ_ADMFQDN:
-+   outf(FEETER_ADMFQDN);
-+   break;
-
-
-  /* 需跟 modes.h 定義同步順序 */
-  XZ xz[] =
-  {
-    .
-    .
-    .
-  {NULL, NULL, M_GEM},            /* XZ_GEM */
-  {NULL, NULL, M_SYSTEM},         /* XZ_ADMIP */
-  {NULL, NULL, M_SYSTEM}          /* XZ_ADMFQDN */
-  };
+- {NULL, NULL, M_GEM, FEETER_GEM}               /* XZ_GEM */
++ {NULL, NULL, M_GEM, FEETER_GEM},              /* XZ_GEM */
++ {NULL, NULL, M_SYSTEM, FEETER_ADMIP},         /* XZ_ADMIP */
++ {NULL, NULL, M_SYSTEM, FEETER_ADMFQDN}        /* XZ_ADMFQDN */
 
 : src/maple/menu.c : 適當選單加入
 

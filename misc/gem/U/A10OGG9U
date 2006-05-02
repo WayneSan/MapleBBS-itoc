@@ -1,6 +1,6 @@
 發信人: itoc.bbs@processor.tfcis.org (核心動力) 看板: plan
 標  題: Re: 關於 "版主刪文時自行設定理由"
-發信站: 動力核心 (2004/02/24 Tue 23:47:52)                Updated: 2005/10/09
+發信站: 動力核心 (2004/02/24 Tue 23:47:52)                Updated: 2006/04/11
 
 ※ 引述《Loveforever.bbs@wretch.csie.nctu.edu.tw (逍遙如風..)》之銘言：
 > 關於 "版主刪文時自行設定理由"
@@ -11,9 +11,11 @@
 
 : hdr.h
 
-#define POST_MARKED     0x00000002      /* marked */
+- #define POST_5        0x00000010
++ #define POST_ERASE    0x00000010      /* 被刪除的文章 */
 
-+ #define POST_ERASE    0x00000004      /* 被刪除的文章 */
+- #define MAIL_5        0x00000010
++ #define MAIL_ERASE    0x00000010
 
 : post.c:post_delete() 如果要有輸入理由的功能就這樣改
 

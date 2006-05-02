@@ -1,6 +1,6 @@
 發信人: ssc24.bbs@cpu.tfcis.org (alt + F4 可以隱形) 看板: plan
 標  題: 查詢使用者ID 可以連結CPG的相簿
-發信站: 動力核心 (2005/11/21 Mon 19:06:31)                Updated: 2005/11/21
+發信站: 動力核心 (2005/11/21 Mon 19:06:31)                Updated: 2006/03/11
 
 做了精華區的 [功能] BBS 與 Coppermine Photo Gallery 帳號同步
 又想要查詢使用者ID直接連接相簿
@@ -12,7 +12,7 @@
 [來源] (2005/11/21 Mon 18:29:56) 218-168-8-159.dynamic.hinet.n
 [相簿] http://bime.twbbs.org/album/ssc24
 
-: /usr/local/www/data/cpg/login.php
+: /usr/local/www/data/cpg/index.php
 /**
 * Main code
 */

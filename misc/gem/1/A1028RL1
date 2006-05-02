@@ -32,15 +32,15 @@ is_bmate(bpal)              /*  1: 我是該板的麻吉 */
 
 : boarc.c:XoPost()
 
-- if (bits & BRD_M_BIT)
-+ if ((bits & BRD_M_BIT) && (bits & BRD_X_BIT))
+-   if (bits & BRD_M_BIT)
++   if ((bits & BRD_M_BIT) && (bits & BRD_X_BIT))
     bbstate |= (STAT_BM | STAT_BOARD | STAT_POST);
-+ else if (bits & BRD_M_BIT)
-+   bbstate |= (STAT_BM | STAT_POST);
-  else if (bits & BRD_X_BIT)
-    bbstate |= (STAT_BOARD | STAT_POST);
-  else if (bits & BRD_W_BIT)
-    bbstate |= STAT_POST;
++   else if (bits & BRD_M_BIT)
++     bbstate |= (STAT_BM | STAT_POST);
+    else if (bits & BRD_X_BIT)
+      bbstate |= (STAT_BOARD | STAT_POST);
+    else if (bits & BRD_W_BIT)
+      bbstate |= STAT_POST;
 
 : account.c:init_bpal()
 

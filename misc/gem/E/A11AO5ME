@@ -1,6 +1,6 @@
 µo«H¤H: itoc.bbs@processor.tfcis.org (®Ö¤ß°Ê¤O) ¬ÝªO: plan
 ¼Ð  ÃD: Re: ½Ð°ÝÃö©ó¶®ªê¡I©_¼¯ªº·s»D¥\¯à
-µo«H¯¸: °Ê¤O®Ö¤ß (2004/02/12 Thu 12:45:28)                Updated: 2005/06/12
+µo«H¯¸: °Ê¤O®Ö¤ß (2004/02/12 Thu 12:45:28)                Updated: 2006/03/17
 
   ­n¥ý°µºëµØ°Ï³o½g
   [¥\¯à] enews-open.c ©_¼¯·s»DÂà¦Ü¬ÝªO
@@ -12,8 +12,18 @@
 
 : theme.h
 
+#define FOOTER_VEDIT    \
+COLOR1 " %s " COLOR2 " (^Z)»¡©ú (^W)²Å¸¹ (^L)­«Ã¸ (^X)ÀÉ®×³B²z ... \033[m"
+
++ #define FOOTER_ENEWS   \
++ COLOR1 " ©_¼¯·s»D " COLOR2 " (kj)¤W¤U½g (¡ô¡õ¡ö)¤W¤UÂ÷¶}             "
++ "                           "
+
+  ...
+  ...
+
 #define FEETER_INNBBS   \
-COLOR1 " Âà«H³]©w " COLOR2 " (¡ô/¡õ)¤W¤U .... (q)Â÷¶}           "
+COLOR1 " Âà«H³]©w " COLOR2 " (¡ô/¡õ)¤W¤U (PgUp/PgDn)¤W¤U­¶ ... "
 
 + #define FEETER_ENEWS \
 + COLOR1 " ©_¼¯·s»D " COLOR2 " (¤è¦V)²¾°Ê (¦r¥À/¼Æ¦r)¶µ¥Ø/½g¼Æ " \
@@ -54,7 +64,6 @@ SO =     ..... [1;33menews.so[m
 #include "bbs.h"
 
 #ifdef HAVE_NETTOOL
-
 
 /*-------------------------------------------------------*/
 /* variable                                              */
@@ -328,7 +337,7 @@ enews_forward(kind, cc)     /* ´£¨Ñ³æ½gÂà±H */
   int userno, rc;
   int method;       /* Âà±H¨ì 0:¯¸¥~ >0:¦Û¤v <0:¨ä¥L¯¸¤º¨Ï¥ÎªÌ */
 
-  if (!HAS_PERM(PERM_FORWARD) || HAS_STATUS(STATUS_MAILOVER))
+  if (!HAS_PERM(PERM_INTERNET) || HAS_STATUS(STATUS_MAILOVER))
     return XO_NONE;
 
   strcpy(rcpt, cuser.email);

@@ -1,6 +1,6 @@
 µo«H¤H: itoc.bbs@cpu.tfcis.org (®Ö¤ß°Ê¤O) ¬ÝªO: plan
 ¼Ð  ÃD: Re: [°ÝÃD]Ãö©ó¬ÝªOÄÝ©Ê...
-µo«H¯¸: °Ê¤O®Ö¤ß (2005/02/18 Fri 09:42:21)                Updated: 2005/02/18
+µo«H¯¸: °Ê¤O®Ö¤ß (2005/02/18 Fri 09:42:21)                Updated: 2006/02/13
 
 ¡° ¤Þ­z¡mdavidliu.bbs@bbs.dlit.edu.tw (David)¡n¤§»Ê¨¥¡G
 > ½Ð°Ý¤@¤U¬O§_¦³¿ìªk³]©w¬Y¬ÝªO¬°"§R¤å«á¤å³¹¤£¶ideleted/junkªO"?
@@ -23,34 +23,8 @@
 
 : post.c:move_post()
 
-  hdr_fpath(fpath, folder, hdr);
-
-+ if (!((bshm->bcache + currbno)->battr & BRD_NOGODELETE))
-+ {
-    brd_fpath(fnew, board, fn_dir);
-    hdr_stamp(fnew, HDR_LINK | 'A', &post, fpath);
-
-    /* ª½±µ½Æ»s trailing data */
-
-    memcpy(post.owner, hdr->owner, TTLEN + 140);
-
-    if (by_bm)
-      sprintf(post.title, "%-13s%.59s", cuser.userid, hdr->title);
-    else if (!stat(fpath, &st))
-      by_bm = st.st_size;
-
-    rec_add(fnew, &post, sizeof(HDR));
-    btime_update(brd_bno(board));
-+ }
-+ else
-+ {
-+   if (!stat(fpath, &st))
-+     by_bm = st.st_size;
-+ }
-
-  unlink(fpath);
-  btime_update(currbno);
-  cancel_post(hdr);
+- if (!(xmode & POST_BOTTOM))   /* ¸m©³¤å³Q¬å¤£¥Î move_post */
++ if (!(xmode & POST_BOTTOM) && !(currbattr & BRD_NOGODELETE))
 
 --
  [1;43m¢«[46m¢ª[m Or[1mig[30min[m: [41m Maple-itoc£»°Ê¤O®Ö¤ß [36;47m cpu.tfcis.org [m

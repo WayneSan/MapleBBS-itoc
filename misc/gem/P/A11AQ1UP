@@ -21,13 +21,10 @@
 
 : board.c:XoPost()
 
-  if (currbno != bno)
-  {
-    if (currbno >= 0 && bshm->mantime[currbno] > 0)
-      bshm->mantime[currbno]--; /* 退出上一個板 */
-    bshm->mantime[bno]++;       /* 進入新的板 */
+    if (currbno >= 0)
+      bshm->mantime[currbno]--;         /* 退出上一個板 */
+    bshm->mantime[bno]++;               /* 進入新的板 */
 +   bshm->lastvisit[bno] = time(NULL);
-  }
 
 ─────────────────────────────────────
 

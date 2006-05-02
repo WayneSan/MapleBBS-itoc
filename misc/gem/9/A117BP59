@@ -1,6 +1,6 @@
 發信人: itoc.bbs@xeon.tfcis.org (核心動力) 看板: plan
 標  題: 推文上限變 99
-發信站: 動力核心 (Wed, 26 Nov 2003 09:02:48 +0800 (CST))  Updated: 2005/06/18
+發信站: 動力核心 (Wed, 26 Nov 2003 09:02:48 +0800 (CST))  Updated: 2006/02/28
 
   聽說有人想要 gy99 :p
 
@@ -68,7 +68,7 @@ post_item(num, hdr)
   else
   {
 -   if (hdd->score > -35)
-+   if (hdr->score >= -99)
++   if (hdd->score >= -99)
       hdd->score--;
   }
 }

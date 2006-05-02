@@ -1,6 +1,6 @@
 發信人: TKyo.bbs@cpu.tfcis.org (暗黑貴公子) 看板: plan
 標  題: Re: [問題]文章類別
-發信站: 動力核心 (2005/01/25 Tue 16:54:09)                Updated: 2005/03/11
+發信站: 動力核心 (2005/01/25 Tue 16:54:09)                Updated: 2006/04/17
 
 ※ 引述《wim888.bbs@wim888.twbbs.org (888)》之銘言：
 > 在POST文章時會先問要不要加上文章類別
@@ -56,26 +56,11 @@ COLOR3 "  編號   文章類別    屬性%*s                                            
 #define FEETER_PREFIX   \
 COLOR1 " 類別管理 " COLOR2 " (ENTER)切換屬性 (a)新增 (E)修改 (↑/↓)上下 (PgUp/PgDn)上下頁      "
 
-: src/maple/xover.c : xo_foot()
+: src/maple/xover.c : xz[]
 
-  case XZ_GEM:
-    outf(FEETER_GEM);
-    break;
-
-+ case XZ_PREFIX:
-+   outf(FEETER_PREFIX);
-+   break;
-
-  /* 需跟 modes.h 定義同步順序 */
-  XZ xz[] =
-  {
-    .
-    .
-    .
-    {NULL, NULL, M_GEM},          /* XZ_GEM */
-+   {NULL, NULL, M_XMODE}         /* XZ_PREFIX */
-  };
-
+- {NULL, NULL, M_GEM, FEETER_GEM}               /* XZ_GEM */
++ {NULL, NULL, M_GEM, FEETER_GEM},              /* XZ_GEM */
++ {NULL, NULL, M_XMODE, FEETER_PREFIX}          /* XZ_PREFIX */
 
 : src/so/manage.c : post_manage()
 

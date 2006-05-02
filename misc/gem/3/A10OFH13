@@ -1,6 +1,6 @@
 µo«H¤H: chwaian.bbs@cpu.tfcis.org (µL¨¥) ¬ÝªO: plan
 ¼Ð  ÃD: [¥\¯à]§ì¨ú©_¼¯¹q¼v
-µo«H¯¸: °Ê¤O®Ö¤ß (2004/11/03 Wed 00:19:17)                Updated: 2004/11/03
+µo«H¯¸: °Ê¤O®Ö¤ß (2004/11/03 Wed 00:19:17)                Updated: 2006/03/08
 
 ®³itoc¼gªºNCTUnews.c(³o°¦µ{¦¡¯u¦n¥Î@_@)§ïªº
 
@@ -32,6 +32,9 @@ EXE =   ... [1;33mKimomovie[m
 
 
 #include "bbs.h"
+
+
+#define LYNX_PATH       "/usr/local/bin/lynx --source"  /* lynx ªºµ´¹ï¸ô®| */
 
 
 /*-------------------------------------------------------*/
@@ -194,7 +197,7 @@ strip_title(str, title)
     if (ch != '\t')
     {
       *dst++ = ch;
-      if (++len > 60)
+      if (++len > TTLEN)
         break;
     }
   }

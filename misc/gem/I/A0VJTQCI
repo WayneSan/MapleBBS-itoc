@@ -1,6 +1,6 @@
 §@ªÌ: itoc (:MM:) ¬ÝªO: itoc
 ¼ÐÃD: Re: [°ÝÃD]WindTopªºFirewall¥\¯à
-®É¶¡: Sat Jan  4 14:18:29 2003                          Updated: 2004/09/07
+®É¶¡: Sat Jan  4 14:18:29 2003                          Updated: 2006/02/16
 
 ¡° ¤Þ­z¡mdundung.bbs@no.bbs.ee.nchu.edu.tw.spam (¬P®ü¤¤ªºµo§b¦Ï)¡n¤§»Ê¨¥¡G
 > ·Q­n¦Û­q±ø¥óÂo«Hªº¸Ü³o¥\¯à¯uªº¤£¿ù¥Î
@@ -25,10 +25,9 @@
 +   board = "apple";   [1;44m// §â¦³Âo±¼ªº«H°e¥h apple ªO¡AªO¦W¦Û©w [m
 + }
 
-  /* ³yÀÉ¦W */
+  /* ¼g¤J¤å³¹¤º®e */
 
-  sprintf(fpath, "brd/%s/@/A", board);
-  fname = strrchr(fpath, 'A') + 1;
+  brd_fpath(folder, board, FN_DIR);
 
 : ¦Ó belong_spam() ¥i¥H³o¼Ë¼g
 : rec_article.c ¦b bbspost_add() «e­±·s¼W¥H¤U¨ç¦¡

@@ -1,53 +1,35 @@
 作者: itoc (League) 看板: plan
 標題: [功能] 半即時設定使用者的看板權限
-時間: 2004/01/02 Fri 23:26:10                           Updated: 2004/06/26
+時間: 2004/01/02 Fri 23:26:10                           Updated: 2006/04/17
 
   因為動態設定使用者的看板權限要改太多了
 
   所以寫個半即時的，簡單很多 :p
 
-: xover.c:xo_foot()
+: visio.c:outf()
 
-  case XZ_CLASS:
-    outz(FEETER_CLASS);
-+   if (time(NULL) - ap_start >= 10 * 60)        /* 10 分鐘更新一次 */
+void
+outf(str)
+  uschar *str;
+{
++ static time_t tcheck = 0;
++ time_t now;
+
++ if (str == FEETER_CLASS)
++ {
++   if (!tcheck)
++     tcheck = ap_start;
++   time(&now);
++   if (now - tcheck >= 10 * 60)        /* 10 分鐘更新一次 */
 +   {
 +     if (cuser.userlevel)
 +       brh_save();
 +     board_main();
++     tcheck = now;
 +   }
-    break;
-
-: board.c:brh_load()
-
-static inline void
-brh_load()
-{
-+ static int default_board = 0;
-  BRD *brdp;
-  usint ulevel;
-  int n, cbno;
-  char *bits;
-
-  ...
-  ...
-
-  /* --------------------------------------------------- */
-  /* 設定 default board                                  */
-  /* --------------------------------------------------- */
-
-+ if (!default_board)
-+ {
-    strcpy(currboard, BN_NULL);
-    currbno = -1;
-+   default_board = 1;
 + }
-+ else
-+ {
-+   currbno = brd_bno(currboard);
-+   if (currbno < 0)
-+     strcpy(currboard, BN_NULL);
-+ }
+  outz(str);
+  prints("%*s\033[m", d_cols, "");
 }
 
 --

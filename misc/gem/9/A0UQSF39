@@ -1,6 +1,6 @@
 §@ªÌ: itoc (¤£¤Óµo®i¹êÅç«Ç) ¬ÝªO: plan
 ¼ÐÃD: [¥\¯à] ´£¿ôªA°È
-®É¶¡: Wed Sep  4 10:52:15 2002                          Updated: 2003/08/17
+®É¶¡: Wed Sep  4 10:52:15 2002                          Updated: 2006/04/17
 
   NPC ªº¥\¯à¤ÓµL²á¡A¨º§ï¤@¤U
   ´N¥i¥HÅÜ´£¿ôªA°È (­n§ï¦¨¥bÂI³ø®É¤]¬O¥i¥H)
@@ -38,19 +38,19 @@ bmw_alarm()
   }
 }
 
-: xover.c:xo_foot()
+: visio.c:outf()
 
-static void
-xo_foot(zone)                   /* itoc.010403: §â b_lines ¶ñ¤W feeter */
-  int zone;
+void
+outf(str)
+  uschar *str;
 {
 + bmw_alarm();
+  outz(str);
+  prints("%*s\033[m", d_cols, "");
+}
 
-  switch (zone)
-  {
 
-
-  ©ñ¦b xo_foot()¡A¦pªG¨Ï¥ÎªÌ idle ®É¡A¨º»ò´N¤£´£¿ô
+  ©ñ¦b outf()¡A¦pªG¨Ï¥ÎªÌ idle ®É¡A¨º»ò´N¤£´£¿ô
 
 --
 [1;37m¡¼ ¥»¤å³¹¥Ñ [33mitoc[37m ±q [32mitoc.Dorm-GD2.NCTU.edu.tw[37m µoªí[m

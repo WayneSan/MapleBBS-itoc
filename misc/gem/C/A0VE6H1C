@@ -1,6 +1,6 @@
 作者: itoc (太陽花兒~) 看板: plan
 標題: [功能] 預覽
-時間: Sun Dec 22 17:29:07 2002                          Updated: 2005/05/19
+時間: Sun Dec 22 17:29:07 2002                          Updated: 2006/04/17
 
   [註] 做了本功能新增，就無需做 "看板說明" 這篇功能的新增
 
@@ -176,7 +176,7 @@ BRD *xbrd;
 : xover.c:preview_tip()
 : xover.c:xo_knee()
 
-  這些函式加在 xo_foot() 之後面
+  這些函式加在 xover() 之前面
 
 static void
 preview_file(fpath, skipline)
@@ -184,18 +184,18 @@ preview_file(fpath, skipline)
   int skipline;
 {
   int i;
-  char buf[256], *str;
+  char buf[ANSILINELEN], *str;
   FILE *fp;
 
   if (!(fp = fopen(fpath, "r")))
     return;
 
   for (i = 0; i < skipline; i++)        /* 略過前幾行 */
-    fgets(buf, 256, fp);
+    fgets(buf, ANSILINELEN, fp);
 
   for (i = 0; i < 3;)                   /* 預覽三行 */
   {
-    if (fgets(buf, 80, fp))
+    if (fgets(buf, SCR_WIDTH + 1, fp))
     {
       if (*buf == '>' || *buf == '\n')
         continue;

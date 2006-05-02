@@ -1,6 +1,6 @@
 µo«H¤H: amaki.bbs@luna.twbbs.org (¥©§J¤O¦Ï) ¬ÝªO: plan
 ¼Ð  ÃD: [¥\¯à]¬ÝªO¦Cªí/¤ÀÃþ¦Cªí§Y®É¨Ì¬ÝªO¤H®ð±Æ§Ç
-µo«H¯¸: ¤ë¤U©]·Q (2003/12/31 Wed 12:45:13)                Updated: 2004/12/11
+µo«H¯¸: ¤ë¤U©]·Q (2003/12/31 Wed 12:45:13)                Updated: 2006/02/23
 
 ¡° ¤Þ­z¡mEfen.bbs@backwind.g1.dorm.ncku.edu.tw (,,,,,,)¡n¤§»Ê¨¥¡G
 > pttªº§Y®É¼öªù¬Ýª©¦³¿ìªk§Ë¶Ü¡H
@@ -16,6 +16,7 @@ mantime_cmp(a, b)
   short *a;
   short *b;
 {
+  /* ¥Ñ¦h±Æ¨ì¤Ö */
   return bshm->mantime[*b] - bshm->mantime[*a];
 }
 
@@ -44,8 +45,12 @@ class_load(xo)
         continue;
 
       [1;44m// 10³o­ÓÁ{¬É­È¦Û©w [m
-+     if (class_hot && bshm->mantime[chn] < 10) /* ¥u¦C¥X¤H®ð¶W¹L 10 ªº¬ÝªO */
-+       continue;
++     if (class_hot)
++     {
++       if (bshm->mantime[chn] < 10) /* ¥u¦C¥X¤H®ð¶W¹L 10 ªº¬ÝªO */
++         continue;
++       bnum++;
++     }
     }
 
     ......
@@ -53,15 +58,10 @@ class_load(xo)
 
     max++;
     *cbase++ = chn;
-+   if (chn >= 0)
-+     bnum++;
   } while (chead < ctail);
 
-+ if (class_hot && bnum > 0)
-+ {
-+   cbase -= bnum;
-+   qsort(cbase, bnum, sizeof(short), mantime_cmp);
-+ }
++ if (bnum > 0)
++   qsort(cbase - bnum, bnum, sizeof(short), mantime_cmp);
 
   xo->max = max;
   if (xo->pos >= max)
@@ -87,7 +87,7 @@ class_load(xo)
 +     chn = CH_END;
 +   }
 
-    if (XoClass(chn) == XO_NONE)
+    if (!XoClass(chn))
       return XO_NONE;
 
 +   if (class_hot)

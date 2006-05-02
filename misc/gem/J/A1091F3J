@@ -107,7 +107,8 @@ readnffile()
 
 
 - /* 另外準備二份相同的資訊，但是排序方法不同 */
-- NEWSFEEDS_B = !NEWSFEEDS_B ? (newsfeeds_t *) malloc(size) : (newsfeeds_t *) realloc(NEWSFEEDS_B, size);
+- NEWSFEEDS_B = !NEWSFEEDS_B ? (newsfeeds_t *) malloc(size) :
+-   (newsfeeds_t *) realloc(NEWSFEEDS_B, size);
 - memcpy(NEWSFEEDS_B, NEWSFEEDS, size);
 - NEWSFEEDS_G = !NEWSFEEDS_G ? (newsfeeds_t *) malloc(size) : (newsfeeds_t *) realloc(NEWSFEEDS_G, size);
 - memcpy(NEWSFEEDS_G, NEWSFEEDS, size);
@@ -117,10 +118,10 @@ readnffile()
 - {
 -   /* NEWSFEEDS[] 不變動，預設依站台名稱排序 */
 
--   /* 將 NEWSFEEDS_B[] 依 board 排序，那麼在 search_newsfeeds_byboard() 可以找快一點 */
+-   /* 將 NEWSFEEDS_B[] 依 board 排序，那麼在 search_newsfeeds_byboard() ... */
 -   qsort(NEWSFEEDS_B, NFCOUNT, sizeof(newsfeeds_t), nf_byboardcmp);
 
--   /* 將 NEWSFEEDS_G[] 依 group 排序，那麼在 search_newsfeeds_bygroup() 可以找快一點 */
+-   /* 將 NEWSFEEDS_G[] 依 group 排序，那麼在 search_newsfeeds_bygroup() ... */
 -   qsort(NEWSFEEDS_G, NFCOUNT, sizeof(newsfeeds_t), nf_bygroupcmp);
 - }
 

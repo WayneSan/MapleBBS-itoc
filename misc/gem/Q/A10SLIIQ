@@ -1,6 +1,6 @@
 發信人: itoc.bbs@cpu.tfcis.org (核心動力) 看板: plan
 標  題: Re: [問題] 用方法二置底時，如何直接 Post 成置底文......
-發信站: 動力核心 (2004/12/23 Thu 20:18:36)                Updated: 2004/12/24
+發信站: 動力核心 (2004/12/23 Thu 20:18:36)                Updated: 2006/02/10
 
 ※ 引述《BioStar.bbs@micro.bio.ncue.edu.tw (澎湖小雲雀)》之銘言：
 > 不知道用方法二（也就是目前標準版所用的方法），
@@ -36,7 +36,7 @@
 
 + if (curredit & EDIT_BOTTOM)
 + {
-+   hdr->xmode |= POST_BOTTOM;
++   hdr.xmode |= POST_BOTTOM;
 +   rec_add(folder, &hdr, sizeof(HDR));
 + }
 + else

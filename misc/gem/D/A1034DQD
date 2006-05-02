@@ -1,6 +1,6 @@
 作者: itoc (太陽花兒~) 站內: plan
 標題: [文件] showSTRUCT 的方法
-時間: Sat Dec 21 02:14:54 2002                          Updated: 2004/10/25
+時間: Sat Dec 21 02:14:54 2002                          Updated: 2006/03/15
 
   調閱使用者註冊單
 
@@ -56,7 +56,7 @@ main(argc, argv)
 
   chdir(BBSHOME);
 
-  if (!(fp = fopen(FN_BRD, "r")))
+  if (!(fp = fopen(FN_RUN_RFORM_LOG, "r")))
     return -1;
 
   while (fread(&rform, sizeof(RFORM), 1, fp) == 1)

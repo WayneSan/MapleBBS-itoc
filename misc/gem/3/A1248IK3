@@ -248,11 +248,11 @@ post_bottom(xo)
 
 : board.c:XoPost()
 
-  xo->key = XZ_POST;
-  xo->xyz = brd->bvote > 0 ? "セ狾秈︽щ布い" : brd->title;
+    xo->key = XZ_POST;
+    xo->xyz = brd->title;
 
-+ if (xo->pos == XO_TAIL)   /* 材Ω秈狾盢村夹ゼ竚┏程絞 */
-+   xo->pos = (brd->btime < 0 ? rec_num(fpath, sizeof(HDR)) : brd->bpost) - 1;
++   if (xo->pos == XO_TAIL)   /* 材Ω秈狾盢村夹ゼ竚┏程絞 */
++     xo->pos = (brd->btime < 0 ? rec_num(fpath, sizeof(HDR)) : brd->bpost) - 1;
 
   
 

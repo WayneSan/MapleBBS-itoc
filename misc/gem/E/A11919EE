@@ -1,6 +1,6 @@
 發信人: itoc.bbs@processor.tfcis.org (核心動力) 看板: plan
 標  題: Re: 請問修改文章/信件檔頭
-發信站: 動力核心 (2004/02/26 Thu 23:38:50)                Updated: 2005/11/17
+發信站: 動力核心 (2004/02/26 Thu 23:38:50)                Updated: 2006/02/23
 
 ※ 引述《Awing (山坡羊)》之銘言：
 > 為了適應舊站使用者習慣,
@@ -25,7 +25,7 @@ more(fpath, footer)
   }
   headend = foff;
 
-+ if (footer)
++ if (header_len && footer)     /* 一般文章，在檔頭與本文之間加入分隔線 */
 + {
 +   lino = strlen(MSG_SEPERATE);
 +
@@ -44,7 +44,7 @@ more(fpath, footer)
 +   fsize += lino;
 +   fimage = fnew;
 +   fend = fimage + fsize;
-+   headend = fimage + shift - 1;
++   headend = fimage + shift;
 + }
 
   /* 歸零 */

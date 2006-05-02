@@ -1,6 +1,6 @@
 發信人: binbin.bbs@cpu.tfcis.org (餅乾) 看板: plan
 標  題: [功能] 我的最愛排序
-發信站: 動力核心 (2005/04/19 Tue 14:48:24)                Updated: 2004/04/19
+發信站: 動力核心 (2005/04/19 Tue 14:48:24)                Updated: 2006/04/10
 
 > favor.c : 增加下面兩個函式
 
@@ -9,14 +9,63 @@ mf_cmp(a, b)
   MF *a;
   MF *b;
 {
-  int k = a->mftype - b->mftype;                /* 類型 */
-  return k ? k : str_cmp(a->xname, b->xname);   /* 名稱 */
+  int ma, mb;
+  int na, nb;
+
+  ma = a->mftype;
+  mb = b->mftype;
+
+  /* 依序是 卷宗、看板、精華區捷徑、分隔線 */
+  na = ma & MF_FOLDER ? 1 : ma & MF_BOARD ? 2 : ma & MF_GEM ? 3 : 4;
+  nb = mb & MF_FOLDER ? 1 : mb & MF_BOARD ? 2 : mb & MF_GEM ? 3 : 4;
+
+  if (ma = na - nb)
+    return ma;
+
+  if (nb == 1)              /* 卷宗 */
+    return str_cmp(a->xname, b->xname);
+
+  if (nb == 2 || nb == 3)   /* 看板、精華區捷徑 */
+  {
+    na = brd_bno(a->xname);
+    nb = brd_bno(b->xname);
+
+    if (na >= 0)
+    {
+      if (nb >= 0)
+      {
+        if (cuser.ufo & UFO_BRDNAME)
+          return strcmp(a->xname, b->xname);
+
+        nb = strcmp(bshm->bcache[na].class, bshm->bcache[nb].class);
+        return nb ? nb :
+          strcmp(bshm->bcache[na].title, bshm->bcache[nb].title);
+      }
+      return -1;
+    }
+
+    if (nb >= 0)
+      return 1;
+    return str_cmp(a->xname, b->xname);
+  }
+
+  return 0;   /* 分隔線 */
 }
 
 static int
 mf_sort(xo)
   XO *xo;
 {
+  static time_t last = 0;
+  time_t now;
+
+  if (time(&now) - last < 10)
+  {
+    vmsg("每十秒鐘只能切換一次");
+    return XO_FOOT;
+  }
+  last = now;
+
   rec_sync(xo->dir, sizeof(MF), mf_cmp, NULL);
   return mf_load(xo);
 }

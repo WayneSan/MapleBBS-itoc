@@ -1,6 +1,6 @@
 µo«H¤H: TKyo.bbs@cpu.tfcis.org (·t¶Â¶Q¤½¤l) ¬ÝªO: plan
 ¼Ð  ÃD: [§ó·s]§Y®É¬d¸ß©_¼¯¹q¼v
-µo«H¯¸: °Ê¤O®Ö¤ß (2005/01/19 Wed 19:29:06)                Updated: 2005/01/20
+µo«H¯¸: °Ê¤O®Ö¤ß (2005/01/19 Wed 19:29:06)                Updated: 2006/04/17
 
 §ó·s»¡©ú
 
@@ -104,25 +104,11 @@
     [1;31m(Enter)      [37m¹q¼v¬d¸ß[m
     [1;31m(h)          [37m»¡©ú[m
 
-: src/maple/xover.c : xo_foot()
+: src/maple/xover.c : xz[]
 
-  case XZ_GEM:
-    outf(FEETER_GEM);
-    break;
-
-+ case XZ_YMOVIE:
-+   outf(FEETER_YMOVIE);
-+   break;
-
-  /* »Ý¸ò modes.h ©w¸q¦P¨B¶¶§Ç */
-  XZ xz[] =
-  {
-    .
-    .
-    .
-    {NULL, NULL, M_GEM},          /* XZ_GEM */
-+   {NULL, NULL, M_XMODE}         /* XZ_YMOVIE */
-  };
+- {NULL, NULL, M_GEM, FEETER_GEM}              /* XZ_GEM */
++ {NULL, NULL, M_GEM, FEETER_GEM},             /* XZ_GEM */
++ {NULL, NULL, M_XMODE, FEETER_YMOVIE}         /* XZ_YMOVIE */
 
 
 : src/maple/menu.c : ¾A·í¿ï³æ

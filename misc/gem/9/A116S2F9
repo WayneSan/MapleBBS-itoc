@@ -1,6 +1,6 @@
 發信人: TKyo.bbs@cpu.tfcis.org (暗黑貴公子) 看板: plan
 標  題: [功能]新記帳手札
-發信站: 動力核心 (2005/04/26 Tue 17:04:56)                Updated: 2005/04/26
+發信站: 動力核心 (2005/04/26 Tue 17:04:56)                Updated: 2006/04/17
 
 /*
 1.本次新記帳手札之新增功能, 是以原 "記帳手札" 功能實際運行一年半後
@@ -86,31 +86,11 @@ typedef struct
   "MoneyNote  ♂ 記帳手札 ♀",
 #endif
 
-: src/maple/xover.c : xo_foot()
-  .
-  .
-  .
-  case XZ_GEM:
-    outf(FEETER_GEM);
-    break;
-
-+ #ifdef HAVE_CREDIT
-+  case XZ_CREDIT:
-+   outf(FEETER_CREDIT);
-+   break;
-+ #endif
-
 : src/maple/xover.c : xz[]
 
-XZ xz[] =
-{
-  .
-  .
-  .
-  {NULL, NULL, M_GEM},      /* XZ_GEM */
-+ {NULL, NULL, M_XMODE},        /* XZ_CREDIT */
-}
-
+- {NULL, NULL, M_GEM, FEETER_GEM}               /* XZ_GEM */
++ {NULL, NULL, M_GEM, FEETER_GEM},              /* XZ_GEM */
++ {NULL, NULL, M_XMODE, FEETER_CREDIT}          /* XZ_CREDIT */
 
 : src/so/new_credit.c   /* 新增此程式 */
 

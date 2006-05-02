@@ -21,9 +21,7 @@ brd_usies()
 
 : board.c:XoPost()
 
-#ifdef HAVE_BRDMATE
-  strcpy(cutmp->mateid, currboard);     /* 借用 mateid 來存放正閱讀的看板 */
-#endif
+  brh_get(brd->bstamp, bno);
 
 + brd_usies();
 

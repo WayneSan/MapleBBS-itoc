@@ -1,21 +1,15 @@
 §@ªÌ: itoc (®Ö¤ß°Ê¤O) ¬ÝªO: itoc
 ¼ÐÃD: Re: ½Ð°Ý¦p¦óÅý"¶i¯¸µe­±"¶Ã¼Æ¶]¥X"°ÊºA¬Ýª©"?
-®É¶¡: 2004/03/11 Thu 14:14:19                           Updated: 2004/03/11
+®É¶¡: 2004/03/11 Thu 14:14:19                           Updated: 2006/02/13
 
 ¡° ¤Þ­z¡mleira.bbs@wretch.twbbs.org (kkk)¡n¤§»Ê¨¥¡G
 >   ·QÅý¶i¯¸µe­±ÀH¾÷¶]¥X°ÊºA¬Ýª©ªº¹Ï
 >   ¦Ó¤£¥u¬O©T©w´X­ÓÀÉ®×
 
-  ¥ý°µºëµØ°Ï³o­Ó patch
-   [­×¥¿] menu.c cache.c °ÊºA¬ÝªO¥X²{ªº¶Ã¼Æ¿ï¨ú
-
-  µM«á§ï
-
 : bbsd.c:tn_main()
 
-- film_out((time(&ap_start) % 3) + FILM_OPENING0, 3);
-+ time(&ap_start);
-+ film_out(-1, 3);
+- film_out((ap_start % 3) + FILM_OPENING0, 3);  /* ¶Ã¼ÆÅã¥Ü¶}ÀYµe­± */
++ film_out(FILM_MOVIE, 3);
 
 --
  [1;43m¢~[46m¢q[m Or[1mig[30min[m: [41m Maple-itoc£»°Ê¤O®Ö¤ß [32;47m processor.tfcis.org [m
