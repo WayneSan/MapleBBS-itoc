@@ -65,7 +65,7 @@ EXE =   ... [1;33mexpireboard[m
 
 
 static void
-mail_him(userid, brdname)
+mail_to_him(userid, brdname)
   char *userid, *brdname;
 {
   HDR hdr;
@@ -98,12 +98,12 @@ note_expire(brd)    /* §ä¥XªO¥D */
   for (; ptr = strchr(str, '/') ;)
   {
     *ptr = '\0';
-    mail_him(str, brd->brdname);
+    mail_to_him(str, brd->brdname);
     len = strlen(str);
     alllen += (len + 1);    /* ªO¥DID + '/' */
     str = buf + alllen;
   }
-  mail_him(str, brd->brdname);         /* ³Ì«á¤@µ§¸ê®Æ¥t¥~³B²z */
+  mail_to_him(str, brd->brdname);         /* ³Ì«á¤@µ§¸ê®Æ¥t¥~³B²z */
 }
 
 

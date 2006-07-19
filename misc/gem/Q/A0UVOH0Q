@@ -2,14 +2,14 @@
 ¼ÐÃD: [¥\¯à] ESPN ¸`¥Øªí
 ®É¶¡: Sun Dec 15 16:56:01 2002                          Updated: 2003/05/04
 
-: menu.c ¾A·íªº¿ï³æ
+: menu.c ¦b¾A·íªº¿ï³æ¥[¤W
 
-  "bin/espn.so:main_espn", 0, - M_XMODE,
-  "ESPN Star  ¡ñ ESPN¸`¥Ø ¡ð",
++ "bin/espn.so:main_espn", 0, - M_XMODE,
++ "ESPN Star  ¡ñ ESPN¸`¥Ø ¡ð",
 
 : game/Makefile
 
-SO =    .... [1;32mespn.so[m
+SO =    ... [1;33mespn.so[m
 
 : game/espn.c ·s¼W³oµ{¦¡
 

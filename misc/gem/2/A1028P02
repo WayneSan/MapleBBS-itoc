@@ -25,13 +25,13 @@ main()
 {
   struct tm ptime;
 
-  /* 2001 年 1 月 1 日 */
+  /* 2001 年 5 月 6 日 */
   ptime.tm_sec = 0;
   ptime.tm_min = 0;
   ptime.tm_hour = 0;
-  ptime.tm_mday = 1;
-  ptime.tm_mon = 0;
-  ptime.tm_year = 101;
+  ptime.tm_mday = 6;
+  ptime.tm_mon = 5 - 1;
+  ptime.tm_year = 2001 - 100;
   ptime.tm_isdst = 0;
   ptime.tm_zone = "GMT";
   ptime.tm_gmtoff = 0;

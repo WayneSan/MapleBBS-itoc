@@ -1,6 +1,6 @@
 發信人: itoc.bbs@cpu.tfcis.org (核心動力) 看板: plan
 標  題: 拒收站外信件
-發信站: 動力核心 (2006/04/06 Thu 12:33:53)                Updated: 2006/04/06
+發信站: 動力核心 (2006/04/06 Thu 12:33:53)                Updated: 2006/05/17
 
 ※ 引述《guessi.bbs@bbs.wretch.cc》之銘言：
 > 記得以前有這function
@@ -24,7 +24,7 @@
 : ufo.h
 
 - "保留",
-+ "拒收站外信件    (要收/不收)",    /* UFO_NOINCOME */
++ "拒收站外信件    (不收/要收)",    /* UFO_NOINCOME */
 
 : bmtad.c:is_rcpt()
 

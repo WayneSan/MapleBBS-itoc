@@ -1,6 +1,6 @@
 作者: itoc (test) 看板: plan
 標題: [功能] 文章評分功能
-時間: Sun Aug 18 14:45:05 2002                          Updated: 2004/09/07
+時間: Sun Aug 18 14:45:05 2002                          Updated: 2006/05/04
 
   將推文改成使用者不可以對同一篇文章重覆評分
 
@@ -106,28 +106,33 @@ plog_unlink(fpath)
   cur = pos - xo->top;
   hdr = (HDR *) xo_pool + cur;
 
-+ if (plog_seek(xo->dir, hdr, logpath))    /* 已被評比過 */
++ if (!HAS_PERM(PERM_ALLBOARD) &&
++   plog_seek(xo->dir, hdr, logpath))    /* 已被評比過 */
 +   return XO_NONE;
 
   ...
   ...
 
-
-+ /* 加入評比記錄 */
-+ memset(&log, 0, sizeof(PLOG));
-+ strcpy(log.userid, cuser.userid);
-+ strcpy(log.email, cuser.email);
-+ strcpy(log.fromhost, fromhost);
-+ rec_add(logpath, &log, sizeof(PLOG));
-
-  if (curraddscore)
+  if (fp = fopen(fpath, "a"))
   {
-    currchrono = hdr->chrono;
-    rec_ref(dir, hdr, sizeof(HDR), xo->key == XZ_XPOST ?
-      hdr->xid : pos, cmpchrono, addscore);
-    return XO_LOAD;
-  }
+    time_t now;
+    struct tm *ptime;
 
+    time(&now);
+    ptime = localtime(&now);
+
+    fprintf(fp, "→ \033[36m%s \033[3%s\033[m：%-*s%02d/%02d/%02d\n",
+      userid, verb, maxlen, reason,
+      ptime->tm_year % 100, ptime->tm_mon + 1, ptime->tm_mday);
+    fclose(fp);
+
++   /* 加入評比記錄 */
++   memset(&log, 0, sizeof(PLOG));
++   strcpy(log.userid, cuser.userid);
++   strcpy(log.email, cuser.email);
++   strcpy(log.fromhost, fromhost);
++   rec_add(logpath, &log, sizeof(PLOG));
+  }
 
 : 當文章過期的時候，要順便刪除評比記錄，改 expire.c
 

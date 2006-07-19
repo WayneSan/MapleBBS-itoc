@@ -13,27 +13,25 @@ hdr_outs(hdr, cc)
   HDR *hdr;
   int cc;   /* 輸出的字串長度 (不算ANSI碼)*/
 {
-  /* 回覆/原創/閱讀中的同主題回覆/閱讀中的同主題原創 */
-  static char *type[4] =
-  {"Re", "◇", "\033[1;33m=>", "\033[1;32m◆"};
-
-......
-
+  /* 回覆/轉錄/原創/閱讀中的同主題回覆/閱讀中的同主題轉錄/閱讀中的同主題原創*/
+  static char *type[6] =
+    {"Re", "Fw", "◇", "\033[1;33m=>", "\033[1;33m=>", "\033[1;32m◆"};
+  uschar *title, *mark;
 + int myflag;   /*Iuu. COLOR_BM_ARTICLE功能和回文不加亮標題[]使用 */
 
-......
+  ...
+  ...
 
-  title = str_ttl(mark = hdr->title);    /* 若該文章為回復，那么去掉文章標題
-                                            前面的"Re: "串 */
-  ch = (title == mark);
-+ myflag = (title == mark);         /* Iuu.如果當前文章標題是原創文章，那麼
-                                    置myflag為1 ，原創文章的標題才需要高亮 */
-  if (!strcmp(currtitle, title))        /*是否是同主題 */
-    ch += 2;
+  title = str_ttl(mark = hdr->title);
++ /* Iuu: 如果當前文章標題是原創文章，那麼置myflag為1，
++    原創文章的標題才需要高亮 */
++ myflag = (title == mark);
+  ch = (title == mark) ? 2 : (*mark == 'R') ? 0 : 1;
+  if (!strcmp(currtitle, title))
+    ch += 3;
 
-......
-
-......
+  ...
+  ...
 
     do
     {
@@ -43,7 +41,8 @@ hdr_outs(hdr, cc)
 +    {
           if (ch < 2)
           {
-......
+  ...
+  ...
           }
 +    }
 #endif

@@ -1,6 +1,6 @@
 發信人: binbin.bbs@cpu.tfcis.org (餅乾) 看板: plan
 標  題: [功能] 按ENTER直接以訪客身分進站
-發信站: 動力核心 (2006/01/09 Mon 00:28:00)                Updated: 2005/01/09
+發信站: 動力核心 (2006/01/09 Mon 00:28:00)                Updated: 2006/01/09
 
 > bbsd.c: login_user()
 

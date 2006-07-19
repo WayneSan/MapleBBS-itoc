@@ -7,16 +7,16 @@
   §ì http://cpu.twbbs.org/~itoc/jcee.tgz ¸ÑÀ£ÁY¦b etc/ ¤U
   ¤]´N¬O­n¦³ etc/jcee/##.txt¡A## ¬O¥Á°ê¦~
 
-: menu.c:menu_net[]  ¾A·íªº¿ï³æ¥[¤W³o¤G¦æ
+: menu.c ¦b¾A·íªº¿ï³æ¥[¤W
 
 + "bin/jcee.so:main_jcee", 0, - M_XMODE,
 + "JCEE       ¡ñ Áp¦Ò¬dº] ¡ð",
 
-: so/Makefile
+: game/Makefile
 
-SO =    ..... jcee.so
+SO =    ... [1;33mjcee.so[m
 
-: so/jcee.c ·s¼W¦¹µ{¦¡
+: game/jcee.c ·s¼W¦¹µ{¦¡
 
 /*-------------------------------------------------------*/
 /* jcee.c       ( NTU FPG BBS Ver 2.00 )                 */

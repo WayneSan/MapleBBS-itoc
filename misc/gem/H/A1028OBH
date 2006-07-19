@@ -28,9 +28,9 @@
   char *dir;            // directory
 
   screenline slp[2];    // screenline pointer
-  screenline slt[t_lines]; // screenline total
+  screenline slt[T_LINES]; // screenline total
 
-  HDR hdr;              // header
+  HDR hdr;              // header (¿…¿Y)
   HDR mhdr, fhdr, ghdr; // mail/file/gem header
 
   BRD brd;              // board header

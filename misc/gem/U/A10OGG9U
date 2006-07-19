@@ -1,6 +1,6 @@
 發信人: itoc.bbs@processor.tfcis.org (核心動力) 看板: plan
 標  題: Re: 關於 "版主刪文時自行設定理由"
-發信站: 動力核心 (2004/02/24 Tue 23:47:52)                Updated: 2006/04/11
+發信站: 動力核心 (2004/02/24 Tue 23:47:52)                Updated: 2006/07/04
 
 ※ 引述《Loveforever.bbs@wretch.csie.nctu.edu.tw (逍遙如風..)》之銘言：
 > 關於 "版主刪文時自行設定理由"
@@ -54,9 +54,17 @@
 
 > ───────────────────────────────────── <
 
-  有 POST_ERASE 旗標的顯示 d
+  有 POST_ERASE 旗標的顯示 d，並視為已讀
 
 : post.c:post_attr()
+
+  attr = ((mode & POST_BOTTOM) || !brh_unread(hdr->chrono) ||
++   (mode & POST_ERASE) ||
+    ((mode & POST_RESTRICT) && strcmp(hdr->owner, cuser.userid) &&
+    !(bbstate & STAT_BM)) ? 0x20 : 0;
+
+  ...
+  ...
 
 + if (mode & POST_ERASE)
 +   attr |= 'D';

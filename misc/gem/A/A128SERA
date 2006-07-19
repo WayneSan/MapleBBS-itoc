@@ -1,6 +1,6 @@
 發信人: qazq.bbs@bbs.cs.nchu.edu.tw (  - THE END -) 看板: plan
 標  題: [功能] 文章閱讀\發表控制碼擴增。
-發信站: 中興資科 (Tue, 18 Nov 2003 00:56:38 +0800 (CST))  Updated: 2003/11/18
+發信站: 中興資科 (Tue, 18 Nov 2003 00:56:38 +0800 (CST))  Updated: 2006/06/28
 
         １. 將 Ctrl + Q 的選項輸入改為視窗化選單。
 
@@ -88,11 +88,57 @@ outx(str)
 +       outs(buf);
 +       str += 3;
 +       continue;
-+     case 'b':       /* **b 顯示站名 */
++     case 'b':       /* **b 顯示生日 */
 +       sprintf(buf, "%d/%d", cuser.month, cuser.day);
 +       outs(buf);
 +       str += 3;
 +       continue;
+      }
+
+: camera.c:str_strip()
+
+      if (ch == '*')
+      {
+        ansi = 0;
+-       len += BMAX(IDLEN, UNLEN) - 1;
++       switch (str[1])
++       {
++       case 's':         /* **s 顯示 ID */
++         len += IDLEN - 1;
++         break;
++       case 'n':         /* **n 顯示暱稱 */
++         outs(cuser.username);
++         len += UNLEN - 1;
++         break;
++       case 'l':       /* **l 顯示上站次數 */
++         len += 5 - 1;     /* 假設最多五位數 */
++         break;
++       case 'p':       /* **p 顯示發文次數 */
++         len += 5 - 1;     /* 假設最多五位數 */
++         break;
++       case 'g':       /* **g 顯示金幣 */
++         len += 10 - 1;    /* 假設最多十位數 */
++         break;
++       case 'm':       /* **m 顯示銀幣 */
++         len += 10 - 1;    /* 假設最多十位數 */
++         break;
++       case 't':       /* **t 顯示日期 */
++         len += 23 - 1;
++         break;
++       case 'u':       /* **u 顯示線上人數 */
++         len += 5 - 1;     /* 假設最多五位數 */
++         break;
++       case 'b':       /* **b 顯示生日 */
++         sprintf(buf, "%d/%d", cuser.month, cuser.day);
++         len += 5 - 1;
++         break;
++       }
+
+        if (len > SCR_WIDTH)
+        {
+          *str = '\0';
+          break;
+        }
       }
 
 --

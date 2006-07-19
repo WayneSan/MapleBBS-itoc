@@ -36,8 +36,6 @@ EXE =   ..... [1;33mcna[m
 
 #include "bbs.h"
 
-#ifdef HAVE_NETTOOL
-
 
 #define MAX_ENEWS   16
 
@@ -130,15 +128,6 @@ main()
 
   return 0;
 }
-#else
-int
-main()
-{
-  printf("You must define HAVE_NETTOOL.");
-  return 0;
-}
-#endif  /* HAVE_NETTOOL */
-
 
 
 

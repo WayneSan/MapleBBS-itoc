@@ -1,6 +1,6 @@
 µo«H¤H: guessi.bbs@bbs.wretch.cc (¨S) ¬ÝªO: plan
 ¼Ð  ÃD: [­×¥¿] Âù­«»{ÃÒ
-µo«H¯¸: µL¦W¤p¯¸ (2006/03/31 Fri 18:02:59)                Updated: 2006/03/31
+µo«H¯¸: µL¦W¤p¯¸ (2006/03/31 Fri 18:02:59)                Updated: 2006/06/09
 
 [­×¥¿] user.c »Ý¯¸ªø¼f®Öµù¥U³æ«á¤~ºâµù¥U¦¨¥\ ¡ö¢{
                                                ¢x
@@ -105,6 +105,20 @@
 +   return XEASY;
 + }
 
+[32m:/src/maple/bbsd.c:login_level()[m
+
+#ifdef JUSTIFY_PERIODICAL
+    if ((level & PERM_VALID) && (cuser.tvalid + VALID_PERIOD < ap_start))
+    {
+-     level ^= PERM_VALID;
++     level &= ~PERM_VALID;
++     level &= ~PERM_MVALID; /* ª½±µ®³°£VALID & MVALID */
+                             /* ­«·s»{ÃÒ ¸ê®Æ³£update  */
+
+      /* itoc.011116: ¥D°Êµo«H³qª¾¨Ï¥ÎªÌ¡A¤@ª½°e«H¤£ª¾¹D·|¤£·|¤Ó¯ÓªÅ¶¡ !? */
+      mail_self(FN_ETC_REREG, str_sysop, "±zªº»{ÃÒ¤w¸g¹L´Á¡A½Ð­«·s»{ÃÒ", 0);
+    }
+#endif
 
 ³Ì«á ·íµM§O§Ñ¤F­×¥¿¥H¤UÀÉ®× ¤å¦r»¡©ú¤º®e
 

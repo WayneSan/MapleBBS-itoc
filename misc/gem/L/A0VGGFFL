@@ -88,10 +88,10 @@ static ACL_t *unmail_root = NULL;       /* UNMAIL_ACLFILE ªº acl_root */
   /* --------------------------------------------------- */
 
   addr = ap->addr;
-- if ((str = strchr(addr, '@')) && str_ncmp("mailer-daemon@", addr, 14))
+- if ((str = strchr(addr, '@')) && str_ncmp(addr, "mailer-daemon@", 14))
 + if (!ap->unlimit && (str = strchr(addr, '@')) &&
-+   str_ncmp("mailer-daemon@", addr, 14))
-
++   str_ncmp(addr, "mailer-daemon@", 14))
+  {
 
 : admutil.c:a_xfile()
 

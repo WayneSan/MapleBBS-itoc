@@ -18,7 +18,9 @@
 
   [33m­×§ïhdr_outs[m
 
-  static char *type[4] = {"Re", "¡º", "\033[1;33m=>", "\033[1;32m¡»"};
+  /* ¦^ÂÐ/Âà¿ý/­ì³Ð/¾\Åª¤¤ªº¦P¥DÃD¦^ÂÐ/¾\Åª¤¤ªº¦P¥DÃDÂà¿ý/¾\Åª¤¤ªº¦P¥DÃD­ì³Ð*/
+  static char *type[6] =
+    {"Re", "Fw", "¡º", "\033[1;33m=>", "\033[1;33m=>", "\033[1;32m¡»"};
   uschar *title, *mark;
   int ch, len;
 +#ifdef HAVE_ADVANCE_DECLARE

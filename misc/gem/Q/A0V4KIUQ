@@ -2,16 +2,16 @@
 ¼ÐÃD: [¥\¯à] grade.c ¥æ¤j¦¨ÁZ¬d¸ß
 ®É¶¡: Wed Feb 12 21:26:55 2003                          Updated: 2003/12/29
 
-: menu.c ¾A·íªº¿ï³æ
+: menu.c ¦b¾A·íªº¿ï³æ¥[¤W
 
-  "bin/grade.so:main_grade", 0, - M_XMODE,
-  "Grade      ¡ñ ¦¨ÁZ¬dº] ¡ð",
++ "bin/grade.so:main_grade", 0, - M_XMODE,
++ "Grade      ¡ñ ¦¨ÁZ¬dº] ¡ð",
 
 : game/Makefile
 
-SO =    .... grade.so
+SO =    ... [1;33mgrade.so[m
 
-: so/game/grade.c ·s¼W³oµ{¦¡
+: game/grade.c ·s¼W³oµ{¦¡
 
 /*-------------------------------------------------------*/
 /* grade.c        ( NTHU CS MapleBBS Ver 3.10 )          */

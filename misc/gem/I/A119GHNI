@@ -1,6 +1,6 @@
 µo«H¤H: itoc.bbs@processor.tfcis.org (®Ö¤ß°Ê¤O) ¬ÝªO: plan
 ¼Ð  ÃD: Re: ½Ð°ÝÃö©ó¶®ªê¡I©_¼¯ªº·s»D¥\¯à
-µo«H¯¸: °Ê¤O®Ö¤ß (2004/02/12 Thu 12:45:28)                Updated: 2006/03/17
+µo«H¯¸: °Ê¤O®Ö¤ß (2004/02/12 Thu 12:45:28)                Updated: 2006/05/23
 
 ¡° ¤Þ­z¡msegaa.bbs@segaa.com.tw (¥[¯Zing)¡n¤§»Ê¨¥¡G
 >    ¦pªG»¡­n¹³µL¦W¤@¼Ëª½±µ§âkimo·s»D¦Û°ÊÂà¨ì¬ÝªO¤W
@@ -26,8 +26,6 @@ EXE =   .... [1;33menews-open[m
 
 : struct.h ·s¼W¤U­±³o¬q
 
-#ifdef HAVE_NETTOOL
-
 /* ----------------------------------------------------- */
 /* enews-open.c ¤¤¹B¥Îªº¸ê®Æµ²ºc : 256 bytes             */
 /* ----------------------------------------------------- */
@@ -42,8 +40,6 @@ typedef struct
   char link[128];               /* ³sµ²¸ô®| */
   char title[TTLEN + 1];        /* ¤å³¹¼ÐÃD */
 } ENEWS;
-
-#endif  /* HAVE_NETTOOL */
 
 : util/enews-open.c ·s¼W¦¹µ{¦¡
 
@@ -77,14 +73,13 @@ typedef struct
 #include "bbs.h"
 
 
-#ifdef HAVE_NETTOOL
-
-
 #define LYNX_PATH       "/usr/local/bin/lynx --source"  /* lynx ªºµ´¹ï¸ô®| */
 
 
 #define INDEX_FILE  "tmp/kimo_index"
 #define NEWS_FILE   "tmp/kimo_news"
+
+#define YAHOO_URL   "http://tw.yahoo.com/me/news/*http://tw.news.yahoo.com/"
 
 
 /*-------------------------------------------------------*/
@@ -363,7 +358,7 @@ html_fetch(fpath, kind) /* ±N³oÀÉ®×¤¤¦³®Äªº³sµ²§ä¥X¨Ó */
       enews.chrono = ++chrono;      /* ¨C½g¤å³¹¤@­Ó½s¸¹ */
       enews.kind = kind;
       sprintf(enews.xname, "A%06d%c", chrono, kind);
-      sprintf(enews.link, "http://tw.news.yahoo.com/%s", str1 + 10);
+      sprintf(enews.link, YAHOO_URL "%s", str1 + 10);
       str_ncpy(enews.title, str2 + 16, sizeof(enews.title));
       if (!rec_add(folder, &enews, sizeof(ENEWS)))
         html_download(&enews, fold);
@@ -398,11 +393,15 @@ main()
 
   init_bshm();
 
+  /* §ì Yahoo cookie */
+  system(LYNX_PATH " -dump http://tw.yahoo.com/ > " INDEX_FILE);
+  unlink(INDEX_FILE);
+
   /* §ì¸ê®Æ¨Ã¤ÀªR¤§ */
 
   for (kind = 'A'; kind <= 'L'; kind++)
   {
-    sprintf(cmd, LYNX_PATH " http://tw.news.yahoo.com/%s > " INDEX_FILE,
+    sprintf(cmd, LYNX_PATH " " YAHOO_URL "%s > " INDEX_FILE,
       class[kind - 'A']);
     system(cmd);
     html_fetch(INDEX_FILE, kind);
@@ -411,15 +410,6 @@ main()
 
   return 0;
 }
-
-#else
-int
-main()
-{
-  printf("You should define HAVE_NETTOOL first.\n");
-  return -1;
-}
-#endif  /* HAVE_NETTOOL */
 
 --
  [1;43m¢~[46m¢q[m Or[1mig[30min[m: [41m Maple-itoc£»°Ê¤O®Ö¤ß [32;47m processor.tfcis.org [m

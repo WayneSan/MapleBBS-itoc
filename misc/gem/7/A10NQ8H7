@@ -272,7 +272,7 @@ rpg_apply(u, userid)
   char *userid;
 {
   strcpy(u->usertitle, "·s«_ÀIªÌ");
-  strcpy(u->username, cuser.username);
+  strcpy(u->username, userid);
 
   u->level = -1;
   u->alliance = u->exp = 0;

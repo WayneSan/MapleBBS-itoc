@@ -1,6 +1,6 @@
 發信人: guessi.bbs@bbs.wretch.cc (沒) 看板: plan
 標  題: [修正] 文章評分修改
-發信站: 無名小站 (2006/03/23 Thu 21:15:50)                Updated: 2006/03/23
+發信站: 無名小站 (2006/03/23 Thu 21:15:50)                Updated: 2006/05/29
 
 ※ 引述《yiyihi.bbs@processor.tfcis.org (...........)》之銘言：
 > 可以在不該推的文章前按 i 、拿掉推文數字
@@ -15,29 +15,27 @@ post_resetscore(xo)
   if (bbstate & STAT_BOARD) /* bm only */
   {
     HDR *hdr;
-    int pos, cur, xmode, score;
+    int pos, cur, score;
     char ans[3];
 
     pos = xo->pos;
     cur = pos - xo->top;
     hdr = (HDR *) xo_pool + cur;
 
-    xmode = hdr->xmode;
-
     switch (vans("◎評分設定 1)自訂 2)清除 3)爆 4)爛 [Q] "))
     {
     case '1':
-      if (!vget(b_lines, 0, "請輸入數字：", ans, 3, DOECHO))
+      if (!vget(b_lines, 0, "請輸入數字：", ans, 4, DOECHO))
         return XO_FOOT;
       score = atoi(ans);
       if (score > 35 || score < -35)
         return XO_FOOT;
-      hdr->xmode = xmode |= POST_SCORE; /* 原文可能無評分 */
+      hdr->xmode |= POST_SCORE; /* 原文可能無評分 */
       hdr->score = score;
       break;
 
     case '2':
-      hdr->xmode = xmode & ~POST_SCORE; /* 清除就不需要POST_SCORE了 */
+      hdr->xmode &= ~POST_SCORE; /* 清除就不需要POST_SCORE了 */
       hdr->score = 0;
       break;
 

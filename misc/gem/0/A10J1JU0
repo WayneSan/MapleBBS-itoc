@@ -9,7 +9,7 @@
 
 : gem.c:gem_add()
 
-+ if (vans("是否進行加密(Y/M)？[N] " == 'y'))
++ if (vans("是否進行加密(Y/N)？[N] " == 'y'))
 +   ghdr.xmode ^= GEM_RESTRICT
 
   if (ans == 'i' || ans == 'n')

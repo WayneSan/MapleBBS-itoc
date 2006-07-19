@@ -49,7 +49,7 @@ add_money(userid, money)
 
 
 static void
-mail_him(userid, money, owner)     /* itoc.011115: 寄檔案給 userid */
+mail_to_him(userid, money, owner)     /* itoc.011115: 寄檔案給 userid */
   char *userid;                 /* 收件人 */
   int money;
   int owner;                    /* 1:開局者 0:一般玩家 */
@@ -292,7 +292,7 @@ main()
             2 + 31, id, money);
 
           add_money(id, money);
-          mail_him(id, money, 0);
+          mail_to_him(id, money, 0);
         }
 
         fclose(fs);
@@ -302,7 +302,7 @@ main()
 
       money = all * betmoney * (CMMTN) / 100;
       add_money(dd, money);
-      mail_him(dd, money, 1);
+      mail_to_him(dd, money, 1);
       fprintf(logfile, "\n\n[開局者] \033[33;1m%s\033[m 抽成 (%d%%) "
         "==> \033[32;1m%d\033[m\n", dd, CMMTN, money);
       fprintf(logfile, "[系統抽成] (%d%%) ==> \033[32;1m%d\033[m\n\n\n\n",

@@ -379,7 +379,7 @@ add_money(userid, kind, money)
 
 
 static void
-mail_him(fpath, userid, title, xmode)     /* itoc.011115: 寄檔案給 userid */
+mail_to_him(fpath, userid, title, xmode)     /* itoc.011115: 寄檔案給 userid */
   char *fpath;                  /* 檔案路徑 */
   char *userid;                 /* 收件人 */
   char *title;                  /* 郵件標題 */
@@ -412,7 +412,7 @@ mail_to_him(userid, num, name, givemoney)
   {
     fprintf(fp, "%s 中了 %d 張 [%s] 得 %d 元\n", userid, num, name, givemoney);
     fclose(fp);
-    mail_him(fpath, userid, "[對對樂] 賭盤開獎通知", 0);
+    mail_to_him(fpath, userid, "[對對樂] 賭盤開獎通知", 0);
     unlink(fpath);
   }
 }

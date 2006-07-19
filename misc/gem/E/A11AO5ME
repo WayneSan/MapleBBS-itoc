@@ -63,7 +63,6 @@ SO =     ..... [1;33menews.so[m
 
 #include "bbs.h"
 
-#ifdef HAVE_NETTOOL
 
 /*-------------------------------------------------------*/
 /* variable                                              */
@@ -527,7 +526,6 @@ main_enews()
     }
   }
 }
-#endif  /* HAVE_NETTOOL */
 
 --
  [1;43m¢~[46m¢q[m Or[1mig[30min[m: [41m Maple-itoc£»°Ê¤O®Ö¤ß [32;47m processor.tfcis.org [m

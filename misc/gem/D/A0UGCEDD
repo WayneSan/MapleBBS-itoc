@@ -1,21 +1,37 @@
-µo«H¤H: visor.bbs@bbs.yzu.edu.tw (16­¿¹ï«þ OnFly  ^O^), ¬ÝªO: plan
-¼Ð  ÃD: Re: [°ÝÃD]Windtop¶}¦n·sª©«á µLªkload
-µo«H¯¸: ¤¸´¼¤j¾Ç­·¤§¶ð (Mon Aug 13 16:38:03 2001)
+§@ªÌ: itoc (¯¸¤W¤H¼Æ¡G802) ¯¸¤º: plan
+¼ÐÃD: [¤å¥ó] shm ¥X²{¿ù»~
+®É¶¡: 2006/05/27 Sat 11:25:16
 
-¡° ¤Þ­z¡mwilliam.bbs@bbs.ydu.edu.tw (¤@°¦ºµ)¡n¤§»Ê¨¥¡G
-> ·í¤p§Ì­×§ïconfig.h ±Nª©³Ì¤j¼Æ¶q§ï¦Ü2048
-> ¤W¯¸¤H¼Æ3000 ªº®É­Ô ´Nµo²{·s¼Wªºª©µLªkshow¥X¨Ó
-> «ì´_1024¸ò1500´N¥X²{¤F~~ ¤£ª¾¹D¬°¤°»ò·|³o¼Ë??
+  ¦pªG¥X²{Ãþ¦ü¥H¤Uªº°ÝÃD¡G
 
-:p  À³¸Ó¬O share memory ¤£°÷¥Î°Õ
-§ï¤@¤U kernel ³]©w§a
+  A. ¥á¦b¯¸¤Wªº¤H¤ô²y, ¨t²Î«o¦^À³¹ï¤è¤£¦b¯¸¤W
+  B. ­×§ï config.h ±N MAXBOARD §ï¦Ü 2048¡A¦ý¬O·s¼WªºªOµLªk¨q¥X¨Ó
+     ±N MAXBOARD «ì´_¦¨ 1024¡A¬ÝªO¤S¥X²{¤F
 
-¥[¤J  ¤U­±¨º¦æ  16mb ªº share memory À³¸Ó°÷¥Î¤F  :p
+  ³o¬O¦]¬° MAXACTIVE¡BMAXBOARD ¤Ó¤jªº­ì¦]¡A¦Ó share memory ¤£°÷¥Î
+  ­n­×§ï kernel ³]©w¡AµM«á­«·s compile kernel ¦A­«¶}¾÷
+
+: ¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w :
+
+  FreeBSD ªº¸Ü¡ASHMMAXPGS ªº¹w³]­È¬O 1025¡Ashm ¤j¤p¹w³]¬O 4MB
+  ½Ð¦b±zªº kernel configuration file ¥[¤J¤U­±³o¦æ¡AÅý shm ¤j¤pÅÜ 16MB
+
 options         SHMMAXPGS=4096
 
-default ­È¬O  1025  Á`¦@ 4mb
+: ¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w¢w :
+
+  Gentoo Linux ªº¸Ü¡A«h¬O§ï /etc/sysctl.conf
+
+kernel.shmmni = 16384
+
 --
-©Ç©Çªº 1025  @@"
+µo«H¤H: visor.bbs@bbs.yzu.edu.tw (16­¿¹ï«þ OnFly  ^O^)
+¼Ð  ÃD: Re: [°ÝÃD]Windtop¶}¦n·sª©«á µLªkload
+µo«H¯¸: ¤¸´¼¤j¾Ç­·¤§¶ð (Mon Aug 13 16:38:03 2001)
 --
-[1;32m¡° Origin: [33m¤¸´¼¤j¾Ç ­·¤§¶ð [37m<bbs.yzu.edu.tw> [m
-[1;32m¡° From  : [36m210.c210-85-10.ethome.net.tw[m
+µo«H¤H: peterkim.bbs@cpu.tfcis.org (¡Ã¡¾¡Ã||..§Ú¬O¤Ñ§L)
+¼Ð  ÃD: Re: ¦n¤Í¦W³æ¥X²{°ÝÃD...
+µo«H¯¸: °Ê¤O®Ö¤ß (2006/04/18 Tue 14:25:57)
+
+--
+[1;37m¡¼ ¥»¤å³¹¥Ñ [33mitoc[37m ±q [32mitoc.Dorm11.NCTU.edu.tw[37m µoªí[m

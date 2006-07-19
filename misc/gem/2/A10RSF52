@@ -19,7 +19,7 @@
   if (cuser.userlevel)          /* not guest */
   {
 +   move(b_lines - 1, 0);
-+   prints("★ 歡迎您第 %d 度拜訪本站，上次您來自 %s\n★ 我記得那天是 %s",
++   prints("★ 歡迎您第 %d 度拜訪本站，上次您來自 %.35s\n★ 我記得那天是 %s",
 +     cuser.numlogins, cuser.lasthost, Btime(&cuser.lastlogin));
 
     /* ------------------------------------------------- */
