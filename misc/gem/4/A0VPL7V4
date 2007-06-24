@@ -1,6 +1,6 @@
 發信人: amaki.bbs@luna.twbbs.org (某羊) 看板: plan
 標  題: [功能]全文置換
-發信站: 月下夜想 (Sat, 25 Oct 2003 13:42:18 +0800 (CST))  Updated: 2003/10/26
+發信站: 月下夜想 (Sat, 25 Oct 2003 13:42:18 +0800 (CST))  Updated: 2007/04/26
 
   vi有，M3當然也可以有，還可以加上grep的技術，讓全文搜尋變成置換看板下特定字串
 
@@ -72,8 +72,7 @@ XoXpost2(xo, on, off, key, fchk_1, fchk_2)  /* Thor: eXtended post : call from p
           break;
 
 #ifdef HAVE_REFUSEMARK
-        if ((head->xmode & POST_RESTRICT) &&
-          strcmp(head->owner, cuser.userid) && !(bbstate & STAT_BOARD))
+        if (!chkrestrict(head))
           continue;
 #endif
 
@@ -110,8 +109,7 @@ XoXpost2(xo, on, off, key, fchk_1, fchk_2)  /* Thor: eXtended post : call from p
           break;
 
 #ifdef HAVE_REFUSEMARK
-        if ((head->xmode & POST_RESTRICT) &&
-          strcmp(head->owner, cuser.userid) && !(bbstate & STAT_BOARD))
+        if (!chkrestrict(head))
           continue;
 #endif
 
@@ -137,8 +135,7 @@ XoXpost2(xo, on, off, key, fchk_1, fchk_2)  /* Thor: eXtended post : call from p
         break;
 
 #ifdef HAVE_REFUSEMARK
-      if ((head->xmode & POST_RESTRICT) &&
-        strcmp(head->owner, cuser.userid) && !(bbstate & STAT_BOARD))
+      if (!chkrestrict(head))
         continue;
 #endif
 

@@ -1,6 +1,6 @@
 發信人: itoc.bbs@xeon.tfcis.org (椰風廣場..還晶華城咧) 看板: plan
 標  題: [功能] 若 newboard 有新文章，站長的畫面會提示
-發信站: 動力核心 (Sun, 31 Aug 2003 00:14:20 +0800 (CST))  Updated: 2004/10/01
+發信站: 動力核心 (Sun, 31 Aug 2003 00:14:20 +0800 (CST))  Updated: 2007/02/10
 
 ※ 引述《CrBoy (>>斷線風潮四處興起<<)》之銘言：
 > (針對看板總管)在newboard版有新文章時
@@ -40,6 +40,10 @@
 +       mid = "\033[5;42m 有人申請看板 \033[m";
 +       spc = 14;
 +     }
++#ifdef ENHANCED_VISIT
++     brd = bshm->bcache + currbno;
++     brh_get(brd->bstamp, currbno);
++#end
 +   }
 + }
 

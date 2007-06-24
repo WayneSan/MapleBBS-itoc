@@ -1,6 +1,6 @@
 作者: itoc (核心動力) 看板: itoc
 標題: Re: 紀錄--觀看該看板--的日期和ID
-時間: Sun Dec  7 19:53:38 2003                          Updated: 2005/05/26
+時間: Sun Dec  7 19:53:38 2003                          Updated: 2005/07/09
 
 ※ 引述《hessionhsiao.bbs@bala.mis.ccu.edu.tw (慶祝 平靜的日子)》之銘言：
 > 就是版主以上的權限的人
@@ -23,7 +23,8 @@ brd_usies()
 
   brh_get(brd->bstamp, bno);
 
-+ brd_usies();
++ if (!(brd->battr & BRD_ANONYMOUS))
++   brd_usies();
 
   return 0;
 }

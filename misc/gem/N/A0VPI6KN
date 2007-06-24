@@ -1,6 +1,6 @@
 發信人: itoc.bbs@xeon.tfcis.org (核心動力) 看板: plan
 標  題: Re: 鎖文Ctrl+y
-發信站: 動力核心 (Fri, 24 Oct 2003 18:36:01 +0800 (CST))  Updated: 2005/03/22
+發信站: 動力核心 (Fri, 24 Oct 2003 18:36:01 +0800 (CST))  Updated: 2007/04/26
 
 ※ 引述《userjoe.bbs@bittern.csie.nctu.edu.tw (紅龍)》之銘言：
 > 鎖文在文章標題改成"文章已被站務人員鎖住"
@@ -17,8 +17,7 @@
 #endif
 
 +#ifdef HAVE_REFUSEMARK
-+ if ((hdr->xmode & POST_RESTRICT) &&
-+   strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
++ if (!chkrestrict(hdr))
 +   mark = "作者加密";
 + else
 +#endif
@@ -32,8 +31,7 @@
   /* --------------------------------------------------- */
 
 +#ifdef HAVE_REFUSEMARK
-+ if ((hdr->xmode & POST_RESTRICT) &&
-+   strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
++ if (!chkrestrict(hdr))
 + {
 +   title = "文章已被站務人員鎖住";
 +   ch = 1;
@@ -52,8 +50,7 @@
   if (hdr->xmode & POST_INCOME) /* POST_INCOME 和 MAIL_INCOME 是相同的 */
     return NULL;
 +#ifdef HAVE_REFUSEMARK
-+ if ((hdr->xmode & POST_RESTRICT) &&
-+   strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
++ if (!chkrestrict(hdr))
 +   return NULL;
 +#endif
   return utmp_get(hdr->owner);
@@ -62,13 +59,26 @@
 
   hdr = (HDR *) xo_pool + (xo->pos - xo->top);
 +#ifdef HAVE_REFUSEMARK
-+ if ((hdr->xmode & POST_RESTRICT) &&
-+   strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
++ if (!chkrestrict(hdr))
 +   return XO_NONE;
 +#endif
   userid = hdr->owner;
   if (strchr(userid, '.'))
     return XO_NONE;
+
+: bhttpd.c::postlist_list()
+
+ if (brdname)
+   fprintf(fpw, "  <td><a href=/bmore?%s&%d>", brdname, i);
+ else
+   fprintf(fpw, "  <td><a href=/mmore?%d&>", i);
+
++ #ifdef HAVE_REFUSEMARK
++     fprintf(fpw, "%s</td>\n</tr>\n",
++       (hdr.xmode & POST_RESTRICT) ? "<資料保密>" : str_html(hdr.title, 50));
++ #else
+      fprintf(fpw, "%s</td>\n</tr>\n", str_html(hdr.title, 50));
++ #endif
 
 : post.c:post_cross() 加密文章不得轉錄
 

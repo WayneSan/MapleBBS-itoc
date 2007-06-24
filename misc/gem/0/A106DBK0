@@ -1,6 +1,6 @@
 發信人: hession.bbs@ccudream.twbbs.org (Be myself-作自己-) 看板: plan
 標  題: Re: 設定看板屬性-> 讓使用者貼文後不得刪除
-發信站: 中正築夢園 (2004/03/27 Sat 12:14:14)              Updated: 2005/05/26
+發信站: 中正築夢園 (2004/03/27 Sat 12:14:14)              Updated: 2006/08/25
 
 因為 有些看板不想讓使用者刪文
 所以我試著去改
@@ -40,7 +40,7 @@
     !strcmp(currboard, BN_JUNK))
     return XO_NONE;
 
-+ if (currbattr & BRD_NODEL)
++ if ((currbattr & BRD_NODEL) && !(bbstate & STAT_BOARD))
 +   return XO_NONE;  /* hession.040310: 使看板貼文者無法刪文 */
 
 

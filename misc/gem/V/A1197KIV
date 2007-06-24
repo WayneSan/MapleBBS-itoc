@@ -1,6 +1,6 @@
 發信人: itoc.bbs@cpu.tfcis.org (核心動力) 看板: plan
 標  題: Re: [請益] 修改文章備份問題
-發信站: 動力核心 (2005/05/24 Tue 18:55:31)                Updated: 2005/05/25
+發信站: 動力核心 (2005/05/24 Tue 18:55:31)                Updated: 2007/04/26
 
 ※ 引述《Ragnarok (呆呆喵(≧⊙⊙≦))》之銘言：
 > 我想像 JUNK/DELETED 一樣備份被修改過的文章(編輯前的內容)，存到 BN_MODIFY 板
@@ -22,8 +22,7 @@
   if (HAS_PERM(PERM_ALLBOARD))                  /* 站長修改 */
   {
 #ifdef HAVE_REFUSEMARK
-    if ((hdr->xmode & POST_RESTRICT) && !(bbstate & STAT_BM) &&
-      strcmp(hdr->owner, cuser.userid))
+    if (!chkrestrict(hdr))
       return XO_NONE;
 #endif
 +   hdr_stamp(folder, HDR_COPY | 'A', &xpost, fpath);

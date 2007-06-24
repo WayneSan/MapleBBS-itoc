@@ -1,6 +1,6 @@
 µo«H¤H: guessi.bbs@bbs.wretch.cc (¨S) ¬ÝªO: plan
 ¼Ð  ÃD: [­×¥¿] Âù­«»{ÃÒ
-µo«H¯¸: µL¦W¤p¯¸ (2006/03/31 Fri 18:02:59)                Updated: 2006/06/09
+µo«H¯¸: µL¦W¤p¯¸ (2006/03/31 Fri 18:02:59)                Updated: 2007/05/18
 
 [­×¥¿] user.c »Ý¯¸ªø¼f®Öµù¥U³æ«á¤~ºâµù¥U¦¨¥\ ¡ö¢{
                                                ¢x
@@ -23,8 +23,8 @@
 
 
 [32m:/src/include/global.h[m  [32m(¦P®É·s«ØÀÉ®×etc/mjustified)[m
-  #define FN_ETC_JUSTIFIED "etc/justified"
-+ #define FN_ETC_JUSTIFIED "etc/mjustified"
+  #define FN_ETC_JUSTIFIED  "etc/justified"
++ #define FN_ETC_MJUSTIFIED "etc/mjustified"
 
   #define MSG_REG_VALID   "±z¤w¸g³q¹L¨­¤À»{ÃÒ¡A½Ð­«·s¤W¯¸"
 + #define MSG_REG_MVALID  "±z¤w¸g³q¹Lªì¨B»{ÃÒ¡A½Ð­«·s¤W¯¸"

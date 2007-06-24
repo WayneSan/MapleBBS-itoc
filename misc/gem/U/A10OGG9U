@@ -58,10 +58,9 @@
 
 : post.c:post_attr()
 
-  attr = ((mode & POST_BOTTOM) || !brh_unread(hdr->chrono) ||
-+   (mode & POST_ERASE) ||
-    ((mode & POST_RESTRICT) && strcmp(hdr->owner, cuser.userid) &&
-    !(bbstate & STAT_BM)) ? 0x20 : 0;
+  attr = ((mode & POST_BOTTOM) || !brh_unread(hdr->chrono) || 
++   (mode & POST_ERASE) || 
+    !chkrestrict(hdr)) ? 0x20 : 0;
 
   ...
   ...
@@ -84,8 +83,7 @@
 +     return XO_NONE;
 
 #ifdef HAVE_REFUSEMARK
-    if ((hdr->xmode & POST_RESTRICT) &&
-      strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
+    if (!chkrestrict(hdr))
       return XO_NONE;
 #endif
 
@@ -95,8 +93,7 @@
 +     break;
 
 #ifdef HAVE_REFUSEMARK
-    if ((xmode & POST_RESTRICT) &&
-      strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
+    if (!chkrestrict(hdr))
       break;
 #endif
 
@@ -116,8 +113,7 @@
 +   return XO_NONE;
 
 #ifdef HAVE_REFUSEMARK
-  if ((hdr->xmode & POST_RESTRICT) &&
-    strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
+  if (!chkrestrict(hdr))
     return XO_NONE;
 #endif
 
@@ -134,8 +130,7 @@
 +   return XO_NONE;
 
 #ifdef HAVE_REFUSEMARK
-  if ((hdr->xmode & POST_RESTRICT) &&
-    strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
+  if (!chkrestrict(hdr))
     return XO_NONE;
 #endif
 
@@ -145,8 +140,7 @@
 +     continue;
 
 #ifdef HAVE_REFUSEMARK
-    if ((head->xmode & POST_RESTRICT) &&
-      strcmp(head->owner, cuser.userid) && !(bbstate & STAT_BM))
+    if (!chkrestrict(hdr))
       continue;
 #endif
 
@@ -156,8 +150,7 @@
 +     continue;
 
 #ifdef HAVE_REFUSEMARK
-    if ((hdr->xmode & POST_RESTRICT) &&
-      strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BM))
+    if (!chkrestrict(hdr))
       continue;
 #endif
 

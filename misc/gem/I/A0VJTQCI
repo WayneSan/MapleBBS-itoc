@@ -1,6 +1,6 @@
 作者: itoc (:MM:) 看板: itoc
 標題: Re: [問題]WindTop的Firewall功能
-時間: Sat Jan  4 14:18:29 2003                          Updated: 2006/02/16
+時間: Sat Jan  4 14:18:29 2003                          Updated: 2006/11/10
 
 ※ 引述《dundung.bbs@no.bbs.ee.nchu.edu.tw.spam (星海中的發呆羊)》之銘言：
 > 想要自訂條件濾信的話這功能真的不錯用
@@ -104,11 +104,7 @@ post_spam_edit(xo)
   {
     brd_fpath(fpath, currboard, "spam");
 
-    if (!(bbstate & STAT_BOARD))
-    {
-      vedit(fpath, -1); /* itoc.020722: 讓一般使用者也能看到 spam 內容 */
-    }
-    else if (mode == 'd')
+    if (mode == 'd')
     {
       unlink(fpath);
       return XO_FOOT;

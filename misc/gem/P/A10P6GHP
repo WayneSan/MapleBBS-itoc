@@ -1,6 +1,6 @@
 作者: itoc (站上人數：802) 站內: plan
 標題: [功能] HDR 新增一個欄位給已讀未讀輔助判斷
-時間: 2004/11/11 Thu 17:46:58                           Updated: 2005/12/28
+時間: 2004/11/11 Thu 17:46:58                           Updated: 2007/03/06
 
   在 struct HDR 新增一個欄位 stamp
   stamp 也是 unique 的，且和 chrono 不能重覆
@@ -54,8 +54,9 @@
 
 : post.c:post_attr()
 
-- attr = brh_unread(hdr->chrono) ? 0 : 0x20;
-+ attr = brh_unread(BMAX(hdr->chrono, hdr->stamp)) ? 0 : 0x20;
+  將 !brh_unread(hdr->chrono)
+  取代成 !brh_unread(BMAX(hdr->chrono, hdr->stamp))
+  共有二處
 
 : xover.c:xo_get_post()
 
@@ -209,6 +210,7 @@ change_stamp(folder, hdr)
         brd->bpost = fsize / sizeof(HDR);
         /* itoc.020829: 找最後一篇未被加密的 HDR */
 -       while ((fsize -= sizeof(HDR)) >= 0)
++       maxchrono = 0;
 +       while (read(fd, &hdr, sizeof(HDR)) == sizeof(HDR))
         {
 -         lseek(fd, fsize, SEEK_SET);

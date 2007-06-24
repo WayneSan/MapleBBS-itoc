@@ -15,12 +15,14 @@
   char *str, buf[80], pass[PSWDLEN + 1];
 + int mmday[12] = {31, 28, 31, 30, 31, 30,
 +                  31, 31, 30, 31, 30, 31}; /* 每個月的天數 */
++ int year;
 
-: maple/acct:acct_setup()
+  ...
+  ...
 
 + /* 平閏年的判別 */
-+ if (((x.year + 1911) % 400 == 0) ||
-+   ((x.year + 1911) % 100 != 0 && (x.year + 1911) % 4 == 0))
++ year = x.year + 1911;
++ if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
 +   mmday[1] = 29;
 
   do

@@ -1,6 +1,6 @@
 作者: itoc (League) 站內: plan
 標題: [功能] 開啟 bbs 的反查 (dns_ident)
-時間: 2004/01/10 Sat 13:58:12                           Updated: 2004/01/10
+時間: 2004/01/10 Sat 13:58:12                           Updated: 2007/01/14
 
   這其實是原本有的功能，只是被我拿掉了
   如果想加回來的話，就這樣改
@@ -15,6 +15,7 @@ VAR char fromhost[48];          /* from FQDN */
 
     tn_addr = sin.sin_addr.s_addr;
 -   dns_name((char *) &sin.sin_addr, fromhost);
+-   /* str_ncpy(fromhost, (char *)inet_ntoa(sin.sin_addr), sizeof(fromhost));*/
 +   dns_ident(0, &sin, fromhost, rusername);
 
     telnet_init();

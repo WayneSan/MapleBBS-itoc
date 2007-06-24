@@ -15,7 +15,6 @@ random_choose_userid()
   SCHEMA schema;
   static ACCT acct;
 
-  srand(time(NULL) + cuser.userno);
   num = rec_num(FN_SCHEMA, sizeof(SCHEMA));
 
   while (1)

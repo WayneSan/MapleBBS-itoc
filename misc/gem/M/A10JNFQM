@@ -37,6 +37,9 @@
   所以只要把 goodhorse.idv.tw 及 brother.twbbs.org 加入 mail.acl [註]
   那麼即可收網路象迷聯誼會的來信了
 
+  加入 mail.acl 以後，要記得重開 bmtad，即
+  (0)Admin -> (B)BSreset -> 3)指名及擋信
+
   [註] 實務上是將 .twbbs.org 加入 mail.acl
        這樣就允許 *.twbbs.org 的來信了
 

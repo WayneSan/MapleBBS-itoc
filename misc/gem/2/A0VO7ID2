@@ -1,6 +1,6 @@
 發信人: BioStar.bbs@micro.bio.ncue.edu.tw (澎湖小雲雀) 看板: plan
 標  題: [文件] 小弟整理過的「全文搜索」
-發信站: 擎天崗 (Wed, 08 Oct 2003 13:46:57 +0800 (CST))    Updated: 2003/10/08
+發信站: 擎天崗 (Wed, 08 Oct 2003 13:46:57 +0800 (CST))    Updated: 2007/04/26
 
 將各位大大的文章整理一下......
 然後用 userno + 10000 作為 SHMKEY ......
@@ -74,8 +74,7 @@ XoXpost2(xo, hdr, on, off, fchk_1, fchk_2)
         break;
 
 #ifdef HAVE_REFUSEMARK
-      if ((head->xmode & POST_RESTRICT) &&
-        strcmp(head->owner, cuser.userid) && !(bbstate & STAT_BOARD))
+      if (!chkrestrict(head))
         continue;
 #endif
 
@@ -112,8 +111,7 @@ XoXpost2(xo, hdr, on, off, fchk_1, fchk_2)
         break;
 
 #ifdef HAVE_REFUSEMARK
-      if ((head->xmode & POST_RESTRICT) &&
-        strcmp(head->owner, cuser.userid) && !(bbstate & STAT_BOARD))
+      if (!chkrestrict(head))
         continue;
 #endif
 
@@ -137,8 +135,7 @@ XoXpost2(xo, hdr, on, off, fchk_1, fchk_2)
         break;
 
 #ifdef HAVE_REFUSEMARK
-      if ((head->xmode & POST_RESTRICT) &&
-        strcmp(head->owner, cuser.userid) && !(bbstate & STAT_BOARD))
+      if (!chkrestrict(head))
         continue;
 #endif
 

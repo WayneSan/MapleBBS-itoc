@@ -1,6 +1,6 @@
 µo«H¤H: itoc.bbs@cpu.tfcis.org (®Ö¤ß°Ê¤O) ¬ÝªO: plan
 ¼Ð  ÃD: Re: ¶}·s¬ÝªO¬ö¿ý
-µo«H¯¸: °Ê¤O®Ö¤ß (2005/08/31 Wed 00:39:29)                Updated: 2005/08/31
+µo«H¯¸: °Ê¤O®Ö¤ß (2005/08/31 Wed 00:39:29)                Updated: 2007/04/29
 
 ¡° ¤Þ­z¡mroofyu (roofyu)¡n¤§»Ê¨¥¡G
 > ¤£ª¾¹D­n«ç¼ËÅý¯¸ªø¶}·s¬ÝªO®É ¥i¥H²£¥Í¤½§i¦b¯S©w¬ÝªO
@@ -10,10 +10,18 @@
 
 : acct.c:brd_new()
 
+  int bno;
+  char fpath[64];
++ char title[TTLEN + 1];
+
+  ...
+  ...
+
   bshm_reload();
 
-+ sprintf(fpath, "·sªO¦¨¥ß %s", brd->brdname);
-+ add_post("newboard", "etc/newboard", fpath);    [1;44m// ¤½§i¬ÝªO¦Û©w [m
++ sprintf(title, "·sªO¦¨¥ß %s", brd->brdname);
++ add_post("newboard", "etc/newboard", title);    [1;44m// ¤½§i¬ÝªO¦Û©w [m
++ add_post(brd->brdname, "etc/newboard", title);  [1;44m// ¤½§i¦b³o­Ó·s¶}ªºªO [m
 
 : ~/etc/newboard ·s¼W¦¹ÀÉ®×
 

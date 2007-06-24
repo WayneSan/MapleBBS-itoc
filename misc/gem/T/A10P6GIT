@@ -1,6 +1,6 @@
 作者: itoc (站上人數：802) 站內: plan
 標題: [修正] 被編輯過的文章變未讀
-時間: 2004/11/11 Thu 18:31:21                           Updated: 2004/11/11
+時間: 2004/11/11 Thu 18:31:21                           Updated: 2007/04/26
 
   必須先做這篇
   [功能] post.c HDR 新增一個欄位給已讀未讀輔助判斷
@@ -10,8 +10,7 @@
   if (HAS_PERM(PERM_ALLBOARD))                  /* 站長修改 */
   {
 #ifdef HAVE_REFUSEMARK
-    if ((hdr->xmode & POST_RESTRICT) && !(bbstate & STAT_BM) &&
-      strcmp(hdr->owner, cuser.userid))
+    if (!chkrestrict(hdr))
       return XO_NONE;
 #endif
     vedit(fpath, 0);

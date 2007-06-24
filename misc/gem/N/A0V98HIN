@@ -1,6 +1,6 @@
 發信人: itoc.bbs@processor.tfcis.org (:MM:) 看板: plan
 標  題: Re: [功能] post.c 文章評分功能
-發信站: XEON (Wed, 09 Apr 2003 22:26:34 +0800 (CST))      Updated: 2006/04/18
+發信站: XEON (Wed, 09 Apr 2003 22:26:34 +0800 (CST))      Updated: 2007/04/26
 
 ※ 引述《amaki.bbs@luna.twbbs.org (仙草小羊)》之銘言：
 > 顯示文章被閱覽的次數程式否？
@@ -8,8 +8,7 @@
 : post.c:post_browse()
 
 #ifdef HAVE_REFUSEMARK
-    if ((xmode & POST_RESTRICT) &&
-      strcmp(hdr->owner, cuser.userid) && !(bbstate & STAT_BOARD))
+    if (!chkrestrict(hdr))
       break;
 #endif
 

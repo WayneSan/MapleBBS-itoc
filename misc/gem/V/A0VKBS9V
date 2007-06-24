@@ -1,81 +1,19 @@
 發信人: qazq.bbs@bbs.cs.nchu.edu.tw (我在哭泣....淚滴...) 看板: plan
 標  題: [功能] 文章收錄精華區加上標記ｇ。
-發信站: 中興資科 (Fri, 22 Aug 2003 17:46:42 +0800 (CST))  Updated: 2003/12/15
+發信站: 中興資科 (Fri, 22 Aug 2003 17:46:42 +0800 (CST))  Updated: 2006/07/07
 
-    這功能之前 itoc 大大已經寫過了。
-
-    不過因為新版本的 gem.c、hdr.h 有了一些的變動，所以修改了一下再貼一次。
-
-
-
-    我把 post_copy() 加上精華區標記拿掉了。
-
-    不然有板主複製了但是沒有貼到精華區，還是會出現ｇ來標記。
-
-    乾脆就寫了一段程式，可以讓板主自行標記收到精華區的文章，就像ｍ一樣。
+    此程式可以讓板主自行標記收到精華區的文章，就像ｍ一樣。
 
     按鍵自設，內設是 Ctrl + G
 
-
-    畢竟有人不喜歡看到滿滿的ｇ，也會有人是不小心收錯文章的...^^a
-
-
-
-    不過有一個很奇怪的地方，用定錨收文，單篇的話，馬上就會顯示ｇ
-
-    但是先用 t 然後大量收文的話，就要先退出看板再進去才看的到。
-
-    好奇怪唷！是檔案重載的問題嗎？神奇....
-
-
 ==============================================================================
 
+: hdr.h
 
-: src/include/hdr.h
+- #define POST_3        0x00000004
++ #define POST_GEM      0x00000004  /* 收錄精華區標記 */
 
-#define POST_MARKED 0x00000002  /* marked */
-
-+#define POST_GEM    0x00000004  /* 收錄精華區標記 */
-
-#define POST_DELETE 0x00000080  /* 標記待砍的 */
-
-
-: src/maple/gem.c:gem_gather()
-
-        rec_add(folder, &ghdr, sizeof(HDR));
-        gem_log(folder, "收錄", &ghdr);
-      }
-
-+     /* 從看板收錄到精華區且我是板主時，要加上 POST_GEM */
-+     if ((*dir == 'b') && (bbstate & STAT_BOARD) && !(xmode & POST_GEM))
-+     {
-+       /* update 屬性 */
-+
-+       hdr->xmode = xmode | POST_GEM;
-+       currchrono = hdr->chrono;
-+
-+#ifdef XZ_XPOST
-+       rec_put(dir, hdr, sizeof(HDR), tag ? TagList[locus].recno :
-+         (xo->key == XZ_XPOST ? hdr->xid : xo->pos), cmpchrono);
-+#else
-+       rec_put(dir, hdr, sizeof(HDR), tag ? TagList[locus].recno : xo->pos,
-+         cmpchrono);
-+#endif
-+     }
-
-    }
-  } while (++locus < tag);
-
-  ...
-  ...
-
-- return XO_FOOT;
-+ return XO_LOAD;   /* update 屬性 */
-}
-
-
-: maple/post.c:post_attr()
-
+: post.c:post_attr()
 
 + if ((bbstate & STAT_BOARD) && (mode & POST_GEM))      /* 板主才看得到 G/B */
 +  attr |= (mode & POST_MARKED ? 'B' : 'G');        /* 若有 mark+gem，顯示 B */
@@ -87,10 +25,7 @@
   else
 #endif
 
-
-
 : post.c:post_gem_mark()    新增整支函式在 post_mark() 下面
-
 
 static int
 post_gem_mark(xo)       /* qazq.030822: 收錄精華區標記 */
@@ -114,7 +49,7 @@ post_gem_mark(xo)       /* qazq.030822: 收錄精華區標記 */
     hdr->xmode = xmode ^ POST_GEM;
     currchrono = hdr->chrono;
 
-    rec_put(xo->dir, hdr, sizeof(HDR), xo->key == XZ_XPOST ? 
+    rec_put(xo->dir, hdr, sizeof(HDR), xo->key == XZ_XPOST ?
       hdr->xid : pos, cmpchrono);
     move(3 + cur, 7);
     outc(post_attr(hdr));

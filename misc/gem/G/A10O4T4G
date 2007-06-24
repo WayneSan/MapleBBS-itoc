@@ -1,6 +1,6 @@
 發信人: simple.bbs@bbs.wfc.edu.tw (養兵千日 用在一時) 看板: plan
 標  題: [功能]樂透彩-大樂透(修改版)
-發信站: 卡布奇諾 (2004/10/27 Wed 00:39:26)                Updated: 2006/01/24
+發信站: 卡布奇諾 (2004/10/27 Wed 00:39:26)                Updated: 2007/05/02
 
 : crontab -e 加入二行
 
@@ -112,7 +112,7 @@ mail_lottery(log)       /* itoc.011115: 寄檔案給 userid */
     /* 開始準備新中獎人的信 */
     strcpy(userid, log->userid);
 
-    sprintf(fpath, "tmp/lottery.%d", userid);
+    sprintf(fpath, "tmp/lottery.%s", userid);
     if (fp = fopen(fpath, "w"))
     {
       /* 文章檔頭 */

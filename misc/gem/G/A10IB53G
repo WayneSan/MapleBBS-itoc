@@ -1,18 +1,20 @@
 作者: itoc (風調雨順，國泰民安) 看板: plan
 標題: [功能] 增加欄位說明
-時間: Sun Aug 17 16:08:35 2003                          Updated: 2004/08/20
+時間: Sun Aug 17 16:08:35 2003                          Updated: 2007/04/12
 
   若有變動 struct ACCT 都需要轉換 .ACCT
   轉換的方式如下：
 
-  1. 關站 (關 bbsd 及清 shm)
+  1. 關站 (執行 src/sh/killbbs.sh)
+          (若是 Cygwin 則是執行 killbbs.bat)
 
-  2. 執行 bin/backupacct 來備份全站的 .ACCT
+  2. 執行 bin/backupacct 來備份全站的 .ACCT  (若有信心不會出錯，此步驟可跳過)
 
   3. 將 src/include/struct.h:struct ACCT 照抄去
      src/util/tran/transacct.c:struct OLD
 
   4. 照 patch 裡面所寫的，對程式做修改
+     並在 src/include/struct.h:struct ACCT 加新欄位
 
   5. 將異動過後的 src/include/struct.h:struct ACCT 照抄去
      src/util/tran/transacct.c:struct NEW

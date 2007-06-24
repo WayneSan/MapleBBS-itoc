@@ -1,6 +1,6 @@
 作者: itoc (cygreadline4.dll) 看板: plan
 標題: [功能] 重要文章置底
-時間: 2004/05/16 Sun 16:52:10                           Updated: 2005/10/30
+時間: 2004/05/16 Sun 16:52:10                           Updated: 2007/02/28
 
   將重要的文章放在看板列表最後
 
@@ -179,18 +179,35 @@ post_bottom(xo)
 + if (hdr->xmode & POST_BOTTOM)  /* 加密文章不能置底 */
 +   return XO_NONE;
 
-: post.c:post_title()  懶得寫謄本同步的程式了，就直接限制不能改標題好了:p
+: post.c:post_title()
 
-  pos = xo->pos;
-  cur = pos - xo->top;
-  hdr = (HDR *) xo_pool + cur;
+  if (memcmp(fhdr, &mhdr, sizeof(HDR)) && vans(msg_sure_ny) == 'y')
+  {
+    memcpy(fhdr, &mhdr, sizeof(HDR));
+    currchrono = fhdr->chrono;
 
-+ if (hdr->xmode & POST_BOTTOM)
-+ {
-+   vmsg("置底文無法修改標題，請先取消置底");
-+   return XO_FOOT;
-+ }
++   if (fhdr->xmode & POST_BOTTOM2)
++     fhdr->xmode ^= POST_BOTTOM;       /* 避免正本變成謄本 */
 
+    rec_put(xo->dir, fhdr, sizeof(HDR), xo->key == XZ_XPOST ?
+      fhdr->xid : pos, cmpchrono);
+
+    move(3 + cur, 0);
+    post_item(++pos, fhdr);
+
+    header_replace(xo, fhdr);
+
++   if (fhdr->xmode & POST_BOTTOM)      /* 同步置底的謄本 */
++   {
++     char fpath[64];
++     brd_fpath(fpath, currboard, FN_BOTTOM);
++     fhdr->xmode ^= POST_BOTTOM;
++     rec_put(fpath, fhdr, sizeof(HDR), 0, cmpchrono);
++     return XO_LOAD;
++   }
+  }
+  return XO_FOOT;
+}
   memcpy(&mhdr, hdr, sizeof(HDR));
 
 : post:post_score()

@@ -1,6 +1,6 @@
 發信人: qazq.bbs@bbs.cs.nchu.edu.tw (ξ愛情御守ξ) 看板: plan
 標  題: [功能] 熱門看板排行榜(2)－topbrd.c
-發信站: 中興資科 (Mon, 14 Jul 2003 17:08:54 +0800 (CST))  Updated: 2004/06/16
+發信站: 中興資科 (Mon, 14 Jul 2003 17:08:54 +0800 (CST))  Updated: 2007/05/13
 
 : util/Makefile
 
@@ -101,7 +101,7 @@ main()
   locus = 0;
   while (!feof(fp))
   {
-    fscanf(fp, "%s%d", board[i].brdname, &(board[i].times));
+    fscanf(fp, "%s%d", board[locus].brdname, &(board[locus].times));
     locus++;
   }
   fclose(fp);

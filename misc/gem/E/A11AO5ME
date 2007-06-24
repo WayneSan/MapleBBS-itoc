@@ -1,6 +1,6 @@
 µo«H¤H: itoc.bbs@processor.tfcis.org (®Ö¤ß°Ê¤O) ¬ÝªO: plan
 ¼Ð  ÃD: Re: ½Ð°ÝÃö©ó¶®ªê¡I©_¼¯ªº·s»D¥\¯à
-µo«H¯¸: °Ê¤O®Ö¤ß (2004/02/12 Thu 12:45:28)                Updated: 2006/03/17
+µo«H¯¸: °Ê¤O®Ö¤ß (2004/02/12 Thu 12:45:28)                Updated: 2006/08/12
 
   ­n¥ý°µºëµØ°Ï³o½g
   [¥\¯à] enews-open.c ©_¼¯·s»DÂà¦Ü¬ÝªO
@@ -52,7 +52,7 @@ SO =     ..... [1;33menews.so[m
 # ¨C¤Ñ 10:30AM 4:30PM §ì©_¼¯·s»D
 30 10,16 * * * bin/enews-open
 
- ­n¨Ï¥Î enews-open.c ¥²¶·¸Ë¦³ lynx¡C
+ ­n¨Ï¥Î enews-open.c ¥²¶·¸Ë¦³ lynx ¤Î iconv¡C
 
  ¤å³¹ÀÉ®×©ñ¦b run/kimo/
 

@@ -1,6 +1,6 @@
 §@ªÌ: itoc (¬@±Ï¤@­ÓÆF»î) ¬ÝªO: plan
 ¼ÐÃD: [¥\¯à] µoªí¤å³¹ªº prefix ¥ÑªO¥D³]©w
-®É¶¡: Tue Jun 18 23:36:31 2002                          Updated: 2005/05/26
+®É¶¡: Tue Jun 18 23:36:31 2002                          Updated: 2007/04/16
 
 ¡° ¤Þ­z¡mtandrian.bbs@ntcb.twbbs.org.tw (¤Û°ìÅ]«°«á¯ª)¡n¤§»Ê¨¥¡G
 > ½Ð¿ï¾Ü¤å³¹Ãþ§O¡]«ö Enter ¸õ¹L¡^¡G
@@ -121,52 +121,37 @@ post_prefix_edit(xo)
   else          /* itoc.020113: ·s¤å³¹¿ï¾Ü¼ÐÃD¤ÀÃþ */
   {
 #define NUM_PREFIX 6
-
--   char *prefix[NUM_PREFIX] = {"[¤½§i] ", "[·s»D] ", ... "[´ú¸Õ] "};
--
--   move(21, 0);
--   outs("Ãþ§O¡G");
--   for (mode = 0; mode < NUM_PREFIX; mode++)
--     prints("%d.%s", mode + 1, prefix[mode]);
--
--   mode = vget(20, 0, "½Ð¿ï¾Ü¤å³¹Ãþ§O¡]...¡^¡G", fpath, 3, DOECHO) - '1';
--   if (mode >= 0 && mode < NUM_PREFIX)         /* ¿é¤J¼Æ¦r¿ï¶µ */
--     rcpt = prefix[mode];
--   else                                        /* ªÅ¥Õ¸õ¹L */
--     rcpt = NULL;
-- }
-
 +   FILE *fp;
 +   char prefix[NUM_PREFIX][10];
-+
+-   char *prefix[NUM_PREFIX] =
++   char *prefix_default[NUM_PREFIX] =
+      {"[¤½§i] ", "[·s»D] ", "[¶¢²á] ", "[¤å¥ó] ", "[°ÝÃD] ", "[´ú¸Õ] "};
+
++   for (mode = 0; mode < NUM_PREFIX; mode++)
++     strcpy(prefix[mode], prefix_default[mode]);
 +   brd_fpath(fpath, currboard, "prefix");
 +   if (fp = fopen(fpath, "r"))
 +   {
-+     move(21, 0);
-+     outs("Ãþ§O¡G");
 +     for (mode = 0; mode < NUM_PREFIX; mode++)
 +     {
 +       if (fscanf(fp, "%9s", fpath) != 1)
 +         break;
 +       strcpy(prefix[mode], fpath);
-+       prints("%d.%s ", mode + 1, fpath);
 +     }
-+
-+     fclose(fp);
-+     mode = vget(20, 0, "½Ð¿ï¾Ü¤å³¹Ãþ§O¡]«ö Enter ¸õ¹L¡^¡G",
-+       fpath, 3, DOECHO) - '1';
-+     if (mode >= 0 && mode < NUM_PREFIX)       /* ¿é¤J¼Æ¦r¿ï¶µ */
-+       rcpt = prefix[mode];
-+     else                                      /* ªÅ¥Õ¸õ¹L */
-+       rcpt = NULL;
 +   }
-+   else
-+   {
-+     rcpt = NULL;
-+   }
-+ }
 
-  if (!ve_subject(21, title, rcpt))
+    move(21, 0);
+    outs("Ãþ§O¡G");
+    for (mode = 0; mode < NUM_PREFIX; mode++)
+      prints("%d.%s", mode + 1, prefix[mode]);
+
+    mode = vget(20, 0, "½Ð¿ï¾Ü¤å³¹Ãþ§O¡]«ö Enter ¸õ¹L¡^¡G",
+      fpath, 3, DOECHO) - '1';
+    if (mode >= 0 && mode < NUM_PREFIX)         /* ¿é¤J¼Æ¦r¿ï¶µ */
+      rcpt = prefix[mode];
+    else                                        /* ªÅ¥Õ¸õ¹L */
+      rcpt = NULL;
+  }
 
 --
 [1;37m¡¼ ¥»¤å³¹¥Ñ [33mitoc[37m ±q [32mnctu5566.Dorm3.NCTU.edu.tw[37m µoªí[m

@@ -4,7 +4,7 @@
 
 : etc/jcee
 
-  抓 http://cpu.twbbs.org/~itoc/jcee.tgz 解壓縮在 etc/ 下
+  抓 http://cpu.twbbs.org/~itoc/download/jcee/jcee.tgz 解壓縮在 etc/ 下
   也就是要有 etc/jcee/##.txt，## 是民國年
 
 : menu.c 在適當的選單加上
